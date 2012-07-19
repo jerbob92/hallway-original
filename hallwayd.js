@@ -86,8 +86,6 @@ function syncComplete(response, task, runInfo, callback) {
 
     logger.verbose("Pipeline finished for " + task.profile + "/" + task.synclet.name);
 
-    //logger.verbose("Rescheduling " + JSON.stringify(task) + " and config " + JSON.stringify(response.config));
-
     // Get the nextRun returned from the synclet (pagination, for example)
     var nextRun = response.config && response.config.nextRun;
 
@@ -101,14 +99,16 @@ function syncComplete(response, task, runInfo, callback) {
         if (!response.auth)
           return cb();
 
-        // TODO: Document what happens here
+        // This allows the profile manager to update any auth changes that
+        // happened during the run, such as refreshing an access token
         profileManager.authSet(task.profile, response.auth, null, cb);
       },
       function(cb) {
         if (!response.config)
-         return cb();
+          return cb();
 
-        // TODO: Document what happens here
+        // This makes sure that the config for this individual synclet is
+        // merged properly into the overall profile config object
         profileManager.configSet(task.profile, response.config, cb);
       },
       function(cb) {
