@@ -23,7 +23,7 @@ function refresh() {
 
     var instances = results.workers.concat(results.apiHosts);
 
-    instances = _.sortBy(instances, 'uptime');
+    instances = _.sortBy(instances, 'host');
 
     _.each(instances, function(instance) {
       instance.host = instance.host.replace(/\.singly\.com/, '');
