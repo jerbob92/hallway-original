@@ -12,8 +12,6 @@ var dashboards = {
     'stats.api.hits',
     'stats.dal.*',
     'stats.gauges.apps.active.*',
-    'stats.gauges.slack.*',
-    'stats.gauges.slag.*',
     'stats.gauges.workers.*',
     'stats.synclet.run',
     'stats.synclet.schedule',
