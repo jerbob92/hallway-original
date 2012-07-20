@@ -81,6 +81,7 @@ function syncComplete(response, task, runInfo, callback) {
   }
 
   pipeline.inject(response.data, runInfo.auth, function(err) {
+    // XXX: Doesn't this leak a task since we don't call the callback?
     if (err)
       return logger.error("Failed pipeline processing: " + err);
 
