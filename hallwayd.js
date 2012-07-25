@@ -188,6 +188,7 @@ if (argv._.length > 0) {
 var startupTasks = [];
 
 if (role !== Roles.stream) {
+  startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
   startupTasks.push(require('ijod').initDB);
 }
 
