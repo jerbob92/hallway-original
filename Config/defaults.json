@@ -1,12 +1,13 @@
 {
    "debug": false,
-   "lockerHost": "localhost",
-   "externalHost": "localhost",
    "lockerListenIP": "0.0.0.0",
+   "lockerHost": "localhost",
    "lockerPort": 8042,
+   "externalHost": "localhost",
    "externalPort": 8042,
    "externalSecure": false,
    "worker": {
+      "listenIP": "0.0.0.0",
       "port": 8041
    },
    "stats": {},
@@ -16,7 +17,32 @@
    },
    "ec2": {},
    "s3": {},
-   "syncManager": {},
+   "alerting": {},
+   "dawg": {
+      "listenIP": "0.0.0.0",
+      "host": "http://localhost:8050",
+      "port": 8050,
+      "password": "test-password"
+   },
+   "syncManager": {
+      "numWorkers": 4,
+      "pagingTiming": 2000,
+      "defaultScanTime": 5000,
+      "redis": {
+         "host": "localhost",
+         "port": 6379
+      },
+      "beanstalk": {
+         "host": "localhost",
+         "port": 11300
+      }
+   },
+   "stream": {
+      "apihost": "http://localhost:8042",
+      "streamhost": "http://localhost:8069",
+      "port": 8069,
+      "listenIP": "0.0.0.0"
+   },
    "authSecrets": {},
    "cookieExpire": 2592000,
    "logging": {
