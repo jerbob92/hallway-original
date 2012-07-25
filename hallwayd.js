@@ -1,11 +1,11 @@
 /*
- *
- * Copyright (C) 2011, The Locker Project
- * All rights reserved.
- *
- * Please see the LICENSE file for more information.
- *
- */
+*
+* Copyright (C) 2011, The Locker Project
+* All rights reserved.
+*
+* Please see the LICENSE file for more information.
+*
+*/
 
 exports.alive = false;
 
@@ -13,71 +13,60 @@ var fs = require('fs');
 var path = require('path');
 var async = require('async');
 var util = require('util');
-var argv = require('optimist').argv;
+var argv = require("optimist").argv;
 
 var Roles = {
   worker: {
-    startup: startWorkerWS
+    startup:startWorkerWS
   },
   apihost: {
-    startup: startAPIHost
+    startup:startAPIHost
   },
   dawg: {
-    startup: startDawg
+    startup:startDawg
   },
   stream: {
-    startup: startStream
+    startup:startStream
   }
 };
-
 var role = Roles.apihost;
 
-// lconfig has to be loaded before any other hallway modules!
+// This lconfig stuff has to come before any other hallway modules are loaded!
 var lconfig = require('lconfig');
 var configDir = process.env.LOCKER_CONFIG || 'Config';
-
 if (!lconfig.loaded) {
-  var configFile;
-
-  if (process.argv[2] === '--config') {
-    configFile = process.argv[3];
-  } else {
-    configFile = path.join(configDir, 'config.json');
-  }
-
-  lconfig.load(configFile);
-} else {
-  console.warn("Hallway config already loaded");
+    var configFile;
+    if (process.argv[2] === '--config') {
+        configFile = process.argv[3];
+    }
+    else {
+        configFile = path.join(configDir, 'config.json');
+    }
+    lconfig.load(configFile);
+}
+else {
+    console.warn("Hallway config already loaded");
 }
 
-var logger = require('logger').logger('hallwayd');
-
+var logger = require("logger").logger("hallwayd");
 logger.info('process id:' + process.pid);
-
-var alerting = require('alerting');
-
+var alerting = require("alerting");
+lconfig.alerting = {key:1}
 if (lconfig.alerting && lconfig.alerting.key) {
   alerting.init(lconfig.alerting);
-
   alerting.install(function(E) {
     logger.error("Uncaught exception: %s", E.message);
-
     shutdown(1);
   });
 }
-
-var syncManager = require('syncManager');
+var syncManager = require("syncManager");
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
-
-var http = require('http');
-
 // Set our globalAgent sockets higher
+var http = require("http");
 http.globalAgent.maxSockets = 800;
 
-if (process.argv.indexOf("offline") >= 0) {
-  syncManager.manager.offlineMode = true;
-}
+if (process.argv.indexOf("offline") >= 0) syncManager.manager.offlineMode = true;
 
 var shuttingDown_ = false;
 
@@ -93,9 +82,8 @@ function syncComplete(response, task, runInfo, callback) {
 
   pipeline.inject(response.data, runInfo.auth, function(err) {
     // XXX: Doesn't this leak a task since we don't call the callback?
-    if (err) {
+    if (err)
       return logger.error("Failed pipeline processing: " + err);
-    }
 
     logger.verbose("Pipeline finished for " + task.profile + "/" + task.synclet.name);
 
@@ -103,25 +91,22 @@ function syncComplete(response, task, runInfo, callback) {
     var nextRun = response.config && response.config.nextRun;
 
     // If it was set make sure it doesn't get stored
-    if (nextRun) {
+    if (nextRun)
       delete response.config.nextRun;
-    }
 
     // Save any changes and reschedule
     async.series([
       function(cb) {
-        if (!response.auth) {
+        if (!response.auth)
           return cb();
-        }
 
         // This allows the profile manager to update any auth changes that
         // happened during the run, such as refreshing an access token
         profileManager.authSet(task.profile, response.auth, null, cb);
       },
       function(cb) {
-        if (!response.config) {
+        if (!response.config)
           return cb();
-        }
 
         // This makes sure that the config for this individual synclet is
         // merged properly into the overall profile config object
@@ -150,12 +135,9 @@ function startSyncmanager(cbDone) {
 
 function startAPIHost(cbDone) {
   logger.info("Starting an API host");
-
   var webservice = require('webservice');
-
   webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP, function(hallway) {
     logger.info('Hallway is now listening at ' + lconfig.lockerBase);
-
     cbDone();
   });
 }
@@ -163,27 +145,21 @@ function startAPIHost(cbDone) {
 function startDawg(cbDone) {
   if (!lconfig.dawg || !lconfig.dawg.port || !lconfig.dawg.password) {
     logger.error("You must specify a dawg section with at least a port and password to run.");
-
     shutdown(1);
   }
-
   logger.info("Starting a Hallway Dawg -- Think you can get away without having a hall pass?  Think again.");
-
-  var dawg = require('dawg');
-
+  var dawg = require("dawg");
+  if (!lconfig.dawg.listenIP) lconfig.dawg.listenIP = "0.0.0.0";
   dawg.startService(lconfig.dawg.port, lconfig.dawg.listenIP, function() {
     logger.info("The Dawg is now monitoring at port %d", lconfig.dawg.port);
-
     cbDone();
   });
 }
 
 function startStream(cbDone) {
   logger.info("Starting a Hallway Stream -- you're in for a good time.");
-
-  require('streamer').startService(lconfig.stream, function() {
+  require("streamer").startService(lconfig.stream, function() {
     logger.info("Streaming at port %d", lconfig.stream.port);
-
     cbDone();
   });
 }
@@ -191,15 +167,12 @@ function startStream(cbDone) {
 function startWorkerWS(cbDone) {
   if (!lconfig.worker || !lconfig.worker.port) {
     logger.error("You must specify a worker section with at least a port and password to run.");
-
     shutdown(1);
   }
-
-  var worker = require('worker');
-
+  var worker = require("worker");
+  if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
   worker.startService(syncManager.manager, lconfig.worker.port, lconfig.worker.listenIP, function() {
     logger.info("Starting a Hallway Worker, thou shalt be digitized", lconfig.worker);
-
     cbDone();
   });
 }
@@ -207,10 +180,8 @@ function startWorkerWS(cbDone) {
 if (argv._.length > 0) {
   if (!Roles.hasOwnProperty(argv._[0])) {
     logger.error("The %s role is unknown.", argv._[0]);
-
     return shutdown(1);
   }
-
   role = Roles[argv._[0]];
 }
 
@@ -233,37 +204,33 @@ if (role.startup) {
 async.series(startupTasks, function(error) {
   // TODO:  This needs a cleanup, it's too async
   logger.info("Hallway is up and running.");
-
   exports.alive = true;
 });
 
 // scheduling and misc things
 function shutdown(returnCode, callback) {
-  if (shuttingDown_ && returnCode !== 0) {
-    try {
-      console.error("Aieee! Shutdown called while already shutting down! Panicking!");
+    if (shuttingDown_ && returnCode !== 0) {
+        try {
+            console.error("Aieee! Shutdown called while already shutting down! Panicking!");
+        }
+        catch (e) {
+            // we tried...
+        }
+        process.exit(1);
     }
-    catch (e) {
-      // we tried...
+    shuttingDown_ = true;
+    process.stdout.write("\n");
+    logger.info("Shutting down...");
+    if (callback) {
+      return callback(returnCode);
     }
-
-    process.exit(1);
-  }
-
-  shuttingDown_ = true;
-  process.stdout.write("\n");
-  logger.info("Shutting down...");
-
-  if (callback) {
-    return callback(returnCode);
-  }
-
-  exit(returnCode);
+    else {
+      return exit(returnCode);
+    }
 }
 
 function exit(returnCode) {
   logger.info("Shutdown complete");
-
   process.exit(returnCode);
 }
 
@@ -276,55 +243,39 @@ process.on("SIGINT", function() {
     });
     break;
   case Roles.apihost:
-    shutdown(0);
-    break;
   default:
     shutdown(0);
     break;
-  }
+  };
 });
 
 process.on("SIGTERM", function() {
   logger.info("Shutting down via SIGTERM...");
-
   shutdown(0);
 });
 
 if (!process.env.LOCKER_TEST) {
   process.on('uncaughtException', function(err) {
     try {
-      if (err.toString().indexOf('Error: Parse Error') >= 0) {
-        // ignoring this for now, relating to some node bug,
-        // https://github.com/joyent/node/issues/2997
+      if (err.toString().indexOf('Error: Parse Error') >= 0)
+      {
+        // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
         logger.warn(err);
-
         return;
       }
-
-      // THEORY: these bubble up from event emitter as uncaught errors,
-      // even though the socket end event still fires and are ignorable
-      if (err.toString().indexOf('ECONNRESET') >= 0 ||
-        err.toString().indexOf('socket hang up') >= 0) {
+      if(err.toString().indexOf('ECONNRESET') >= 0 || err.toString().indexOf('socket hang up') >= 0)
+      {
+        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
         logger.warn(err);
-
         return;
       }
-
       logger.error('Uncaught exception:');
       logger.error(util.inspect(err));
-
-      if (err && err.stack) {
-        logger.error(util.inspect(err.stack));
-      }
-
+      if (err && err.stack) logger.error(util.inspect(err.stack));
       if (lconfig.airbrakeKey) {
         var airbrake = require('airbrake').createClient(lconfig.airbrakeKey);
-
         airbrake.notify(err, function(err, url) {
-          if (url) {
-            logger.error(url);
-          }
-
+          if (url) logger.error(url);
           shutdown(1);
         });
       } else {
@@ -337,12 +288,10 @@ if (!process.env.LOCKER_TEST) {
       } catch (e) {
         // we tried...
       }
-
       process.exit(1);
     }
   });
 }
 
-// Export some things so this can be used by other processes,
-// mainly for the test runner
+// Export some things so this can be used by other processes, mainly for the test runner
 exports.shutdown = shutdown;
