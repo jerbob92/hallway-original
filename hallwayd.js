@@ -24,11 +24,14 @@ var Roles = {
   },
   dawg: {
     startup:startDawg
+  },
+  stream: {
+    startup:startStream
   }
 };
 var role = Roles.apihost;
 
-// This lconfig stuff has to come before any other locker modules are loaded!!
+// This lconfig stuff has to come before any other hallway modules are loaded!
 var lconfig = require('lconfig');
 var configDir = process.env.LOCKER_CONFIG || 'Config';
 if (!lconfig.loaded) {
@@ -42,7 +45,7 @@ if (!lconfig.loaded) {
     lconfig.load(configFile);
 }
 else {
-    console.warn("Locker config already loaded, me is set to", lconfig.me);
+    console.warn("Hallway config already loaded");
 }
 
 var logger = require("logger").logger("hallwayd");
@@ -56,7 +59,7 @@ if (lconfig.alerting && lconfig.alerting.key) {
     shutdown(1);
   });
 }
-var syncManager = require("syncManager.js");
+var syncManager = require("syncManager");
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
 // Set our globalAgent sockets higher
@@ -67,30 +70,64 @@ if (process.argv.indexOf("offline") >= 0) syncManager.manager.offlineMode = true
 
 var shuttingDown_ = false;
 
-function syncComplete(response, task, callback) {
+// Runs after each completed synclet
+function syncComplete(response, task, runInfo, callback) {
   logger.info("Got a completion from %s", task.profile);
-  if(!response) logger.debug("missing response");
-  if(!response) response = {};
-  pipeline.inject(response.data, function(err) {
-    if(err) return logger.error("failed pipeline processing: "+err);
-    logger.verbose("Rescheduling " + JSON.stringify(task) + " and config "+JSON.stringify(response.config));
-    // save any changes and reschedule
+
+  if (!response)  {
+    logger.debug("Missing response");
+
+    response = {};
+  }
+
+  pipeline.inject(response.data, runInfo.auth, function(err) {
+    // XXX: Doesn't this leak a task since we don't call the callback?
+    if (err)
+      return logger.error("Failed pipeline processing: " + err);
+
+    logger.verbose("Pipeline finished for " + task.profile + "/" + task.synclet.name);
+
+    // Get the nextRun returned from the synclet (pagination, for example)
     var nextRun = response.config && response.config.nextRun;
-    if(nextRun) delete response.config.nextRun; // don't want this getting stored!
+
+    // If it was set make sure it doesn't get stored
+    if (nextRun)
+      delete response.config.nextRun;
+
+    // Save any changes and reschedule
     async.series([
-      function(cb) { if(!response.auth) return cb(); profileManager.authSet(task.profile, response.auth, null, cb) },
-      function(cb) { if(!response.config) return cb(); profileManager.configSet(task.profile, response.config, cb) },
-      function(cb) { syncManager.manager.schedule(task, nextRun, cb); },
+      function(cb) {
+        if (!response.auth)
+          return cb();
+
+        // This allows the profile manager to update any auth changes that
+        // happened during the run, such as refreshing an access token
+        profileManager.authSet(task.profile, response.auth, null, cb);
+      },
+      function(cb) {
+        if (!response.config)
+          return cb();
+
+        // This makes sure that the config for this individual synclet is
+        // merged properly into the overall profile config object
+        profileManager.configSet(task.profile, response.config, cb);
+      },
+      function(cb) {
+        syncManager.manager.schedule(task, nextRun, cb);
+      }
     ], callback);
-  })
+  });
 }
 
 function startSyncmanager(cbDone) {
   var isWorker = (role === Roles.worker);
+
   if (isWorker) {
     syncManager.manager.completed = syncComplete;
+
     logger.info("Starting a worker.");
   }
+
   syncManager.manager.init(isWorker, function() {
     cbDone();
   });
@@ -99,7 +136,7 @@ function startSyncmanager(cbDone) {
 function startAPIHost(cbDone) {
   logger.info("Starting an API host");
   var webservice = require('webservice');
-  webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP, function(locker) {
+  webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP, function(hallway) {
     logger.info('Hallway is now listening at ' + lconfig.lockerBase);
     cbDone();
   });
@@ -115,6 +152,14 @@ function startDawg(cbDone) {
   if (!lconfig.dawg.listenIP) lconfig.dawg.listenIP = "0.0.0.0";
   dawg.startService(lconfig.dawg.port, lconfig.dawg.listenIP, function() {
     logger.info("The Dawg is now monitoring at port %d", lconfig.dawg.port);
+    cbDone();
+  });
+}
+
+function startStream(cbDone) {
+  logger.info("Starting a Hallway Stream -- you're in for a good time.");
+  require("streamer").startService(lconfig.stream, function() {
+    logger.info("Streaming at port %d", lconfig.stream.port);
     cbDone();
   });
 }
@@ -142,9 +187,12 @@ if (argv._.length > 0) {
 
 var startupTasks = [];
 
-startupTasks.push(require('ijod').initDB);
+if (role !== Roles.stream) {
+  startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
+  startupTasks.push(require('ijod').initDB);
+}
 
-if (role !== Roles.dawg) {
+if (role !== Roles.dawg && role !== Roles.stream) {
   startupTasks.push(startSyncmanager);
   startupTasks.push(require('acl').init);
   startupTasks.push(profileManager.init);
@@ -210,9 +258,15 @@ process.on("SIGTERM", function() {
 if (!process.env.LOCKER_TEST) {
   process.on('uncaughtException', function(err) {
     try {
-      if(err.toString().indexOf('Error: Parse Error') >= 0)
+      if (err.toString().indexOf('Error: Parse Error') >= 0)
       {
         // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
+        logger.warn(err);
+        return;
+      }
+      if(err.toString().indexOf('ECONNRESET') >= 0 || err.toString().indexOf('socket hang up') >= 0)
+      {
+        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
         logger.warn(err);
         return;
       }
