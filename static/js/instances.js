@@ -1,30 +1,49 @@
 function refresh() {
   async.parallel({
+    head: function(callback) {
+      $.getJSON('https://api.github.com/repos/Singly/hallway/commits', function(commits) {
+        callback(null, commits[0]);
+      });
+    },
     workers: function(callback) {
       $.getJSON('/workers/state', function(state) {
-        callback(null, state);
+        callback(null, state.workers);
       });
     },
     apiHosts: function(callback) {
       $.getJSON('/apiHosts/state', function(state) {
-        callback(null, state);
+        callback(null, state.apiHosts);
       });
     },
   },
   function(err, results) {
     $('#rows').html('');
 
-    // I hate how this looks.
-    var instances = results.workers.workers.concat(results.apiHosts.apiHosts);
+    $('#head').html('<a href="https://github.com/Singly/hallway/commit/' + results.head.sha + '">' + results.head.sha.slice(0, 8) + '</a>');
 
-    instances = _.sortBy(instances, 'uptime');
+    var instances = results.workers.concat(results.apiHosts);
+
+    instances = _.sortBy(instances, 'host');
 
     _.each(instances, function(instance) {
       instance.host = instance.host.replace(/\.singly\.com/, '');
 
+      var url = 'http://' + instance.publicIp + ':8042/state';
+
+      if (/worker/.test(instance.host)) {
+        url = 'http://' + instance.publicIp + ':8041/';
+      }
+
+      var versionClass = '';
+
+      if (instance.version &&
+        instance.version !== results.head.sha) {
+        versionClass = 'versionAlert';
+      }
+
       $('#rows').append('<tr>' +
-          '<td>' + instance.host + '</td>' +
-          '<td>' + (instance.version ? '<a href="https://github.com/Singly/hallway/commit/' + instance.version + '">' + instance.version + '</a>' : '') + '</td>' +
+          '<td><a href="' + url + '">' + instance.host + '</a></td>' +
+          '<td>' + (instance.version ? '<span class="' + versionClass + '"><a href="https://github.com/Singly/hallway/commit/' + instance.version + '">' + instance.version.slice(0, 8) + '</a></span>' : '') + '</td>' +
           '<td>' + moment.duration(instance.uptime, "seconds").humanize() + '</td>' +
           '<td>' + (instance.active ? instance.active.length : '') + '</td>' +
           '<td>' + (instance.total ? commas(instance.total) : '') + '</td>' +

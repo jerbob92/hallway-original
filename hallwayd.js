@@ -59,7 +59,7 @@ if (lconfig.alerting && lconfig.alerting.key) {
     shutdown(1);
   });
 }
-var syncManager = require("syncManager.js");
+var syncManager = require("syncManager");
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
 // Set our globalAgent sockets higher
@@ -70,30 +70,64 @@ if (process.argv.indexOf("offline") >= 0) syncManager.manager.offlineMode = true
 
 var shuttingDown_ = false;
 
+// Runs after each completed synclet
 function syncComplete(response, task, runInfo, callback) {
   logger.info("Got a completion from %s", task.profile);
-  if(!response) logger.debug("missing response");
-  if(!response) response = {};
+
+  if (!response)  {
+    logger.debug("Missing response");
+
+    response = {};
+  }
+
   pipeline.inject(response.data, runInfo.auth, function(err) {
-    if(err) return logger.error("failed pipeline processing: "+err);
-    logger.verbose("Rescheduling " + JSON.stringify(task) + " and config "+JSON.stringify(response.config));
-    // save any changes and reschedule
+    // XXX: Doesn't this leak a task since we don't call the callback?
+    if (err)
+      return logger.error("Failed pipeline processing: " + err);
+
+    logger.verbose("Pipeline finished for " + task.profile + "/" + task.synclet.name);
+
+    // Get the nextRun returned from the synclet (pagination, for example)
     var nextRun = response.config && response.config.nextRun;
-    if(nextRun) delete response.config.nextRun; // don't want this getting stored!
+
+    // If it was set make sure it doesn't get stored
+    if (nextRun)
+      delete response.config.nextRun;
+
+    // Save any changes and reschedule
     async.series([
-      function(cb) { if(!response.auth) return cb(); profileManager.authSet(task.profile, response.auth, null, cb) },
-      function(cb) { if(!response.config) return cb(); profileManager.configSet(task.profile, response.config, cb) },
-      function(cb) { syncManager.manager.schedule(task, nextRun, cb); },
+      function(cb) {
+        if (!response.auth)
+          return cb();
+
+        // This allows the profile manager to update any auth changes that
+        // happened during the run, such as refreshing an access token
+        profileManager.authSet(task.profile, response.auth, null, cb);
+      },
+      function(cb) {
+        if (!response.config)
+          return cb();
+
+        // This makes sure that the config for this individual synclet is
+        // merged properly into the overall profile config object
+        profileManager.configSet(task.profile, response.config, cb);
+      },
+      function(cb) {
+        syncManager.manager.schedule(task, nextRun, cb);
+      }
     ], callback);
-  })
+  });
 }
 
 function startSyncmanager(cbDone) {
   var isWorker = (role === Roles.worker);
+
   if (isWorker) {
     syncManager.manager.completed = syncComplete;
+
     logger.info("Starting a worker.");
   }
+
   syncManager.manager.init(isWorker, function() {
     cbDone();
   });
@@ -153,7 +187,10 @@ if (argv._.length > 0) {
 
 var startupTasks = [];
 
-startupTasks.push(require('ijod').initDB);
+if (role !== Roles.stream) {
+  startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
+  startupTasks.push(require('ijod').initDB);
+}
 
 if (role !== Roles.dawg && role !== Roles.stream) {
   startupTasks.push(startSyncmanager);
@@ -221,7 +258,7 @@ process.on("SIGTERM", function() {
 if (!process.env.LOCKER_TEST) {
   process.on('uncaughtException', function(err) {
     try {
-      if(err.toString().indexOf('Error: Parse Error') >= 0)
+      if (err.toString().indexOf('Error: Parse Error') >= 0)
       {
         // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
         logger.warn(err);
