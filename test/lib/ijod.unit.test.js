@@ -45,8 +45,6 @@ describe("IJOD", function() {
 //    fakeDB.addFake(/^SELECT path, offset, len FROM ijod WHERE idr/, function(binds) {
 //      return [];
 //    });
-    // Disabled temp -- temas -- 8/1/2012
-    /*
     it("should return one by idr", function(done) {
       ijod.getOne("contact:709761820@facebook/friends#3409545", function(err, entry){
         done();
@@ -57,7 +55,6 @@ describe("IJOD", function() {
         done();
       })
     });
-    */
   });
 });
 
