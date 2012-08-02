@@ -27,7 +27,7 @@
     "express": "=2.5.4",
     "facebook-js": "=1.0.0",
     "fivebeans": "0.2.x",
-    "generic-pool": "",
+    "generic-pool": "=1.0.9",
     "gift": "0.0.5",
     "gzippo": "=0.1.4",
     "hiredis": "0.1.x",
