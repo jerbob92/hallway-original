@@ -12,10 +12,11 @@ var dashboards = {
     'stats.api.hits',
     'stats.dal.*',
     'stats.gauges.apps.active.*',
-    'stats.gauges.slack.*',
-    'stats.gauges.slag.*',
     'stats.gauges.workers.*',
     'stats.synclet.run',
+    'stats.synclet.schedule',
+    'stats.synclet.reserve',
+    'stats.synclet.destroy',
     'stats.ijod.*',
     'stats.timers.dal.query_length.upper',
     'stats.timers.ijod.save_time.upper',
@@ -29,6 +30,12 @@ var dashboards = {
   features: [
     'stats.app.features.*'
   ],
+  requestDurations: [
+    'stats.timers.request.duration.*.upper'
+  ],
+  syncletDurations: [
+    'stats.timers.synclet.duration.*.*.upper'
+  ],
   services: [
     'stats.app.services.rollup',
     'stats.app.services.*.*'
@@ -40,6 +47,15 @@ var dashboards = {
   types: [
     'stats.app.types.*',
     'stats.app.types.discovery.*'
+  ],
+  typesItems: [
+    // Call these out individually since there's a lot of noise
+    'stats.data.types.photo',
+    'stats.data.types.news',
+    'stats.data.types.video',
+    'stats.data.types.status',
+    'stats.data.types.contact',
+    'stats.data.types.checkin'
   ],
   proxy: [
     'stats.app.proxy.*'
@@ -54,6 +70,11 @@ function addMetrics(dashboard, results, callback) {
   results.forEach(function(result) {
     // If there's another level don't add the stat
     if (/\.$/.test(result)) {
+      return;
+    }
+
+    // upper returns upper and upper_90, we just want upper
+    if (/upper_90$/.test(result)) {
       return;
     }
 
@@ -86,7 +107,7 @@ $(function() {
   // Search for metrics in parallel
   _.each(dashboards, function(searches, dashboard) {
     async.forEach(searches, function(search, searchCallback) {
-      if (/\*$/.test(search)) {
+      if (/\*/.test(search)) {
         graphite.find(search, function(err, results) {
           addMetrics(dashboard, results, searchCallback);
         });
