@@ -32,3 +32,7 @@
         "appSecret" : "PASTE_HERE"
     }
 }
+
+flickr: 
+    //"appKey" : "fc9345c6fc5d181c14810eda3d90d5b8",
+    //"appSecret" : "b6bfa4b6fdd952e1"
