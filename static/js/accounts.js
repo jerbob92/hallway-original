@@ -72,8 +72,8 @@ function refresh() {
             '<td>' + app.details.notes.appName  + '</td>' +
             '<td>' + email + '</td>' +
             '<td>' + app.details.notes.appUrl  + '</td>' +
-            '<td>' + app.profiles + '</td>' +
-            '<td>' + app.accounts + '</td>' +
+            '<td>' + commas(app.profiles) + '</td>' +
+            '<td>' + commas(app.accounts) + '</td>' +
             '<td>' + ratio + '</td>' +
             '<td>' + app.details.cat + '</td>' +
           '</tr>');
