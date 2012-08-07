@@ -1,8 +1,11 @@
 function sortTable() {
   $('table').find('td').filter(function() {
-    return $(this).index() === 4;
+    return $(this).index() === 5;
   }).sortElements(function(a, b) {
-    return parseInt($.text([a]), 10) > parseInt($.text([b]), 10) ? -1 : 1;
+    a = parseInt($.text([a]).replace(',', ''), 10);
+    b = parseInt($.text([b]).replace(',', ''), 10);
+
+    return a > b ? -1 : 1;
   }, function() {
     return this.parentNode;
   });
