@@ -1,8 +1,11 @@
 function sortTable() {
   $('table').find('td').filter(function() {
-    return $(this).index() === 4;
+    return $(this).index() === 5;
   }).sortElements(function(a, b) {
-    return parseInt($.text([a]), 10) > parseInt($.text([b]), 10) ? -1 : 1;
+    a = parseInt($.text([a]).replace(',', ''), 10);
+    b = parseInt($.text([b]).replace(',', ''), 10);
+
+    return a > b ? -1 : 1;
   }, function() {
     return this.parentNode;
   });
@@ -72,8 +75,8 @@ function refresh() {
             '<td>' + app.details.notes.appName  + '</td>' +
             '<td>' + email + '</td>' +
             '<td>' + app.details.notes.appUrl  + '</td>' +
-            '<td>' + app.profiles + '</td>' +
-            '<td>' + app.accounts + '</td>' +
+            '<td>' + commas(app.profiles) + '</td>' +
+            '<td>' + commas(app.accounts) + '</td>' +
             '<td>' + ratio + '</td>' +
             '<td>' + app.details.cat + '</td>' +
           '</tr>');
