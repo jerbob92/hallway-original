@@ -131,10 +131,10 @@ var startupTasks = [];
 if (role !== Roles.stream) {
   startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
   startupTasks.push(require('ijod').initDB);
+  startupTasks.push(startTaskman);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
-  startupTasks.push(startTaskman);
   startupTasks.push(require('acl').init);
   startupTasks.push(profileManager.init);
 }
