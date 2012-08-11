@@ -1,6 +1,6 @@
 {
-	"name":"LinkedIn",
-	"desc":"Syncs connections, shares, and the network updates news feed.",
+	"name":"zeo",
+	"desc":"Syncs average zqscore and sleep stats",
   "key": "API Key",
   "secret": "Secret Key",
   "icons": [
@@ -10,8 +10,7 @@
   ],
   "synclets":[
     {"name": "self",        "frequency": 86400},
-    {"name": "updates",     "frequency": 3600},
-    {"name": "network",     "frequency": 3600},
-    {"name": "connections", "frequency": 86400}
+    {"name": "zqScore", "frequency": 1},
+    {"name": "sleepStats", "frequency": 1}
   ]
 }
