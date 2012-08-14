@@ -59,78 +59,19 @@ if (lconfig.alerting && lconfig.alerting.key) {
     shutdown(1);
   });
 }
-var syncManager = require("syncManager");
+var taskman = require("taskman");
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
 // Set our globalAgent sockets higher
 var http = require("http");
 http.globalAgent.maxSockets = 800;
 
-if (process.argv.indexOf("offline") >= 0) syncManager.manager.offlineMode = true;
-
 var shuttingDown_ = false;
 
-// Runs after each completed synclet
-function syncComplete(response, task, runInfo, callback) {
-  logger.info("Got a completion from %s", task.profile);
-
-  if (!response)  {
-    logger.debug("Missing response");
-
-    response = {};
-  }
-
-  pipeline.inject(response.data, runInfo.auth, function(err) {
-    // XXX: Doesn't this leak a task since we don't call the callback?
-    if (err)
-      return logger.error("Failed pipeline processing: " + err);
-
-    logger.verbose("Pipeline finished for " + task.profile + "/" + task.synclet.name);
-
-    // Get the nextRun returned from the synclet (pagination, for example)
-    var nextRun = response.config && response.config.nextRun;
-
-    // If it was set make sure it doesn't get stored
-    if (nextRun)
-      delete response.config.nextRun;
-
-    // Save any changes and reschedule
-    async.series([
-      function(cb) {
-        if (!response.auth)
-          return cb();
-
-        // This allows the profile manager to update any auth changes that
-        // happened during the run, such as refreshing an access token
-        profileManager.authSet(task.profile, response.auth, null, cb);
-      },
-      function(cb) {
-        if (!response.config)
-          return cb();
-
-        // This makes sure that the config for this individual synclet is
-        // merged properly into the overall profile config object
-        profileManager.configSet(task.profile, response.config, cb);
-      },
-      function(cb) {
-        syncManager.manager.schedule(task, nextRun, cb);
-      }
-    ], callback);
-  });
-}
-
-function startSyncmanager(cbDone) {
+function startTaskman(cbDone) {
   var isWorker = (role === Roles.worker);
-
-  if (isWorker) {
-    syncManager.manager.completed = syncComplete;
-
-    logger.info("Starting a worker.");
-  }
-
-  syncManager.manager.init(isWorker, function() {
-    cbDone();
-  });
+  if (isWorker) logger.info("Starting a worker.");
+  taskman.init(argv.pid, isWorker, cbDone);
 }
 
 function startAPIHost(cbDone) {
@@ -171,7 +112,7 @@ function startWorkerWS(cbDone) {
   }
   var worker = require("worker");
   if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
-  worker.startService(syncManager.manager, lconfig.worker.port, lconfig.worker.listenIP, function() {
+  worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function() {
     logger.info("Starting a Hallway Worker, thou shalt be digitized", lconfig.worker);
     cbDone();
   });
@@ -190,10 +131,10 @@ var startupTasks = [];
 if (role !== Roles.stream) {
   startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
   startupTasks.push(require('ijod').initDB);
+  startupTasks.push(startTaskman);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
-  startupTasks.push(startSyncmanager);
   startupTasks.push(require('acl').init);
   startupTasks.push(profileManager.init);
 }
@@ -239,7 +180,7 @@ process.on("SIGINT", function() {
   logger.info("Shutting down via SIGINT...");
   switch (role) {
   case Roles.worker:
-    syncManager.manager.stop(function() {
+    taskman.stop(function() {
       shutdown(0);
     });
     break;
@@ -258,16 +199,24 @@ process.on("SIGTERM", function() {
 if (!process.env.LOCKER_TEST) {
   process.on('uncaughtException', function(err) {
     try {
-      if (err.toString().indexOf('Error: Parse Error') >= 0)
+      // copy of these in alerting.js so they don't fire alerts too
+      var E = err;
+      if(E.toString().indexOf('Error: Parse Error') >= 0)
       {
         // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
-        logger.warn(err);
+        logger.warn("ignored exception",E);
         return;
       }
-      if(err.toString().indexOf('ECONNRESET') >= 0 || err.toString().indexOf('socket hang up') >= 0)
+      if(E.toString().indexOf('ECONNRESET') >= 0 || E.toString().indexOf('socket hang up') >= 0)
       {
         // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
-        logger.warn(err);
+        logger.warn("ignored exception",E);
+        return;
+      }
+      if(E.toString().indexOf('ETIMEDOUT') >= 0)
+      {
+        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
+        logger.warn("ignored exception",E);
         return;
       }
       logger.error('Uncaught exception:');
