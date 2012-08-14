@@ -51,10 +51,10 @@ function refresh() {
         return;
       }
 
-      if (!app.details.cat) {
-        app.details.cat = '';
+      if (!app.created) {
+        app.created = '';
       } else {
-        app.details.cat = moment(app.details.cat).format("M/D/YYYY h:mma");
+        app.created = moment(app.created).format("M/D/YYYY h:mma");
       }
 
       var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
