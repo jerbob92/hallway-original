@@ -1,6 +1,6 @@
 function sortTable() {
   $('table').find('td').filter(function() {
-    return $(this).index() === 5;
+    return $(this).index() === 4;
   }).sortElements(function(a, b) {
     a = parseInt($.text([a]).replace(',', ''), 10);
     b = parseInt($.text([b]).replace(',', ''), 10);
@@ -62,12 +62,11 @@ function refresh() {
       $('#rows').append('<tr>' +
           '<td>' + app.id + '</td>' +
           '<td>' + app.details.notes.appName  + '</td>' +
-          '<td>' + email + '</td>' +
           '<td>' + app.details.notes.appUrl  + '</td>' +
-          '<td>' + commas(app.profiles) + '</td>' +
           '<td>' + commas(app.accounts) + '</td>' +
+          '<td>' + commas(app.profiles) + '</td>' +
           '<td>' + ratio + '</td>' +
-          '<td>' + app.details.cat + '</td>' +
+          '<td>' + app.created + '</td>' +
         '</tr>');
     });
 
