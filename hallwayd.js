@@ -199,16 +199,24 @@ process.on("SIGTERM", function() {
 if (!process.env.LOCKER_TEST) {
   process.on('uncaughtException', function(err) {
     try {
-      if (err.toString().indexOf('Error: Parse Error') >= 0)
+      // copy of these in alerting.js so they don't fire alerts too
+      var E = err;
+      if(E.toString().indexOf('Error: Parse Error') >= 0)
       {
         // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
-        logger.warn(err);
+        logger.warn("uncaughtException",E);
         return;
       }
-      if(err.toString().indexOf('ECONNRESET') >= 0 || err.toString().indexOf('socket hang up') >= 0)
+      if(E.toString().indexOf('ECONNRESET') >= 0 || E.toString().indexOf('socket hang up') >= 0)
       {
         // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
-        logger.warn(err);
+        logger.warn("uncaughtException",E);
+        return;
+      }
+      if(E.toString().indexOf('ETIMEDOUT') >= 0)
+      {
+        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
+        logger.warn("uncaughtException",E);
         return;
       }
       logger.error('Uncaught exception:');
