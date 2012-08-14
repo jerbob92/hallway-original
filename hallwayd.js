@@ -204,19 +204,19 @@ if (!process.env.LOCKER_TEST) {
       if(E.toString().indexOf('Error: Parse Error') >= 0)
       {
         // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
-        logger.warn("uncaughtException",E);
+        logger.warn("ignored exception",E);
         return;
       }
       if(E.toString().indexOf('ECONNRESET') >= 0 || E.toString().indexOf('socket hang up') >= 0)
       {
         // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
-        logger.warn("uncaughtException",E);
+        logger.warn("ignored exception",E);
         return;
       }
       if(E.toString().indexOf('ETIMEDOUT') >= 0)
       {
         // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
-        logger.warn("uncaughtException",E);
+        logger.warn("ignored exception",E);
         return;
       }
       logger.error('Uncaught exception:');
