@@ -30,5 +30,10 @@
     "glatitude" : {
         "appKey" : "PASTE_HERE",
         "appSecret" : "PASTE_HERE"
-    }
+    },
+    "zeo" : {
+        "appKey" : "PASTE_HERE",
+        "appSecret" : "PASTE_HERE",
+        "callerKey" : "PASTE_HERE"
+    },
 }
