@@ -3,5 +3,5 @@
     "status":"stable",
     "provider":"gplus",
     "provides":["activitiy/gplus"],
-    "synclets":[{"name": "activities", "frequency": 3500}]
+    "synclets":[{"name": "activities", "frequency": 3500, "class":"core"}]
 }

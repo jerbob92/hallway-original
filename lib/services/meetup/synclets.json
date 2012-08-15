@@ -9,10 +9,10 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/meetup.png"}
   ],
   "synclets":[
-    {"name": "self", "frequency": 86400},
-	{"name": "checkins", "frequency": 3600}, 
-	{"name": "groups", "frequency": 3600}, 
-	{"name": "photos", "frequency": 3600}, 
-	{"name": "events", "frequency": 3600} 
+    {"name": "self", "frequency": 86400, "class":"core"},
+	{"name": "checkins", "frequency": 3600, "class":"personal"}, 
+	{"name": "groups", "frequency": 3600, "class":"personal"}, 
+	{"name": "photos", "frequency": 3600, "class":"personal"}, 
+	{"name": "events", "frequency": 3600, "class":"personal"} 
   ]
 }

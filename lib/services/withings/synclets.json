@@ -9,7 +9,7 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/withings.png"}
   ],
   "synclets":[
-    {"name": "self",    "frequency": 86400},
-    { "name": "measures", "frequency": 43200}
+    {"name": "self",    "frequency": 86400, "class":"core"},
+    { "name": "measures", "frequency": 43200, "class":"personal"}
   ]
 }
