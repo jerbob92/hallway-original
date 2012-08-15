@@ -7,7 +7,7 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/google.png"}
   ],
     "synclets":[
-        {"name": "self",    "frequency": 86400},
-        {"name": "changes",    "frequency": 3600}
+        {"name": "self",    "frequency": 86400, "class":"core"},
+        {"name": "changes",    "frequency": 3600, "class":"personal"}
     ]
 }

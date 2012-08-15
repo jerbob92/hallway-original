@@ -9,11 +9,11 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/github.png"}
   ],
   "synclets": [
-    {"frequency": 3600, "name": "self"},
-    {"frequency": 3600, "name": "users"},
-    {"frequency": 3600, "name": "issues"},
-    {"frequency": 3600, "name": "repos"},
-    {"frequency": 3600, "name": "received"},
-    {"frequency": 3600, "name": "events"}
+    {"frequency": 3600, "name": "self", "class":"core"},
+    {"frequency": 3600, "name": "users", "class":"core"},
+    {"frequency": 3600, "name": "issues", "class":"personal"},
+    {"frequency": 3600, "name": "repos", "class":"personal"},
+    {"frequency": 3600, "name": "received", "class":"social"},
+    {"frequency": 3600, "name": "events", "class":"social"}
   ]
 }
