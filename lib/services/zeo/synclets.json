@@ -10,7 +10,7 @@
   ],
   "synclets":[
     {"name": "self", "frequency": 86400},
-    {"name": "sleepStats", "frequency": 3600},
-    {"name": "zqScores", "frequency": 3600}
+    {"name": "sleep_stats", "frequency": 3600},
+    {"name": "zq_scores", "frequency": 3600}
   ]
 }
