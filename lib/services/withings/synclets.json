@@ -1,0 +1,15 @@
+{
+	"name":"Withings",
+	"desc":"Withings",
+  "key": "Client ID",
+  "secret": "Client secret",
+  "icons": [
+    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/withings.png"},
+    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/withings.png"},
+    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/withings.png"}
+  ],
+  "synclets":[
+    {"name": "self",    "frequency": 86400},
+    { "name": "measures", "frequency": 43200}
+  ]
+}
