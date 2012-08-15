@@ -21,14 +21,6 @@ function sortTable() {
 }
 
 function refresh() {
-  $.getJSON('/stats/beanstalk', function(stats) {
-    var key;
-
-    for (key in stats) {
-      $('#' + key).text(commas(stats[key]));
-    }
-  });
-
   $.getJSON('/workers/state', function(state) {
     $('#rows').html('');
 
