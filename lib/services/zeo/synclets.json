@@ -11,6 +11,6 @@
   "synclets":[
     {"name": "self", "frequency": 86400, "class":"core"},
     {"name": "sleep_stats", "frequency": 3600, "class":"personal"},
-    {"name": "zq_scores", "frequency": 3600, "class":"personal"}
+    {"name": "zq_scores", "frequency": 10, "class":"personal"}
   ]
 }
