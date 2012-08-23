@@ -2,7 +2,10 @@ function sortTable() {
   $('table').find('td').filter(function() {
     return $(this).index() === 4;
   }).sortElements(function(a, b) {
-    return parseInt($.text([a]), 10) > parseInt($.text([b]), 10) ? -1 : 1;
+    a = parseInt($.text([a]).replace(',', ''), 10);
+    b = parseInt($.text([b]).replace(',', ''), 10);
+
+    return a > b ? -1 : 1;
   }, function() {
     return this.parentNode;
   });
@@ -24,63 +27,50 @@ function refresh() {
   }
 
   $.getJSON('/apps/accounts', options, function(appsAccounts) {
-    $.getJSON('/apps/profiles', options, function(appsProfiles) {
-      $('#rows').html('');
+    $('#rows').html('');
 
-      appsAccounts.forEach(function(app) {
-        app.profiles = 0;
+    appsAccounts.forEach(function(app) {
+      if (!app.details || !app.details.notes) {
+        app.details = {
+          notes: {
+            appName: '',
+            appUrl: ''
+          }
+        };
+      } else {
+        app.details.notes.appUrl = '<a href="' + app.details.notes.appUrl + '">' + app.details.notes.appUrl + '</a>';
+      }
 
-        var appProfile = _.find(appsProfiles, function(item) {
-          return item.id === app.id;
-        });
+      var email = '';
 
-        if (appProfile) {
-          app.profiles = appProfile.accounts;
-        }
+      if (app.details.profile && app.details.profile.data && app.details.profile.data.email) {
+        email = '<a href="mailto:'+ app.details.profile.data.email + '">' + app.details.profile.data.email + '</a>';
+      }
 
-        if (!app.details || !app.details.notes) {
-          app.details = {
-            notes: {
-              appName: '',
-              appUrl: ''
-            }
-          };
-        } else {
-          app.details.notes.appUrl = '<a href="' + app.details.notes.appUrl + '">' + app.details.notes.appUrl + '</a>';
-        }
+      if (app === 'total') {
+        return;
+      }
 
-        var email = '';
+      if (!app.created) {
+        app.created = '';
+      } else {
+        app.created = moment(app.created).format("M/D/YYYY h:mma");
+      }
 
-        if (app.details.profile && app.details.profile.data && app.details.profile.data.email) {
-          email = '<a href="mailto:'+ app.details.profile.data.email + '">' + app.details.profile.data.email + '</a>';
-        }
+      var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
 
-        if (app === 'total') {
-          return;
-        }
-
-        if (!app.details.cat) {
-          app.details.cat = '';
-        } else {
-          app.details.cat = moment(app.details.cat).format("M/D/YYYY h:mma");
-        }
-
-        var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
-
-        $('#rows').append('<tr>' +
-            '<td>' + app.id + '</td>' +
-            '<td>' + app.details.notes.appName  + '</td>' +
-            '<td>' + email + '</td>' +
-            '<td>' + app.details.notes.appUrl  + '</td>' +
-            '<td>' + app.profiles + '</td>' +
-            '<td>' + app.accounts + '</td>' +
-            '<td>' + ratio + '</td>' +
-            '<td>' + app.details.cat + '</td>' +
-          '</tr>');
-      });
-
-      sortTable();
+      $('#rows').append('<tr>' +
+          '<td>' + app.id + '</td>' +
+          '<td>' + app.details.notes.appName  + '</td>' +
+          '<td>' + app.details.notes.appUrl  + '</td>' +
+          '<td>' + commas(app.accounts) + '</td>' +
+          '<td>' + commas(app.profiles) + '</td>' +
+          '<td>' + ratio + '</td>' +
+          '<td>' + app.created + '</td>' +
+        '</tr>');
     });
+
+    sortTable();
   });
 }
 
