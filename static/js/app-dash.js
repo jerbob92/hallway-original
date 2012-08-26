@@ -104,6 +104,26 @@ function setupOverview() {
 }
 
 $(function() {
+  $('#filter').keyup(function() {
+    var re = new RegExp($('#filter').val(), 'i');
+
+    $('.horizon, .comparison').each(function(index) {
+      if (re.test($(this).find('.title').eq(0).text().toLowerCase())) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+
+    $('body > .group').show();
+
+    var $visible = $('body > .group').has('.horizon:visible, .comparison:visible');
+
+    $('body > .group').hide();
+
+    $visible.show();
+  });
+
   // Search for metrics in parallel
   _.each(dashboards, function(searches, dashboard) {
     async.forEach(searches, function(search, searchCallback) {
