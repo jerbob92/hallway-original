@@ -1,6 +1,6 @@
 {
 	"name":"Flickr",
-	"desc":"Syncs photos, photo feed, and contacts.",
+	"desc":"Syncs photos",
   "icons": [
     {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/flickr.png"},
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/flickr.png"},
@@ -8,8 +8,6 @@
   ],
     "synclets":[
         {"name": "self", "frequency": 86400},
-        {"name": "contacts", "frequency": 3600},
-        {"name": "photos", "frequency": 3600},
-        {"name": "photos_feed", "frequency": 3600}
+        {"name": "photos", "frequency": 3600}
     ]
 }
