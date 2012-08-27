@@ -1,6 +1,8 @@
 {
 	"name":"Flickr",
 	"desc":"Syncs photos",
+  "key": "Key",
+  "secret": "Secret",
   "icons": [
     {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/flickr.png"},
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/flickr.png"},
