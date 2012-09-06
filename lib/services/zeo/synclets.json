@@ -1,16 +1,16 @@
 {
-	"name":"zeo",
-	"desc":"Syncs and archives average zqscore and historic sleep stats",
+  "name": "zeo",
+  "desc": "Syncs and archives average zqscore and historic sleep stats",
   "key": "API Key",
   "secret": "Secret Key",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/zeo.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/zeo.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/zeo.png"}
+    { "height": 16, "width": 16, "source": "http://assets.singly.com/service-icons/16px/zeo.png" },
+    { "height": 24, "width": 24, "source": "http://assets.singly.com/service-icons/24px/zeo.png" },
+    { "height": 32, "width": 32, "source": "http://assets.singly.com/service-icons/32px/zeo.png" }
   ],
   "synclets":[
-    {"name": "self", "frequency": 86400, "class":"core"},
-    {"name": "sleep_stats", "frequency": 3600, "class":"personal"},
-    {"name": "zq_scores", "frequency": 3600, "class":"personal"}
+    { "name": "self", "frequency": 86400, "class": "core" },
+    { "name": "sleep_stats", "frequency": 3600, "class": "personal" },
+    { "name": "zq_scores", "frequency": 3600, "class": "personal" }
   ]
 }
