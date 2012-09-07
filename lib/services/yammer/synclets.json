@@ -9,9 +9,9 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/yammer.png"}
   ],
   "synclets":[
-    {"name": "self", "frequency": 7200, "class":"core"},
+    {"name": "self", "frequency": 86400, "class":"core"},
     {"name": "messages", "frequency": 600, "class":"social"},
-    {"name": "users", "frequency": 7200, "class":"core"},
-    {"name": "groups", "frequency": 7200, "class":"core"}
+    {"name": "users", "frequency": 86400, "class":"core"},
+    {"name": "groups", "frequency": 86400, "class":"core"}
   ]
 }

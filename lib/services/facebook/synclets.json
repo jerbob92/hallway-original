@@ -9,13 +9,13 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/facebook.png"}
   ],
   "synclets":[
-    {"name": "self",        "frequency": 7200,  "class": "core"},
-    {"name": "feed",        "frequency": 3600,  "class": "social"},
+    {"name": "self",        "frequency": 86400,  "class": "core"},
+    {"name": "feed",        "frequency": 3600,  "class": "personal"},
     {"name": "checkins",    "frequency": 1800,  "class": "personal"},
-    {"name": "friends",     "frequency": 3600,  "class": "core"},
+    {"name": "friends",     "frequency": 86400,  "class": "core"},
     {"name": "home",        "frequency": 600,   "class": "social"},
     {"name": "home_update", "frequency": 7000,  "class": "social"},
     {"name": "photos",      "frequency": 86400, "class": "personal"},
-    {"name": "likes",       "frequency": 3600,  "class": "personal"}
+    {"name": "likes",       "frequency": 86400,  "class": "personal"}
   ]
 }

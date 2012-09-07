@@ -9,10 +9,10 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/instagram.png"}
   ],
     "synclets":[
-        {"name": "self",    "frequency": 3600, "class":"core"},
-        {"name": "feed",    "frequency": 600, "class":"personal"},
-        {"name": "follows", "frequency": 3600, "class":"core"},
+        {"name": "self",    "frequency": 86400, "class":"core"},
+        {"name": "feed",    "frequency": 600, "class":"social"},
+        {"name": "follows", "frequency": 86400, "class":"core"},
         {"name": "updated", "frequency": 4200, "class":"personal"},
-        {"name": "media",   "frequency": 1200, "class":"personal"}
+        {"name": "media",   "frequency": 3600, "class":"personal"}
     ]
 }

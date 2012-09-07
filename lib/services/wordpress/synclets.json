@@ -9,7 +9,7 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/wordpress.png"}
   ],
   "synclets":[
-    {"name": "self",  "frequency": 3600, "class":"core"},
+    {"name": "self",  "frequency": 86400, "class":"core"},
     {"name": "posts", "frequency": 3600, "class":"personal"},
     {"name": "feed",  "frequency": 3600, "class":"social"}
   ]

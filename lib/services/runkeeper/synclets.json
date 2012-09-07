@@ -13,7 +13,7 @@
 	{"name": "fitness_activities", "frequency": 3600, "class":"personal"},
 	{"name": "strength_activities", "frequency": 3600, "class":"personal"},
 	{"name": "background_activities", "frequency": 3600, "class":"personal"},
-	{"name": "records", "frequency": 3600, "class":"personal"},
-	{"name": "street_team", "frequency": 3600, "class":"core"}
+	{"name": "records", "frequency": 86400, "class":"personal"},
+	{"name": "street_team", "frequency": 86400, "class":"core"}
   ]
 }
