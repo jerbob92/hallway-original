@@ -30,7 +30,7 @@ get('profiles', function(j){
         });
       }, function(){
         var last = {};
-        if(path.existsSync(path.join(__dirname,'snaps','last.json'))) try {
+        if(fs.existsSync(path.join(__dirname,'snaps','last.json'))) try {
           last = JSON.parse(fs.readFileSync(path.join(__dirname,'snaps','last.json')));
         }catch(E){console.error(E)}
         var union = {};
