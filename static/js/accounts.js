@@ -1,3 +1,4 @@
+/*globals commas:true humanTimeFromSeconds:true secondsFromHumanTime:true*/
 function sortTable() {
   $('table').find('td').filter(function() {
     return $(this).index() === 4;
@@ -9,6 +10,24 @@ function sortTable() {
   }, function() {
     return this.parentNode;
   });
+}
+
+function updateSelected() {
+  var state = $.bbq.getState();
+
+  $('a.time').removeClass('selected');
+
+  if (state.appSince) {
+    $('a[data-parameter=app][data-time=' + humanTimeFromSeconds(state.appSince) + ']').addClass('selected');
+  } else {
+    $('a[data-parameter=app][data-time=forever]').addClass('selected');
+  }
+
+  if (state.accountSince) {
+    $('a[data-parameter=account][data-time=' + humanTimeFromSeconds(state.accountSince) + ']').addClass('selected');
+  } else {
+    $('a[data-parameter=account][data-time=forever]').addClass('selected');
+  }
 }
 
 function refresh() {
@@ -72,24 +91,6 @@ function refresh() {
 
     sortTable();
   });
-}
-
-function updateSelected() {
-  var state = $.bbq.getState();
-
-  $('a.time').removeClass('selected');
-
-  if (state.appSince) {
-    $('a[data-parameter=app][data-time=' + humanTimeFromSeconds(state.appSince) + ']').addClass('selected');
-  } else {
-    $('a[data-parameter=app][data-time=forever]').addClass('selected');
-  }
-
-  if (state.accountSince) {
-    $('a[data-parameter=account][data-time=' + humanTimeFromSeconds(state.accountSince) + ']').addClass('selected');
-  } else {
-    $('a[data-parameter=account][data-time=forever]').addClass('selected');
-  }
 }
 
 $(function() {

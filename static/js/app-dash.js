@@ -1,3 +1,4 @@
+/*globals cubism:true d3:true*/
 var context = cubism.context()
   .step(60 * 1000)
   .size(960);

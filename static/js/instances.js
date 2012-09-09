@@ -1,3 +1,4 @@
+/*globals commas:true*/
 function refresh() {
   async.parallel({
     head: function(callback) {
@@ -14,7 +15,7 @@ function refresh() {
       $.getJSON('/apiHosts/state', function(state) {
         callback(null, state.apiHosts);
       });
-    },
+    }
   },
   function(err, results) {
     $('#rows').html('');
