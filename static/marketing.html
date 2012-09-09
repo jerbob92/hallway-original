@@ -11,8 +11,11 @@
   <link rel="stylesheet" href="/css/dawg.css" />
   <link rel="stylesheet" href="/css/marketing.css" />
 
+  <script src="/lib/underscore-min.js"></script>
   <script src="/lib/moment.min.js"></script>
+  <script src="/lib/sprintf.js"></script>
 
+  <script src="/js/utilities.js"></script>
   <script src="/js/marketing.js"></script>
  </head>
 
@@ -27,6 +30,21 @@
    <ul>
     <li>Facebook likes: <span id="facebook-likes"></span></li>
    </ul>
+
+   <h2>Developer GitHub Repo Languages</h2>
+
+   <table class="table table-striped">
+    <thead>
+     <tr>
+      <th>Language</th>
+      <th>Repos</th>
+     </tr>
+    </thead>
+
+    <tbody id="language-rows">
+     <!-- Filled programatically -->
+    </tbody>
+   </table>
   </div>
  </body>
 </html>
