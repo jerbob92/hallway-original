@@ -14,6 +14,8 @@ module.exports = function(grunt) {
     },
     lint: {
       src: 'lib/**/*.js',
+      scripts: 'scripts/**/*.js',
+      dawg: 'static/js/*.js',
       grunt: 'grunt.js',
       tests: 'test/**/*.js'
     },
