@@ -3,15 +3,26 @@
   "description": "A personal data API",
   "version": "0.0.0",
   "homepage": "https://github.com/Singly/hallway",
+  "bugs": {
+    "url": "https://github.com/Singly/hallway/issues",
+    "email": "support@singly.com"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Singly/hallway.git"
+  },
   "directories": {
     "lib": "./lib"
   },
   "engines": {
-    "node": ">=0.6.8 <=0.6.16"
+    "node": ">=0.8.7 <=0.8.8"
   },
   "scripts": {
     "test": "make test",
     "start": "./hallway"
+  },
+  "devDependencies": {
+    "grunt-simple-mocha": "*"
   },
   "dependencies": {
     "apparatus": "",
