@@ -1,7 +1,7 @@
 {
   "name": "hallway",
   "description": "A personal data API",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/Singly/hallway",
   "bugs": {
     "url": "https://github.com/Singly/hallway/issues",
