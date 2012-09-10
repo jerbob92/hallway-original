@@ -27,7 +27,11 @@
   "dependencies": {
     "apparatus": "",
     "async": "=0.1.15",
-    "aws2js": "",
+
+    "mime-magic": "0.3.0",
+    "libxml-to-js": "0.3.10",
+    "aws2js": "0.7.4",
+
     "chai": "1.1.x",
     "colors": "",
     "compress-buffer": "",
