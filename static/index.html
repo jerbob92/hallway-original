@@ -60,7 +60,7 @@
    <form class="form-horizontal" id="Run test invoice at http://localhost:8045" method="post" action="http://localhost:8045/invoices/run">
     <div class="control-group">
      <label for="pid-1" class="control-label">Test invoice by ID: </label>
-     
+
      <div class="controls">
       <input id="pid-1" name="account" placeholder="test account id"/>
 
@@ -72,7 +72,7 @@
    <form class="form-horizontal" id="Run live invoice" method="post" action="https://singly.com/invoices/run">
     <div class="control-group">
      <label for="pid-1" class="control-label">Live invoice by ID: </label>
-     
+
      <div class="controls">
       <input id="pid-1" name="account" placeholder="live account id"/>
 
@@ -196,6 +196,18 @@
 
       <button type="submit" class="btn btn-primary">Go</button>
       <button type="submit" class="btn btn-primary" onclick="return appact(this)">Token</button>
+     </div>
+    </div>
+   </form>
+  <form class="form-horizontal" method="get" action="gate">
+    <div class="control-group">
+     <label for="gate" class="control-label">Update maxUsers</label>
+
+     <div class="controls">
+      <input id="gate" name="id" placeholder="client key" style="width:145px">
+      <input name="users" placeholder="maxUsers" style="width:50px">
+
+      <button type="submit" class="btn btn-primary">Go</button>
      </div>
     </div>
    </form>
