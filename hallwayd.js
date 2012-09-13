@@ -246,6 +246,10 @@ if (!process.env.LOCKER_TEST) {
         return;
       }
 
+      if (E.toString().indexOf('EADDRINFO') >= 0) {
+        logger.warn("ignored exception",E);
+        return;
+      }
       logger.error('Uncaught exception:');
       logger.error(util.inspect(err));
 
