@@ -47,21 +47,22 @@ function refresh() {
 
       workerClasses[worker.host] = i;
 
-      worker.active.forEach(function(job) {
-        var classes = [];
+      Object.keys(worker.workers).forEach(function(pid) {
+        worker.workers[pid].tasks.forEach(function(task){
+          var classes = [];
 
-        if (job.tstart < Date.now() - (5 * 60 * 1000)) {
-          classes.push('dawgAlert');
-        }
+          if (task.tstart < Date.now() - (60 * 1000)) {
+            classes.push('dawgAlert');
+          }
 
-        $('#rows').append('<tr>' +
-            '<td><span class="worker worker-' + i + '">' + worker.host + '</span></td>' +
-            '<td>' + job.synclet.connector + '#' + job.synclet.name + '</td>' +
-            '<td>' + job.profile + '</td>' +
-            '<td>' + (states[job.state] ? states[job.state] : '') + '</td>' +
-            '<td data-start="' + job.tstart + '"><span class="' + classes.join(' ') + '">' + moment(job.tstart).fromNow(true) + '</span></td>' +
-            '<td>' + (job.tpipe ? moment(job.tpipe).fromNow(true) : '') + '</td>' +
-          '</tr>');
+          $('#rows').append('<tr>' +
+              '<td><span class="worker worker-' + i + '">' + worker.host + '</span></td>' +
+              '<td>' + task.service + '#' + task.synclet + '</td>' +
+              '<td>' + task.pid + '</td>' +
+              '<td data-start="' + task.tstart + '"><span class="' + classes.join(' ') + '">' + moment(task.tstart).fromNow(true) + '</span></td>' +
+              '<td>' + (task.tpipe ? moment(task.tpipe).fromNow(true) : '') + '</td>' +
+            '</tr>');
+        });
       });
     });
 
