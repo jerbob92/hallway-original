@@ -60,7 +60,7 @@ function refresh() {
               '<td>' + task.service + '#' + task.synclet + '</td>' +
               '<td>' + task.pid + '</td>' +
               '<td data-start="' + task.tstart + '"><span class="' + classes.join(' ') + '">' + moment(task.tstart).fromNow(true) + '</span></td>' +
-              '<td>' + (task.tpipe ? moment(task.tpipe).fromNow(true) : '') + '</td>' +
+              '<td>' + (task.tpipe > task.tstart ? parseInt((task.tpipe - task.tstart)/1000)+'s' : '') + '</td>' +
             '</tr>');
         });
       });
