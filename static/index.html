@@ -203,7 +203,22 @@
      </div>
     </div>
    </form>
-  <form class="form-horizontal" method="get" action="gate">
+
+   <form class="form-horizontal" method="GET" action="logs/apps">
+     <div class="control-group">
+       <label for="logs_to_app_query" class="control-label">
+         Apps hitting a URL
+       </label>
+       <div class="controls">
+         <input id="logs_to_app_query" name="query" placeholder="Query" />
+         <input id="logs_to_app_hours" name="hours" value="1"
+                style="width: 50px"/> hours
+         <button type="submit" class="btn btn-primary">Search</button>
+       </div>
+     </div>
+   </form>
+
+   <form class="form-horizontal" method="get" action="gate">
     <div class="control-group">
      <label for="gate" class="control-label">Update maxUsers</label>
 
