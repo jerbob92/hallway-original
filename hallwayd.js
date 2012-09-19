@@ -65,6 +65,7 @@ if (lconfig.alerting && lconfig.alerting.key) {
     shutdown(1);
   });
 }
+
 var taskman = require('taskman');
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
@@ -87,8 +88,8 @@ function startAPIHost(cbDone) {
 
   var webservice = require('webservice');
 
-  webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP, function(hallway) {
-    logger.info('Hallway is now listening at ' + lconfig.lockerBase);
+  webservice.startService(lconfig.externalPort, lconfig.externalListenIP, function(hallway) {
+    logger.info('Hallway is now listening at ' + lconfig.externalBase);
 
     cbDone();
   });
@@ -101,7 +102,7 @@ function startDawg(cbDone) {
     shutdown(1);
   }
 
-  logger.info("Starting a Hallway Dawg -- Think you can get away without having a hall pass?  Think again.");
+  logger.info("Starting a Hallway Dawg -- Think you can get away without having a hall pass? Think again.");
 
   var dawg = require('dawg');
 

@@ -1,8 +1,6 @@
 {
    "debug": false,
-   "lockerListenIP": "0.0.0.0",
-   "lockerHost": "localhost",
-   "lockerPort": 8042,
+   "externalListenIP": "0.0.0.0",
    "externalHost": "localhost",
    "externalPath": "",
    "externalPort": 8042,
