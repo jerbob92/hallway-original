@@ -1,0 +1,13 @@
+{
+	"name":"StockTwits Account",
+	"desc":"Connect to and authenticate with any StockTwits profile",
+  "icons": [
+    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/stocktwits.png"},
+    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/stocktwits.png"},
+    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/stocktwits.png"}
+  ],
+    "synclets":[
+        {"name": "self",    "frequency": 86400, "class":"core"},
+        {"name": "users",    "frequency": 86400, "class":"core", "aka":"following followers"}
+    ]
+}
