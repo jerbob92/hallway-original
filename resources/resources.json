@@ -1,7 +1,7 @@
 {
   "apiVersion": "1",
   "swaggerVersion": "1.1",
-  "basePath": "http://lvh.me:8042/resources",
+  "basePath": "https://api.singly.com/resources",
   "apis": [
     {
       "path": "/services",
