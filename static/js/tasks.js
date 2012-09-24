@@ -21,10 +21,10 @@ function refresh() {
 
       $('#rows').append('<tr>' +
           '<td><span class="worker">' + task.service + '#' + task.synclet + '</span></td>' +
-          '<td>' + moment(task.tdone).fromNow(true) + '</td>' +
+          '<td>' + moment(task.tdone).fromNow(true) + ' <span class="actualRunTime">(' + moment(task.tdone).format("MMM DD h:mm:ss") + ')</span></td>' +
           '<td><span class="' + classes.join(' ') + '">' + moment(task.at).fromNow(true) + '</span></td>' +
           '<td>' +  task.count + '</td>' +
-          '<td>' +  task.err + '</td>' +
+          '<td>' +  JSON.stringify(task.err) + '</td>' +
         '</tr>');
     });
   });
