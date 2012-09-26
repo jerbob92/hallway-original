@@ -1,0 +1,15 @@
+{
+  "apiVersion": "1",
+  "swaggerVersion": "1.1",
+  "basePath": "https://api.singly.com/resources",
+  "apis": [
+    {
+      "path": "/services",
+      "description": "Operations to get services"
+    },
+    {
+      "path": "/types",
+      "description": "Operations to get types"
+    }
+  ]
+}

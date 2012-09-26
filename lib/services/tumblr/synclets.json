@@ -9,9 +9,9 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/tumblr.png"}
   ],
   "synclets": [
-	  {"name": "self",      "frequency": 3600},
-    {"name": "following", "frequency": 3600},
-    {"name": "dashboard", "frequency": 600},
-    {"name": "posts",     "frequency": 1200}
+	  {"name": "self",      "frequency": 86400, "class":"core"},
+    {"name": "following", "frequency": 86400, "class":"core"},
+    {"name": "dashboard", "frequency": 600, "class":"social"},
+    {"name": "posts",     "frequency": 1200, "class":"personal"}
   ]
 }

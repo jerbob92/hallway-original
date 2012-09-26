@@ -21,112 +21,52 @@ function sortTable() {
 }
 
 function refresh() {
-  $('#rows').html('');
-  $('#disavowed-jobs-rows').html('');
+  $.getJSON('/workers/state', function(state) {
+    $('#rows').html('');
 
-  $.getJSON('/syncSchedule/active', function(active) {
-    var profiles = {};
+    var i = 0;
 
-    active.forEach(function(syncSchedule) {
-      if (!profiles[syncSchedule.task.profile]) {
-        profiles[syncSchedule.task.profile] = {};
-      }
+    if (state.unresponsive && state.unresponsive.length) {
+      $('#unresponsive').text(state.unresponsive.join(', '));
 
-      profiles[syncSchedule.task.profile][syncSchedule.task.synclet.connector + '#' + syncSchedule.task.synclet.name] = syncSchedule;
+      $('#unresponsive-wrapper').show();
+    } else {
+      $('#unresponsive').text('');
+
+      $('#unresponsive-wrapper').hide();
+    }
+
+    var workerClasses = {};
+
+    _.each(state.workers, function(worker) {
+      worker.host = worker.host.replace(/\.singly\.com/, '');
     });
 
-    $.getJSON('/workers/state', function(state) {
-      var i = 0;
+    _.sortBy(state.workers, 'host').forEach(function(worker) {
+      i++;
 
-      if (state.unresponsive && state.unresponsive.length) {
-        $('#unresponsive').text(state.unresponsive.join(', '));
+      workerClasses[worker.host] = i;
 
-        $('#unresponsive-wrapper').show();
-      } else {
-        $('#unresponsive').text('');
-
-        $('#unresponsive-wrapper').hide();
-      }
-
-      var workerClasses = {};
-
-      _.each(state.workers, function(worker) {
-        worker.host = worker.host.replace(/\.singly\.com/, '');
-      });
-
-      _.each(profiles, function(jobs, profile) {
-        _.each(jobs, function(job, syncletKey) {
-          job.worker = job.worker.replace(/\.singly\.com/, '');
-        });
-      });
-
-      _.sortBy(state.workers, 'host').forEach(function(worker) {
-        i++;
-
-        workerClasses[worker.host] = i;
-
-        worker.active.forEach(function(job) {
+      Object.keys(worker.workers).forEach(function(pid) {
+        worker.workers[pid].tasks.forEach(function(task){
           var classes = [];
 
-          if (job.tstart < Date.now() - (5 * 60 * 1000)) {
+          if (task.tstart < Date.now() - (60 * 1000)) {
             classes.push('dawgAlert');
-          }
-
-          try {
-            delete profiles[job.profile][job.synclet.connector + '#' + job.synclet.name];
-          } catch(e) {
-            // pass, since there's a race condition and we expect this to fail sometimes
           }
 
           $('#rows').append('<tr>' +
               '<td><span class="worker worker-' + i + '">' + worker.host + '</span></td>' +
-              '<td>' + job.synclet.connector + '#' + job.synclet.name + '</td>' +
-              '<td>' + job.profile + '</td>' +
-              '<td>' + states[job.state] + '</td>' +
-              '<td data-start="' + job.tstart + '"><span class="' + classes.join(' ') + '">' + moment(job.tstart).fromNow(true) + '</span></td>' +
-              '<td>' + (job.tpipe ? moment(job.tpipe).fromNow(true) : '') + '</td>' +
+              '<td>' + task.service + '#' + task.synclet + '</td>' +
+              '<td>' + task.pid + '</td>' +
+              '<td data-start="' + task.tstart + '"><span class="' + classes.join(' ') + '">' + moment(task.tstart).fromNow(true) + '</span></td>' +
+              '<td>' + (task.tpipe > task.tstart ? parseInt((task.tpipe - task.tstart)/1000)+'s' : '') + '</td>' +
             '</tr>');
         });
       });
-
-      _.each(profiles, function(jobs, profile) {
-        _.each(jobs, function(job, syncletKey) {
-          var classes = [];
-
-          // If it's less than a minute ago maybe it's just the race condition
-          if (job.task.tstart > Date.now() - (1 * 60 * 1000)) {
-            return;
-          }
-
-          if (job.task.tstart < Date.now() - (5 * 60 * 1000)) {
-            classes.push('dawgAlert');
-          }
-
-          var workerClass = '';
-
-          if (workerClasses[job.worker]) {
-            workerClass = 'worker-' + workerClasses[job.worker];
-          }
-
-          $('#disavowed-jobs-rows').append('<tr>' +
-              '<td><span class="worker ' + workerClass + '">' + job.worker + '</span></td>' +
-              '<td>' + job.task.synclet.connector + '#' + job.task.synclet.name + '</td>' +
-              '<td>' + job.task.profile + '</td>' +
-              '<td>' + states[job.task.state] + '</td>' +
-              '<td data-start="' + job.task.tstart + '"><span class="' + classes.join(' ') + '">' + moment(job.task.tstart).fromNow(true) + '</span></td>' +
-              '<td>' + (job.task.tpipe ? moment(job.task.tpipe).fromNow(true) : '') + '</td>' +
-            '</tr>');
-        });
-      });
-
-      if ($('#disavowed-jobs-rows tr').length > 0) {
-        $('#disavowed-jobs-wrapper').show();
-      } else {
-        $('#disavowed-jobs-wrapper').hide();
-      }
-
-      sortTable();
     });
+
+    sortTable();
   });
 }
 

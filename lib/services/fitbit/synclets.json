@@ -9,11 +9,11 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/fitbit.png"}
   ],
   "synclets":[
-    {"name":"self",       "frequency": 7200},
-    {"name":"activities", "frequency": 7200},
-    {"name":"devices",    "frequency": 3600},
-    {"name":"fat",        "frequency": 7200},
-    {"name":"sleep",      "frequency": 7200},
-    {"name":"weight",     "frequency": 7200}
+    {"name":"self",       "frequency": 86400, "class":"core"},
+    {"name":"activities", "frequency": 7200, "class":"personal"},
+    {"name":"devices",    "frequency": 86400, "class":"personal"},
+    {"name":"fat",        "frequency": 7200, "class":"personal"},
+    {"name":"sleep",      "frequency": 7200, "class":"personal"},
+    {"name":"weight",     "frequency": 86400, "class":"personal"}
   ]
 }

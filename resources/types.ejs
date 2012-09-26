@@ -1,0 +1,85 @@
+{
+  "apiVersion": "1",
+  "swaggerVersion": "1.1",
+  "basePath": "https://api.singly.com",
+  "resourcePath": "/types",
+
+  "apis": [
+  <% for (var i=0; i<types.length; i++) { %>
+    {
+      "path":"/types/<%= types[i] %>",
+      "description":"<%= types[i] %> data type",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "nickname":"<%= types[i] %>",
+          "parameters":[
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            },
+            <%- partial('params') %>
+          ],
+          "summary":"Return all <%= types[i] %>"
+        }
+      ]
+    },
+    <% if (post[types[i]]) { %>
+    {
+      "path":"/types/<%= types[i] %>",
+      "description":"<%= types[i] %> data type",
+      "operations":[
+        {
+          "httpMethod":"POST",
+          "nickname":"<%= types[i] %>",
+          "parameters":[
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            },
+            {
+              "name": "services",
+              "description": "A comma seperated list of services (see docs for what is supported)",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": true,
+              "dataType": "string"
+            },
+            {
+              "name": "<%= post[types[i]].body %>",
+              "description": "<%= post[types[i]].description %>",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": true,
+              "dataType": "string"
+            }
+          ],
+          "summary":"Post to <%= types[i] %>"
+        }
+      ]
+    },
+    <% } %>
+      <% } %>
+    {
+      "path":"/types",
+      "description":"list available types",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "nickname":"types",
+          "parameters":[
+          ],
+          "summary":"Get Available Types"
+        }
+      ]
+    }
+  ]
+}

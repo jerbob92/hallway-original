@@ -1,76 +1,14 @@
+/*globals commas:true humanTimeFromSeconds:true secondsFromHumanTime:true*/
 function sortTable() {
   $('table').find('td').filter(function() {
     return $(this).index() === 4;
   }).sortElements(function(a, b) {
-    return parseInt($.text([a]), 10) > parseInt($.text([b]), 10) ? -1 : 1;
+    a = parseInt($.text([a]).replace(',', ''), 10);
+    b = parseInt($.text([b]).replace(',', ''), 10);
+
+    return a > b ? -1 : 1;
   }, function() {
     return this.parentNode;
-  });
-}
-
-function refresh() {
-  updateSelected();
-
-  $('#rows').html('');
-
-  var options = {};
-
-  var state = $.bbq.getState();
-
-  if (state.appSince) {
-    options.appSince = moment().subtract('seconds', parseInt(state.appSince, 10)).unix();
-  }
-
-  if (state.accountSince) {
-    options.accountSince = moment().subtract('seconds', parseInt(state.accountSince, 10)).unix();
-  }
-
-  $.getJSON('/apps/accounts', options, function(apps) {
-    apps.forEach(function(app) {
-      (function(currentApp) {
-        $.getJSON('/apps/get?key=' + currentApp.id, function(info) {
-          info = info[0];
-
-          if (!info || !info.notes) {
-            info = {
-              notes: {
-                appName: '',
-                appUrl: ''
-              }
-            };
-          } else {
-            info.notes.appUrl = '<a href="' + info.notes.appUrl + '">' + info.notes.appUrl + '</a>';
-          }
-
-          var email = '';
-
-          if (info.profile && info.profile.data && info.profile.data.email) {
-            email = '<a href="mailto:'+ info.profile.data.email + '">' + info.profile.data.email + '</a>';
-          }
-
-          if (currentApp === 'total') {
-            return;
-          }
-
-          if (!info.cat) {
-            info.cat = '';
-          } else {
-            info.cat = moment(info.cat).format("M/D/YYYY h:mma");
-          }
-
-          $('#rows').append('<tr>' +
-              '<td>' + currentApp.id + '</td>' +
-              '<td>' + info.notes.appName  + '</td>' +
-              '<td>' + email + '</td>' +
-              '<td>' + info.notes.appUrl  + '</td>' +
-              '<td>' + currentApp.accounts + '</td>' +
-              '<td>' + info.cat + '</td>' +
-            '</tr>');
-
-          sortTable();
-        });
-      })(app);
-    });
   });
 }
 
@@ -90,6 +28,69 @@ function updateSelected() {
   } else {
     $('a[data-parameter=account][data-time=forever]').addClass('selected');
   }
+}
+
+function refresh() {
+  updateSelected();
+
+  var options = {};
+
+  var state = $.bbq.getState();
+
+  if (state.appSince) {
+    options.appSince = moment().subtract('seconds', parseInt(state.appSince, 10)).unix();
+  }
+
+  if (state.accountSince) {
+    options.accountSince = moment().subtract('seconds', parseInt(state.accountSince, 10)).unix();
+  }
+
+  $.getJSON('/apps/accounts', options, function(appsAccounts) {
+    $('#rows').html('');
+
+    appsAccounts.forEach(function(app) {
+      if (!app.details || !app.details.notes) {
+        app.details = {
+          notes: {
+            appName: '',
+            appUrl: ''
+          }
+        };
+      } else {
+        app.details.notes.appUrl = '<a href="' + app.details.notes.appUrl + '">' + app.details.notes.appUrl + '</a>';
+      }
+
+      var email = '';
+
+      if (app.details.profile && app.details.profile.data && app.details.profile.data.email) {
+        email = '<a href="mailto:'+ app.details.profile.data.email + '">' + app.details.profile.data.email + '</a>';
+      }
+
+      if (app === 'total') {
+        return;
+      }
+
+      if (!app.created) {
+        app.created = '';
+      } else {
+        app.created = moment(app.created).format("M/D/YYYY h:mma");
+      }
+
+      var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
+
+      $('#rows').append('<tr>' +
+          '<td>' + app.id + '</td>' +
+          '<td>' + app.details.notes.appName  + '</td>' +
+          '<td>' + app.details.notes.appUrl  + '</td>' +
+          '<td>' + commas(app.accounts) + '</td>' +
+          '<td>' + commas(app.profiles) + '</td>' +
+          '<td>' + ratio + '</td>' +
+          '<td>' + app.created + '</td>' +
+        '</tr>');
+    });
+
+    sortTable();
+  });
 }
 
 $(function() {

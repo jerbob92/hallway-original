@@ -1,14 +1,23 @@
-{ 
-"database": {
-      "hostname":"XXX",
-      "username":"admin",
-      "password":"XXX",
-      "database":"test"
-    },
-"s3" : {
-      "key":"XXX",
-      "secret":"XXX",
-      "bucket":"XXX"
-    }
+{
+ "database": {
+    "driver": "mysql",
+    "hostname":"localhost",
+    "username":"root",
+    "user":"root",
+    "password":"",
+    "database":"test"
+  },
+  "ec2" : {
+    "accessKeyId":"VALUE",
+    "secretKey":"VALUE"
+  },
+  "s3" : {
+    "key":"VALUE",
+    "secret":"VALUE",
+    "bucket":"cb-testing"
+  },
+  "dawg": {
+    "password": "PASSWORD",
+    "port": 8050
+  }
 }
-

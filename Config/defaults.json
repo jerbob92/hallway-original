@@ -1,0 +1,64 @@
+{
+   "debug": false,
+   "lockerListenIP": "0.0.0.0",
+   "lockerHost": "localhost",
+   "lockerPort": 8042,
+   "externalHost": "localhost",
+   "externalPath": "",
+   "externalPort": 8042,
+   "externalSecure": false,
+   "worker": {
+      "listenIP": "0.0.0.0",
+      "port": 8041
+   },
+   "stats": {},
+   "database": {
+      "maxConnections": 10,
+      "port": 3306
+   },
+   "ec2": {},
+   "s3": {},
+   "alerting": {},
+   "dawg": {
+      "listenIP": "0.0.0.0",
+      "host": "http://localhost:8050",
+      "port": 8050,
+      "password": "test-password"
+   },
+   "taskman": {
+      "numWorkers": 4,
+      "pagingTiming": 2000,
+      "defaultScanTime": 5000,
+      "redis": {
+         "host": "localhost",
+         "port": 6379
+      }
+   },
+   "stream": {
+      "apihost": "http://localhost:8042",
+      "streamhost": "http://localhost:8069",
+      "port": 8069,
+      "listenIP": "0.0.0.0"
+   },
+   "authSecrets": {
+      "crypt": "foo",
+      "sign": "bar",
+      "oldcrypt": "foo",
+      "oldsign": "bar"
+   },
+   "cookieExpire": 2592000,
+   "logging": {
+      "level": "verbose",
+      "maxsize": 268435456,
+      "console": true
+   },
+   "tolerance": {
+      "threshold": 50,
+      "maxstep": 10,
+      "idle": 600
+   },
+   "quiesce": 650000,
+   "keys": [],
+   "papertrailToken": "",
+   "papertrailGroup": 0
+}

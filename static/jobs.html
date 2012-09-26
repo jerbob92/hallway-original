@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>hallway dawg</title>
+  <title>running jobs</title>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" />
@@ -15,6 +15,7 @@
   <script src="/lib/underscore-min.js"></script>
   <script src="/lib/jquery.sortElements.js"></script>
 
+  <script src="/js/utilities.js"></script>
   <script src="/js/jobs.js"></script>
  </head>
 
@@ -26,34 +27,12 @@
 
    <div id="unresponsive-wrapper"><strong>Unresponsive workers:</strong> <span id="unresponsive"></span></div>
 
-   <div id="disavowed-jobs-wrapper">
-    <p><strong>These jobs are not claimed by any worker:</strong></p>
-
-    <table class="table table-striped">
-     <thead>
-      <tr>
-       <th class="worker">Worker</th>
-       <th class="synclet">Synclet</th>
-       <th class="profile">Profile</th>
-       <th class="state">State</th>
-       <th class="duration">Duration</th>
-       <th class="pipe">Pipe Duration</th>
-      </tr>
-     </thead>
-
-     <tbody id="disavowed-jobs-rows">
-      <!-- Filled programatically -->
-     </tbody>
-    </table>
-   </div>
-
    <table class="table table-striped">
     <thead>
      <tr>
       <th class="worker">Worker</th>
       <th class="synclet">Synclet</th>
       <th class="profile">Profile</th>
-      <th class="state">State</th>
       <th class="duration">Duration</th>
       <th class="pipe">Pipe Duration</th>
      </tr>

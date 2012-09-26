@@ -2,6 +2,8 @@ export GIT_REVISION?=$(shell git rev-parse --short --default HEAD)
 # if not provided by Jenkins, then just use the gitrev
 export BUILD_NUMBER?=git-$(GIT_REVISION)
 
+.PHONY: deps build npm_modules build.json
+
 all: build
 	@echo
 	@echo "Looks like everything worked!"
@@ -12,7 +14,6 @@ deps:
 	./scripts/install-deps deps
 	@echo
 	@echo "Go ahead and run 'make'"
-.PHONY: deps
 
 # check if system level dependencies are installed
 check_deps:
@@ -22,51 +23,44 @@ check_deps:
 		exit 1; \
 	fi
 
-# get Locker ready to run
+# Get Hallway ready to run
 build: check_deps npm_modules build.json
-.PHONY: build
 
 # install node dependencies via npm
 npm_modules:
 	@. scripts/use-deps.sh && \
 	npm install
-.PHONY: npm_modules
 
-# build.json allows Locker to report its build number and git revision at runtime
+migrations:
+	@echo "Applying migrations"
+	./node_modules/db-migrate/bin/db-migrate -v --config config/config.json -e database up
+.PHONY: migrations
+
+
+# build.json allows Hallway to report its build number and git revision at runtime
 # the test suite pretends that tests/ is the top of the source tree,
 # so drop a copy there too
 build.json:
 	@echo '{ "build" : "$(BUILD_NUMBER)", "gitrev" : "$(GIT_REVISION)" }' \
 	| tee $@ test/$@
-.PHONY: build.json
 
-# run all of the tests
-test: newtest
-
-# new style mocha tests
 MOCHA = ./node_modules/.bin/mocha
 MOCHA_TESTS = $(shell find test -name "*.test.js")
-newtest: build
-	@env NODE_PATH="lib:$(PWD)/Common/node" \
+test: build
+	@env NODE_PATH="lib" \
 	$(MOCHA) $(MOCHA_TESTS)
 
 MOCHA_UNIT_TESTS=$(shell find test -name "*.unit.test.js")
 unittest: build
-	@env NODE_PATH="lib:$(PWD)/Common/node" \
+	@env NODE_PATH="lib" \
 		$(MOCHA) $(MOCHA_UNIT_TESTS)
 
 _MOCHA=./node_modules/.bin/_mocha
 COVER=./node_modules/cover/bin/cover
 cov: check_deps npm_modules
-	@env NODE_PATH="lib:$(PWD)/Common/node" \
+	@env NODE_PATH="lib" \
 		$(COVER) run $(_MOCHA) $(MOCHA_TESTS)
 	$(COVER) report html
-
-# phantom tests
-PHANTOM_TESTS = $(shell find test -name "*.phantom.js")
-phantomtest: build
-	@env NODE_PATH="$(PWD)/Common/node" \
-	$(MOCHA) $(PHANTOM_TESTS)
 
 SUBDIR=hallway-$(BUILD_NUMBER)
 DISTFILE=$(SUBDIR).tar.gz
@@ -86,7 +80,6 @@ jenkins:
 	$(MAKE) test-bindist
 
 clean:
-	rm -f "$(DISTFILE)" "$(TEMPLATE_OUTPUT)" build.json test/build.json
+	rm -f "$(DISTFILE)" build.json test/build.json
 	rm -f "hallway-git-*.tar.gz"
 	rm -rf node_modules
-	rm -rf Me.*.test

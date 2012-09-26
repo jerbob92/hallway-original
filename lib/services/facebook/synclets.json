@@ -1,6 +1,6 @@
 {
-	"name":"Facebook",
-	"desc":"Syncs data for photos, wall, news feed, and friends.",
+  "name":"Facebook",
+  "desc":"Syncs data for photos, wall, news feed, and friends.",
   "key": "App ID",
   "secret": "App Secret",
   "icons": [
@@ -9,12 +9,13 @@
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/facebook.png"}
   ],
   "synclets":[
-    {"name": "self",        "frequency": 7200},
-    {"name": "feed",        "frequency": 3600},
-    {"name": "checkins",    "frequency": 1800},
-    {"name": "friends",     "frequency": 3600},
-    {"name": "home",        "frequency": 600},
-    {"name": "home_update", "frequency": 7000},
-    {"name": "photos",      "frequency": 86400}
+    {"name": "self",        "frequency": 86400,  "class": "core"},
+    {"name": "feed",        "frequency": 3600,  "class": "personal", "aka":"feed_self feed_others"},
+    {"name": "checkins",    "frequency": 1800,  "class": "personal"},
+    {"name": "friends",     "frequency": 86400,  "class": "core"},
+    {"name": "home",        "frequency": 600,   "class": "social", "aka":"home_photos"},
+    {"name": "home_update", "frequency": 7000,  "class": "social"},
+    {"name": "photos",      "frequency": 86400, "class": "personal", "aka":"albums"},
+    {"name": "likes",       "frequency": 86400,  "class": "personal", "aka":"url_likes stream_likes page_likes"}
   ]
 }
