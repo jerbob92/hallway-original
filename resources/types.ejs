@@ -14,6 +14,7 @@
           "httpMethod":"GET",
           "nickname":"<%= types[i] %>",
           "parameters":[
+            <%- partial('params') %>,
             {
               "name": "access_token",
               "description": "A Singly access_token",
@@ -21,8 +22,7 @@
               "required": true,
               "allowMultiple": false,
               "dataType": "string"
-            },
-            <%- partial('params') %>
+            }
           ],
           "summary":"Return all <%= types[i] %>"
         }
