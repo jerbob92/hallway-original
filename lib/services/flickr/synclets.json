@@ -12,6 +12,6 @@
         {"name": "self", "frequency": 86400},
         {"name": "photos", "frequency": 3600},
         {"name": "contacts", "frequency": 86400},
-        {"name": "photofeed", "frequency": 3600}
+        {"name": "photos_feed", "frequency": 3600}
     ]
 }
