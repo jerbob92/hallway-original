@@ -1,0 +1,16 @@
+{
+	"name":"Klout",
+	"desc":"Connect any Klout profile",
+  "key": "OAuth API Key",
+  "secret": "Shared Secret",
+  "icons": [
+    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/klout.png"},
+    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/klout.png"},
+    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/klout.png"}
+  ],
+    "synclets":[
+        {"name": "self",    "frequency": 86400, "class":"core"},
+        {"name": "influence",    "frequency": 86400, "class":"core"},
+        {"name": "topics",    "frequency": 86400, "class":"core"}
+    ]
+}

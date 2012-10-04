@@ -15,7 +15,7 @@
 
  <body>
   <div class="container">
-   <img src="/img/dawg.jpg" />
+   <img src="/img/dawg.jpg" alt="Yo dawg, I herd u leik dawg" />
 
    <h1>Hello? Yes, this is dawg.</h1>
 
@@ -23,10 +23,11 @@
 
    <ul>
     <li><a href="/accounts.html">Accounts by app</a> (<a href="/apps/accounts">raw</a>)</li>
-    <li><a href="/apps.html?since=1440">API hits by app (24h)</a> (<a href="/apps/hits">raw</a>)</a></li>
+    <li><a href="/apps.html?since=1440">API hits by app (24h)</a> (<a href="/apps/hits">raw</a>)</li>
     <li><a href="/jobs.html">Currently syncing jobs</a> (<a href="/workers/state">raw</a>)</li>
     <li><a href="/instances.html">Instance status</a></li>
     <li><a href="/app-dash.html">Application dashboard</a></li>
+    <li><a href="/icons.html">Icoooons!</a></li>
    </ul>
 
    <h2>Marketing Metrics</h2>
@@ -57,24 +58,24 @@
 
    <h2>Invoices</h2>
 
-   <form class="form-horizontal" id="Run test invoice at http://localhost:8045" method="post" action="http://localhost:8045/invoices/run">
+   <form class="form-horizontal" id="test_invoice" method="post" action="http://localhost:8045/invoices/run">
     <div class="control-group">
-     <label for="pid-1" class="control-label">Test invoice by ID: </label>
+     <label for="test_invoice_account" class="control-label">Test invoice by ID: </label>
 
      <div class="controls">
-      <input id="pid-1" name="account" placeholder="test account id"/>
+      <input id="test_invoice_account" name="account" placeholder="test account id"/>
 
       <button type="submit" class="btn btn-primary">Run Test Invoice</button>
      </div>
     </div>
    </form>
 
-   <form class="form-horizontal" id="Run live invoice" method="post" action="https://singly.com/invoices/run">
+   <form class="form-horizontal" id="invoice" method="post" action="https://singly.com/invoices/run">
     <div class="control-group">
-     <label for="pid-1" class="control-label">Live invoice by ID: </label>
+     <label for="invoice_account" class="control-label">Live invoice by ID: </label>
 
      <div class="controls">
-      <input id="pid-1" name="account" placeholder="live account id"/>
+      <input id="invoice_account" name="account" placeholder="live account id"/>
 
       <button type="submit" class="btn btn-primary">Run Live Invoice</button>
      </div>
@@ -83,12 +84,16 @@
 
    <h2>Profiles</h2>
 
+   <ul>
+    <li><a href="/tasks.html">task viewer/runner</a></li>
+   </ul>
+
    <form class="form-horizontal" id="profileact" method="get" action="profiles/get">
     <div class="control-group">
-     <label for="pid-1" class="control-label">Profile lookup by id</label>
+     <label for="profile_id" class="control-label">Profile lookup by id</label>
 
      <div class="controls">
-      <input id="pid-1" name="pid" placeholder="id@service" />
+      <input id="profile_id" name="pid" placeholder="id@service" />
 
       <button type="submit" class="btn btn-primary">Go</button>
       <button type="submit" class="btn btn-primary" onclick="return profileact(this)">Token</button>
@@ -98,10 +103,10 @@
 
    <form class="form-horizontal" method="get" action="profiles/search">
     <div class="control-group">
-     <label for="pid-1" class="control-label">Profile search by handle</label>
+     <label for="profile_handle" class="control-label">Profile search by handle</label>
 
      <div class="controls">
-      <input id="pid-1" name="q" placeholder="username" />
+      <input id="profile_handle" name="q" placeholder="username" />
 
       <button type="submit" class="btn btn-primary">Go</button>
      </div>
@@ -165,10 +170,10 @@
 
    <form class="form-horizontal" method="get" action="apps/get">
     <div class="control-group">
-     <label for="key-1" class="control-label">App lookup</label>
+     <label for="lookup_app_key" class="control-label">App lookup</label>
 
      <div class="controls">
-      <input id="key-1" name="key" placeholder="client key" />
+      <input id="lookup_app_key" name="key" placeholder="client key" />
 
       <button type="submit" class="btn btn-primary">Go</button>
      </div>
@@ -177,10 +182,10 @@
 
    <form class="form-horizontal" method="get" action="apps/logs">
     <div class="control-group">
-     <label for="key-2" class="control-label">App logs</label>
+     <label for="logs_app_key" class="control-label">App logs</label>
 
      <div class="controls">
-      <input id="key-2" name="key" placeholder="client key" />
+      <input id="logs_app_key" name="key" placeholder="client key" />
 
       <button type="submit" class="btn btn-primary">Go</button>
      </div>
@@ -189,17 +194,32 @@
 
    <form class="form-horizontal" id="appact" method="get" action="apps/account">
     <div class="control-group">
-     <label for="key-2" class="control-label">App User Account</label>
+     <label for="user_account_id" class="control-label">App User Account</label>
 
      <div class="controls">
-      <input id="key-2" name="id" placeholder="account id" />
+      <input id="user_account_id" name="id" placeholder="account id" />
 
       <button type="submit" class="btn btn-primary">Go</button>
       <button type="submit" class="btn btn-primary" onclick="return appact(this)">Token</button>
      </div>
     </div>
    </form>
-  <form class="form-horizontal" method="get" action="gate">
+
+   <form class="form-horizontal" method="GET" action="logs/apps">
+     <div class="control-group">
+       <label for="logs_to_app_query" class="control-label">
+         Apps hitting a URL
+       </label>
+       <div class="controls">
+         <input id="logs_to_app_query" name="query" placeholder="Query" />
+         <input id="logs_to_app_hours" name="hours" value="1"
+                style="width: 50px"/> hours
+         <button type="submit" class="btn btn-primary">Search</button>
+       </div>
+     </div>
+   </form>
+
+   <form class="form-horizontal" method="get" action="gate">
     <div class="control-group">
      <label for="gate" class="control-label">Update maxUsers</label>
 

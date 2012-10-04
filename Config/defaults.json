@@ -4,6 +4,7 @@
    "lockerHost": "localhost",
    "lockerPort": 8042,
    "externalHost": "localhost",
+   "externalPath": "",
    "externalPort": 8042,
    "externalSecure": false,
    "worker": {
@@ -39,7 +40,12 @@
       "port": 8069,
       "listenIP": "0.0.0.0"
    },
-   "authSecrets": {},
+   "authSecrets": {
+      "crypt": "foo",
+      "sign": "bar",
+      "oldcrypt": "foo",
+      "oldsign": "bar"
+   },
    "cookieExpire": 2592000,
    "logging": {
       "level": "verbose",
@@ -50,5 +56,9 @@
       "threshold": 50,
       "maxstep": 10,
       "idle": 600
-   }
+   },
+   "quiesce": 650000,
+   "keys": [],
+   "papertrailToken": "",
+   "papertrailGroup": 0
 }
