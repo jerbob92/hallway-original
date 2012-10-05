@@ -1,0 +1,14 @@
+{
+  "name": "Tout",
+  "desc": "Syncs the user's profile and videos.",
+  "key": "API Key",
+  "secret": "Secret Key",
+  "icons": [
+    { "height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/tout.png" },
+    { "height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/tout.png" },
+    { "height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/tout.png" }
+  ],
+  "synclets": [
+    { "name": "self", "frequency": 86400, "class": "core" }
+  ]
+}

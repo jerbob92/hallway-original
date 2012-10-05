@@ -16,14 +16,6 @@
           "nickname":"<%= key %>",
           "parameters":[
             {
-              "name": "access_token",
-              "description": "A Singly access_token",
-              "paramType": "query",
-              "required": true,
-              "allowMultiple": false,
-              "dataType": "string"
-            },
-            {
               "name": "endpoint",
               "description": "Name of the endpoint from which to fetch data",
               "paramType": "path",
@@ -42,7 +34,15 @@
                 ]
               }
             },
-            <%- partial('params') %>
+            <%- partial('params') %>,
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            }
           ],
           "summary":"<%= services[key].desc %>"
         }

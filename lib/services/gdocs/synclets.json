@@ -1,6 +1,8 @@
 {
 	"name":"Google Documents",
 	"desc":"Access to Google Docs, sync's the change feed",
+  "key": "Client ID",
+  "secret": "Client secret",
   "icons": [
     {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/google.png"},
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/google.png"},
