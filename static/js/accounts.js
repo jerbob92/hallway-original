@@ -88,7 +88,7 @@ function refresh() {
           '<td>' + app.created + '</td>' +
         '</tr>');
     });
-
+    $('#total > span').text(appsAccounts.length);
     sortTable();
   });
 }
