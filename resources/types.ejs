@@ -47,20 +47,29 @@
             },
             {
               "name": "services",
-              "description": "A comma seperated list of services (see docs for what is supported)",
+              "description": "A comma separated list of services (see docs for what is supported)",
               "paramType": "query",
               "required": true,
               "allowMultiple": true,
               "dataType": "string"
             },
-            {
-              "name": "<%= post[types[i]].body %>",
-              "description": "<%= post[types[i]].description %>",
-              "paramType": "query",
-              "required": true,
-              "allowMultiple": true,
-              "dataType": "string"
-            }
+            <% var params = post[types[i]];
+            var paramIndex = 0;
+            for (var paramName in params) {
+              if (params.hasOwnProperty(paramName)) { %>
+              {
+                "name": "<%= paramName %>",
+                "description": "<%= params[paramName][1] %>",
+                "paramType": "<%= params[paramName][0] %>",
+                "required": true,
+                "allowMultiple": true,
+                "dataType": "string"
+              }
+              <% if (++paramIndex < Object.keys(params).length) { %>
+                ,
+              <% } %>
+            <% }
+            } %>
           ],
           "summary":"Post to <%= types[i] %>"
         }
