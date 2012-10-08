@@ -1,0 +1,15 @@
+{
+	"name":"Google Calendar",
+	"desc":"Access to Google Calendar, sync's the calendar list",
+  "key": "Client ID",
+  "secret": "Client secret",
+  "icons": [
+    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/gcal.png"},
+    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/gcal.png"},
+    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/gcal.png"}
+  ],
+    "synclets":[
+        {"name": "self",    "frequency": 86400, "class":"core"},
+        {"name": "calendars",    "frequency": 86400, "class":"personal"}
+    ]
+}

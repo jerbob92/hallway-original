@@ -79,7 +79,7 @@ function refresh() {
       var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
 
       $('#rows').append('<tr>' +
-          '<td>' + app.id + '</td>' +
+          '<td><a href="/app/info/' + app.id + '">' + app.id + '</a></td>' +
           '<td>' + app.details.notes.appName  + '</td>' +
           '<td>' + app.details.notes.appUrl  + '</td>' +
           '<td>' + commas(app.accounts) + '</td>' +
@@ -88,7 +88,7 @@ function refresh() {
           '<td>' + app.created + '</td>' +
         '</tr>');
     });
-
+    $('#total > span').text(appsAccounts.length);
     sortTable();
   });
 }

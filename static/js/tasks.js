@@ -1,14 +1,15 @@
 var pid;
 
-function setpid() {
-  pid = window.prompt("id@service");
-  if(!pid) return;
-  $('#pid').prop('value',pid);
-  refresh();
+function htmlEntities(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function refresh() {
-  $.getJSON('/profiles/tasks?pid='+pid, function(tasks) {
+  $.getJSON('/profiles/tasks?pid=' + pid, function(tasks) {
     $('#rows').html('');
 
     Object.keys(tasks).forEach(function(taskid) {
@@ -23,16 +24,27 @@ function refresh() {
           '<td><span class="worker">' + task.service + '#' + task.synclet + '</span></td>' +
           '<td>' + moment(task.tdone).fromNow(true) + ' <span class="actualRunTime">(' + moment(task.tdone).format("MMM DD h:mm:ss") + ')</span></td>' +
           '<td><span class="' + classes.join(' ') + '">' + moment(task.at).fromNow(true) + '</span></td>' +
-          '<td>' +  task.count + '</td>' +
-          '<td>' +  JSON.stringify(task.err) + '</td>' +
+          '<td>' + task.count + '</td>' +
+          '<td>' + htmlEntities(JSON.stringify(task.err)) + '</td>' +
         '</tr>');
     });
   });
 }
 
+function setpid() {
+  pid = window.prompt("id@service");
+
+  if (!pid) return;
+
+  $('#pid').prop('value', pid);
+
+  refresh();
+}
+
 function run() {
-  $('#rows').html('running');
-  $.getJSON('/run/'+pid, refresh);
+  $('#rows').html('');
+
+  $.getJSON('/run/' + pid, refresh);
 }
 
 $(function() {
@@ -41,9 +53,11 @@ $(function() {
   $('#pid').click(function() {
     setpid();
   });
+
   $('#refresh').click(function() {
     refresh();
   });
+
   $('#run').click(function() {
     run();
   });
