@@ -1,0 +1,20 @@
+{
+  "name":"Rdio",
+  "desc":"Syncs following, collection, and activity.",
+  "key":"",
+  "secret":"",
+  "icons": [
+    {"height": 16, "width": 16,
+    "source":"http://assets.singly.com/service-icons/16px/rdio.png"},
+    {"height": 24, "width": 24,
+    "source":"http://assets.singly.com/service-icons/24px/rdio.png"},
+    {"height": 32, "width": 32,
+    "source":"http://assets.singly.com/service-icons/32px/rdio.png"}
+  ],
+  "synclets" : [
+    {"name": "self",       "frequency" : 86400, "class": "core"},
+    {"name": "following",  "frequency" : 600,   "class": "core"},
+    {"name": "collection", "frequency" : 3600,  "class": "personal"},
+    {"name": "activity",   "frequency" : 3600,  "class": "personal"}
+  ]
+}
