@@ -215,12 +215,12 @@ describe('lutil', function() {
             work: [
               {
                 employer: {
-                  name: 'Singly',
+                  name: 'Singly'
                 }
               },
               {
                 employer: {
-                  name: 'Causes',
+                  name: 'Causes'
                 }
               }
             ]
@@ -277,5 +277,44 @@ describe('lutil', function() {
       );
     });
 
+  });
+
+  describe('trimObject', function() {
+    it('trims top-level strings', function() {
+      assert.deepEqual(
+        lutil.trimObject({
+          shave: '  haircut  '
+        }),
+        {
+          shave: 'haircut'
+        }
+      );
+    });
+
+    it('trims nested strings', function() {
+      assert.deepEqual(
+        lutil.trimObject({
+          shave: {
+            haircut: '    two pence   '
+          }
+        }),
+        {
+          shave: {
+            haircut: 'two pence'
+          }
+        }
+      );
+    });
+
+    it('ignores non-strings', function() {
+      assert.deepEqual(
+        lutil.trimObject({
+          shave: 1
+        }),
+        {
+          shave: 1
+        }
+      );
+    });
   });
 });
