@@ -43,6 +43,7 @@
     "express": "=2.5.4",
     "facebook-js": "=1.0.0",
     "flickr-js": "=0.0.3",
+    "fitbit-js": "=0.1.0",
     "fivebeans": "0.2.x",
     "generic-pool": "=1.0.9",
     "gift": "0.0.5",
