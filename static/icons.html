@@ -1,35 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+<!DOCTYPE html>
+<html>
+ <head>
   <title>icooooons</title>
 
-</head>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
-<body>
-  <h1>I Have Many Icons!</h1>
-  <div id="test"></div>
-</body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
-<script>
-$.getJSON("https://api.singly.com/services", {}, render);
+  <script src="/js/icons.js"></script>
 
-function render(data){
-    if(typeof data != 'object') return window.alert(data);
-    var html = "";
-    Object.keys(data).forEach(function(service){
-		var i = data[service];
-		if(!Array.isArray(i.icons)) return;
-		html += "<li>"+service;
-		i.icons.forEach(function(icon){
-	        html += " <img src='"+icon.source+"'>";			
-		})
-    });
-    $("#test").append(html);
-};
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" />
 
-</script>
+  <link rel="stylesheet" href="/css/dawg.css" />
+ </head>
+
+ <body>
+  <div class="container">
+   <h1>I Have Many Icons!</h1>
+
+   <table class="table table-striped">
+    <thead>
+     <tr>
+      <th>Service</th>
+      <th>Short name</th>
+      <th>16px</th>
+      <th>24px</th>
+      <th>32px</th>
+     </tr>
+    </thead>
+
+    <tbody id="rows">
+     <!-- Filled programatically -->
+    </tbody>
+   </table>
+  </div>
+ </body>
 </html>
