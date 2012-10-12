@@ -8,6 +8,7 @@
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/facebook.png"},
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/facebook.png"}
   ],
+  "sandbox": true,
   "synclets":[
     {"name": "self",        "frequency": 86400,  "class": "core"},
     {"name": "feed",        "frequency": 3600,  "class": "personal", "aka":"feed_self feed_others"},
