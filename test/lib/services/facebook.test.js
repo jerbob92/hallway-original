@@ -96,7 +96,7 @@ describe("Facebook connector", function() {
     describe('when there is more to fetch', function() {
       it('remembers the next page to fetch', function(done) {
         feed.sync(pinfo, function(err, response) {
-          response.config.feedNext.should.equal(
+          response.config.next.should.equal(
             'https://graph.facebook.com/me/home?access_token=abc&date_format=U&limit=25&until=1306193396'
           );
           return done();
@@ -122,7 +122,7 @@ describe("Facebook connector", function() {
 
       it('does not schedule another run', function(done) {
         feed.sync(pinfo, function(err, response) {
-          response.config.feedNext.should.equal(false);
+          response.config.next.should.equal(false);
           return done();
         });
       });
