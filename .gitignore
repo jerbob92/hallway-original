@@ -21,3 +21,4 @@ Logs/*
 build.json
 .coverage_data/
 cover_html/
+.env
