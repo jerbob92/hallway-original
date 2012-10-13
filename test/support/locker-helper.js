@@ -1,14 +1,15 @@
-var path   = require('path')
-  , temp   = require('temp')
-  , wrench = require('wrench')
-  , fs     = require('fs')
-  , util   = require('util');
+var path = require('path');
+var temp = require('temp');
+var wrench = require('wrench');
+var fs = require('fs');
+var util = require('util');
 
 var lconfig;
 
 exports.configurate = function() {
   if (!lconfig) {
-    // override from the system temporary directory because of the locker's insane insistence on relative paths.
+    // override from the system temporary directory because of the locker's
+    // insane insistence on relative paths.
     temp.dir = '.';
 
     lconfig = require(path.join(__dirname, '..', '..', 'lib', 'lconfig.js'));
