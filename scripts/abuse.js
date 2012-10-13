@@ -1,5 +1,4 @@
 var lconfig = require("../lib/lconfig");
-lconfig.load("../Config/config.json");
 
 var dal = require("dal");
 dal.debug = false;

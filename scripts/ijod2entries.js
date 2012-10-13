@@ -1,5 +1,4 @@
 var lconfig = require('lconfig');
-lconfig.load('Config/config.json');
 var dal = require('dal');
 var async = require('async');
 

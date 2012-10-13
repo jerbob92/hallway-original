@@ -12,8 +12,10 @@ exports.configurate = function() {
     // insane insistence on relative paths.
     temp.dir = '.';
 
+    process.env.CONFIG_PATH = path.join(__dirname, '..', 'resources',
+      'config.json');
+
     lconfig = require(path.join(__dirname, '..', '..', 'lib', 'lconfig.js'));
-    lconfig.load(path.join(__dirname, '..', 'resources', 'config.json'));
   }
 
   return lconfig;

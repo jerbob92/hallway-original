@@ -15,40 +15,8 @@ var async = require('async');
 var util = require('util');
 var argv = require('optimist').argv;
 
-var Roles = {
-  worker: {
-    startup: startWorkerWS
-  },
-  apihost: {
-    startup: startAPIHost
-  },
-  dawg: {
-    startup: startDawg
-  },
-  stream: {
-    startup: startStream
-  }
-};
-
-var role = Roles.apihost;
-
 // lconfig has to be loaded before any other hallway modules!
 var lconfig = require('lconfig');
-var configDir = process.env.LOCKER_CONFIG || 'Config';
-
-if (!lconfig.loaded) {
-  var configFile;
-
-  if (process.argv[2] === '--config') {
-    configFile = process.argv[3];
-  } else {
-    configFile = path.join(configDir, 'config.json');
-  }
-
-  lconfig.load(configFile);
-} else {
-  console.warn("Hallway config already loaded");
-}
 
 var logger = require('logger').logger('hallwayd');
 
@@ -56,15 +24,48 @@ logger.info('process id:' + process.pid);
 
 var alerting = require("alerting");
 
-lconfig.alerting = { key: 1 };
+function exit(returnCode) {
+  logger.info("Shutdown complete");
+
+  process.exit(returnCode);
+}
+
+var shuttingDown_ = false;
+
+// scheduling and misc things
+function shutdown(returnCode, callback) {
+  if (shuttingDown_ && returnCode !== 0) {
+    try {
+      console.error("Aieee! Shutdown called while already shutting down! " +
+        "Panicking!");
+    }
+    catch (e) {
+      // we tried...
+    }
+
+    process.exit(1);
+  }
+
+  shuttingDown_ = true;
+  process.stdout.write("\n");
+  logger.info("Shutting down...");
+
+  if (callback) {
+    return callback(returnCode);
+  }
+
+  exit(returnCode);
+}
 
 if (lconfig.alerting && lconfig.alerting.key) {
   alerting.init(lconfig.alerting);
+
   alerting.install(function(E) {
     logger.error("Uncaught exception: %s", E.message);
     shutdown(1);
   });
 }
+
 var taskman = require('taskman');
 var pipeline = require('pipeline');
 var profileManager = require('profileManager');
@@ -74,20 +75,13 @@ var http = require('http');
 // Set our globalAgent sockets higher
 http.globalAgent.maxSockets = 800;
 
-var shuttingDown_ = false;
-
-function startTaskman(cbDone) {
-  var isWorker = (role === Roles.worker);
-  if (isWorker) logger.info("Starting a worker.");
-  taskman.init(argv.pid, isWorker, cbDone);
-}
-
 function startAPIHost(cbDone) {
   logger.info("Starting an API host");
 
   var webservice = require('webservice');
 
-  webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP, function(hallway) {
+  webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP,
+    function(hallway) {
     logger.info('Hallway is now listening at ' + lconfig.lockerBase);
 
     cbDone();
@@ -96,12 +90,14 @@ function startAPIHost(cbDone) {
 
 function startDawg(cbDone) {
   if (!lconfig.dawg || !lconfig.dawg.port || !lconfig.dawg.password) {
-    logger.error("You must specify a dawg section with at least a port and password to run.");
+    logger.error("You must specify a dawg section with at least a port and " +
+      "password to run.");
 
     shutdown(1);
   }
 
-  logger.info("Starting a Hallway Dawg -- Think you can get away without having a hall pass?  Think again.");
+  logger.info("Starting a Hallway Dawg -- Think you can get away without " +
+    "having a hall pass?  Think again.");
 
   var dawg = require('dawg');
 
@@ -124,15 +120,40 @@ function startStream(cbDone) {
 
 function startWorkerWS(cbDone) {
   if (!lconfig.worker || !lconfig.worker.port) {
-    logger.error("You must specify a worker section with at least a port and password to run.");
+    logger.error("You must specify a worker section with at least a port and " +
+      "password to run.");
     shutdown(1);
   }
   var worker = require("worker");
   if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
   worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function() {
-    logger.info("Starting a Hallway Worker, thou shalt be digitized", lconfig.worker);
+    logger.info("Starting a Hallway Worker, thou shalt be digitized",
+      lconfig.worker);
     cbDone();
   });
+}
+
+var Roles = {
+  worker: {
+    startup: startWorkerWS
+  },
+  apihost: {
+    startup: startAPIHost
+  },
+  dawg: {
+    startup: startDawg
+  },
+  stream: {
+    startup: startStream
+  }
+};
+
+var role = Roles.apihost;
+
+function startTaskman(cbDone) {
+  var isWorker = (role === Roles.worker);
+  if (isWorker) logger.info("Starting a worker.");
+  taskman.init(argv.pid, isWorker, cbDone);
 }
 
 if (argv._.length > 0) {
@@ -148,7 +169,8 @@ if (argv._.length > 0) {
 var startupTasks = [];
 
 if (role !== Roles.stream) {
-  startupTasks.push(require('dMap').startup); // this loads all lib/services/*/map.js
+  // this loads all lib/services/*/map.js
+  startupTasks.push(require('dMap').startup);
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(startTaskman);
 }
@@ -168,36 +190,6 @@ async.series(startupTasks, function(error) {
 
   exports.alive = true;
 });
-
-// scheduling and misc things
-function shutdown(returnCode, callback) {
-  if (shuttingDown_ && returnCode !== 0) {
-    try {
-      console.error("Aieee! Shutdown called while already shutting down! Panicking!");
-    }
-    catch (e) {
-      // we tried...
-    }
-
-    process.exit(1);
-  }
-
-  shuttingDown_ = true;
-  process.stdout.write("\n");
-  logger.info("Shutting down...");
-
-  if (callback) {
-    return callback(returnCode);
-  }
-
-  exit(returnCode);
-}
-
-function exit(returnCode) {
-  logger.info("Shutdown complete");
-
-  process.exit(returnCode);
-}
 
 process.on("SIGINT", function() {
   logger.info("Shutting down via SIGINT...");
@@ -229,19 +221,23 @@ if (!process.env.LOCKER_TEST) {
       var E = err;
 
       if (E.toString().indexOf('Error: Parse Error') >= 0) {
-        // ignoring this for now, relating to some node bug, https://github.com/joyent/node/issues/2997
+        // ignoring this for now, relating to some node bug,
+        // https://github.com/joyent/node/issues/2997
         logger.warn("ignored exception",E);
         return;
       }
 
-      if (E.toString().indexOf('ECONNRESET') >= 0 || E.toString().indexOf('socket hang up') >= 0) {
-        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
+      if (E.toString().indexOf('ECONNRESET') >= 0 ||
+        E.toString().indexOf('socket hang up') >= 0) {
+        // THEORY: these bubble up from event emitter as uncaught errors, even
+        // though the socket end event still fires and are ignorable
         logger.warn("ignored exception",E);
         return;
       }
 
       if (E.toString().indexOf('ETIMEDOUT') >= 0) {
-        // THEORY: these bubble up from event emitter as uncaught errors, even though the socket end event still fires and are ignorable
+        // THEORY: these bubble up from event emitter as uncaught errors, even
+        // though the socket end event still fires and are ignorable
         logger.warn("ignored exception",E);
         return;
       }
@@ -265,7 +261,8 @@ if (!process.env.LOCKER_TEST) {
       }
     } catch (e) {
       try {
-        console.error("Caught an exception while handling an uncaught exception!");
+        console.error("Caught an exception while handling an uncaught " +
+          "exception!");
         console.error(e);
       } catch (e) {
         // we tried...
