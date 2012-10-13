@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
-    mocha: {
+    simplemocha: {
       all: {
         src: 'test/**/*.test.js',
         options: {
@@ -82,5 +82,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-simple-mocha');
 
   // Default task.
-  grunt.registerTask('default', 'lint:src mocha');
+  grunt.registerTask('default', 'lint:src simplemocha');
 };
