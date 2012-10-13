@@ -36,7 +36,6 @@ migrations:
 	./node_modules/db-migrate/bin/db-migrate -v --config config/config.json -e database up
 .PHONY: migrations
 
-
 # build.json allows Hallway to report its build number and git revision at runtime
 # the test suite pretends that tests/ is the top of the source tree,
 # so drop a copy there too
