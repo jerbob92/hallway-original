@@ -1,13 +1,9 @@
 language: node_js
 node_js:
-    - 0.6
-before_install: "bash tests/setup-travis.sh"
+    - 0.8
 notifications:
     email:
         - temas@singly.com
         - temas@sparecog.com
         - jer@singly.com
-        - forrest@singly.com
-branches:
-    only:
-        - master
+        - beau@singly.com

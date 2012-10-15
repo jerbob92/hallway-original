@@ -9,7 +9,7 @@ describe("Hallway reporting", function() {
    alerting.init({});
    should.strictEqual(alerting.api_key, undefined);
    alerting.init({"key":"present"});
-   alerting.api_key.should.equal("present");
+   alerting.should.have.property("api_key", "present");
  });
  it("should be able to post an alert to pager duty", function() {
    // Fakeweb issues preventing this from going futher yet
