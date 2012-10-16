@@ -2,8 +2,4 @@ language: node_js
 node_js:
     - 0.8
 notifications:
-    email:
-        - temas@singly.com
-        - temas@sparecog.com
-        - jer@singly.com
-        - beau@singly.com
+    email: false
