@@ -18,7 +18,7 @@
     "node": ">=0.8.7 <=0.8.8"
   },
   "scripts": {
-    "test": "make unittest",
+    "test": "make test",
     "start": "./hallway"
   },
   "devDependencies": {
