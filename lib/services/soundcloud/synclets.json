@@ -1,0 +1,14 @@
+{
+  "name": "SoundCloud",
+  "desc": "Syncs the user's profile.",
+  "key": "Client ID",
+  "secret": "Client Secret",
+  "icons": [
+    { "height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/soundcloud.png" },
+    { "height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/soundcloud.png" },
+    { "height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/soundcloud.png" }
+  ],
+  "synclets": [
+    { "name": "self", "frequency": 86400, "class": "core" }
+  ]
+}
