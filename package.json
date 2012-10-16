@@ -22,7 +22,9 @@
     "start": "./hallway"
   },
   "devDependencies": {
-    "grunt-simple-mocha": "*"
+    "grunt-simple-mocha": "*",
+    "mocha": "1.6.x",
+    "should": "1.2.x"
   },
   "dependencies": {
     "apparatus": "",
@@ -50,9 +52,8 @@
     "gzippo": "=0.1.4",
     "hiredis": "0.1.x",
     "knox": "=0.0.9",
-    "mc": "=1.0.6",
+    "mc": "",
     "mime": "",
-    "mocha": "1.3.x",
     "moment": "1.6.x",
     "murmurhash3": "",
     "mysql": "",
@@ -66,7 +67,6 @@
     "request": "=2.9.203",
     "sanitizer": "",
     "serializer": ">=0.0.2 <0.1.0",
-    "should": "",
     "socket.io": "",
     "temp": ">=0.4.0",
     "tumblrwks": "https://github.com/Singly/tumblrwks/tarball/master",

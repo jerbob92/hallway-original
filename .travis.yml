@@ -2,10 +2,6 @@ language: node_js
 node_js:
     - 0.8
 notifications:
-    email:
-        - temas@singly.com
-        - temas@sparecog.com
-        - jer@singly.com
-        - beau@singly.com
+    email: false
 notifications:
     hipchat: 33d0319e384ba2d38a29b40c07bfdd@Nerds

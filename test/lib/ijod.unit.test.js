@@ -1,11 +1,13 @@
 var fakeweb = require("node-fakeweb");
-var lconfig = require("lconfig");
 var path = require('path');
 var helper  = require(path.join(__dirname, '..', 'support', 'locker-helper.js'));
-helper.configurate();
+var lconfig = helper.configurate();
 var dal = require("dal");
 var ijod = require("ijod");
 var should = require("should");
+
+// ijod requires aws info in lconfig
+lconfig.s3 = {key:"test", bucket:"cb-testing", secret:"test"};
 
 fakeweb.allowNetConnect = false;
 
