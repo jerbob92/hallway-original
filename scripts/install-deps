@@ -6,7 +6,6 @@ set -e
 
 NODE_DOWNLOAD='http://nodejs.org/dist/v0.8.7/node-v0.8.7.tar.gz'
 NPM_DOWNLOAD='http://npmjs.org/install.sh'
-VIRTUALENV_DOWNLOAD='http://github.com/pypa/virtualenv/raw/develop/virtualenv.py'
 
 #### Helper functions
 
@@ -129,7 +128,7 @@ fi
 check_for Git git 'git --version'
 #check_for Python python 'python -V' 2.6
 
-if ! check_for Node.js node 'node -v' 0.6.0 0.9.0
+if ! check_for Node.js node 'node -v' 0.8.0 0.9.0
 then
     if [ "$check_only" = true ]; then exit 1; fi
 

@@ -51,12 +51,12 @@ build.json:
 MOCHA = ./node_modules/.bin/mocha
 MOCHA_TESTS = $(shell find test -name "*.test.js")
 test: build_dev
-	@env NODE_PATH="lib" \
+	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib" \
 	$(MOCHA) $(MOCHA_TESTS)
 
 MOCHA_UNIT_TESTS=$(shell find test -name "*.unit.test.js")
 unittest: build_dev
-	@env NODE_PATH="lib" \
+	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib" \
 		$(MOCHA) $(MOCHA_UNIT_TESTS)
 
 _MOCHA=./node_modules/.bin/_mocha
