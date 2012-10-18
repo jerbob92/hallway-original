@@ -26,6 +26,8 @@
 
 var fakeweb = require("node-fakeweb");
 
+var lconfig = require("lconfig");
+var logger = require("logger").logger("ijod-backend-test");
 var assert = require("assert");
 var crypto = require("crypto");
 
@@ -35,7 +37,16 @@ describe("ijod-backend", function () {
     done();
   });
 
-  var backends = ["ijod-fs", "ijod-s3"];
+  var backends = ["ijod-fs"];
+
+  // If there is configuration information available for S3,
+  // go ahead and add it to the list of backends
+  if (lconfig.s3 && lconfig.s3.key && lconfig.s3.key !== "test") {
+    backends.push("ijod-s3");
+  } else {
+    logger.warn("Skipping ijod-s3 integration test; no config available!");
+  }
+
   backends.forEach(function (backendName) {
     it('should complete put/get successfully: ' + backendName, function (done) {
       var backendModule = require(backendName);
