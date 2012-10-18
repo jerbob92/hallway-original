@@ -6,8 +6,10 @@ var dal = require("dal");
 var ijod = require("ijod");
 var should = require("should");
 
-// ijod requires aws info in lconfig
-lconfig.s3 = {key:"test", bucket:"cb-testing", secret:"test"};
+// ijod requires aws info in lconfig -- insert it there is none there
+if (!lconfig.s3) {
+  lconfig.s3 = {key:"test", bucket:"cb-testing", secret:"test"};
+}
 
 fakeweb.allowNetConnect = false;
 
