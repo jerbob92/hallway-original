@@ -20,9 +20,10 @@ function refresh() {
         classes.push('dawgAlert');
       }
 
+      var lastRun = task.tdone? moment(task.tdone).fromNow(true) : undefined;
       $('#rows').append('<tr>' +
           '<td><span class="worker">' + task.service + '#' + task.synclet + '</span></td>' +
-          '<td>' + moment(task.tdone).fromNow(true) + ' <span class="actualRunTime">(' + moment(task.tdone).format("MMM DD h:mm:ss") + ')</span></td>' +
+          '<td>' + (lastRun? lastRun + ' <span class="actualRunTime">(' + moment(task.tdone).format("MMM DD h:mm:ss") + ')</span>': 'never run') + '</td>' +
           '<td><span class="' + classes.join(' ') + '">' + moment(task.at).fromNow(true) + '</span></td>' +
           '<td>' + task.count + '</td>' +
           '<td>' + htmlEntities(JSON.stringify(task.err)) + '</td>' +
