@@ -15,6 +15,6 @@
     {"name": "connections",
      "frequency": 86400,
      "class":"personal",
-     "freshDeps":"network"}
+     "freshInstead":"network"}
   ]
 }
