@@ -37,7 +37,7 @@ describe("ijod-backend", function () {
     done();
   });
 
-  var backends = ["ijod-fs"];
+  var backends = ["ijod-mem", "ijod-fs"];
 
   // If there is configuration information available for S3,
   // go ahead and add it to the list of backends
