@@ -62,7 +62,7 @@
     "node-fakeweb": "=0.0.7",
     "oauth": "=0.9.6",
     "optimist": "",
-    "password-hash": "",
+    "password-hash": "=1.2.1",
     "qs": "",
     "redis": "0.7.x",
     "request": "=2.9.203",
