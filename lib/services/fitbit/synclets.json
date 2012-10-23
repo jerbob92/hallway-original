@@ -8,12 +8,13 @@
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/fitbit.png"},
     {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/fitbit.png"}
   ],
+  "sandbox": true,
   "synclets":[
-    {"name":"self",       "frequency": 86400, "class":"core"},
-    {"name":"activities", "frequency": 7200, "class":"personal"},
-    {"name":"devices",    "frequency": 86400, "class":"personal"},
-    {"name":"fat",        "frequency": 7200, "class":"personal"},
-    {"name":"sleep",      "frequency": 7200, "class":"personal"},
-    {"name":"weight",     "frequency": 86400, "class":"personal"}
+    {"name":"self",       "frequency": 86400, "class": "core"},
+    {"name":"activities", "frequency": 7200,  "class": "personal"},
+    {"name":"devices",    "frequency": 86400, "class": "personal"},
+    {"name":"fat",        "frequency": 7200,  "class": "personal"},
+    {"name":"sleep",      "frequency": 7200,  "class": "personal"},
+    {"name":"weight",     "frequency": 86400, "class": "personal"}
   ]
 }
