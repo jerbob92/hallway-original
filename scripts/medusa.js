@@ -12,7 +12,7 @@ var calls = 0;
 var start = Date.now();
 get('profiles', function(j){
   async.forEach(Object.keys(j), function(service, cb1){
-    if(service == 'id' || service == 'all') return cb1();
+    if(service == 'id' || service == 'all') return process.nextTick(cb1);
     get('services/'+service, function(s){
       async.forEach(Object.keys(s), function(k, cb2){
         get('services/'+service+'/'+k, function(d){
