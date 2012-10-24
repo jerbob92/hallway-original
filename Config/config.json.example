@@ -7,17 +7,14 @@
     "password":"",
     "database":"test"
   },
-  "ec2" : {
-    "accessKeyId":"VALUE",
-    "secretKey":"VALUE"
-  },
+
+  "ijod_backend": "file",
+
+  "ijod_file": "/tmp/ijod",
+
   "s3" : {
     "key":"VALUE",
     "secret":"VALUE",
-    "bucket":"cb-testing"
-  },
-  "dawg": {
-    "password": "PASSWORD",
-    "port": 8050
+    "bucket":"VALUE"
   }
 }

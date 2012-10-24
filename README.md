@@ -15,133 +15,106 @@ and say hello!
 
 Let's get started.
 
-## Install NodeJS, NPM, and Dependencies
+## Installing Dependencies
 
-### Linux
-If you are using Ubuntu/Mint use the following commands
+Hallway has the following dependencies:
 
-    sudo apt-get install python-software-properties
-    sudo add-apt-repository ppa:chris-lea/node.js
-    sudo apt-get update
-    sudo apt-get install nodejs nodejs-dev npm libv8-dev libmysqlclient libxml2-dev libxml2-doc mysql-server redis-doc, redis-server
+ * [NodeJS](http://nodejs.org/)
+ * [NPM](https://npmjs.org/)
+ * [MySQL](http://www.mysql.com/downloads/mysql/5.1.html)
+ * [Redis](http://redis.io/)
 
-This will install the latest version of nodejs, the node package manager, the mysql 
-server, the redis server, and necessary utility libraries.  Hallway requires a mysql 
-server and a Redis server to run.  In this setup we will run through how to setup 
-these services to run locally
+Detailed instructions for each platform can be found
+[here](https://github.com/Singly/hallway/wiki/Installing-hallway-dependencies).
 
-### Mac
-If you are using Mac use the following commands:
+## Building Hallway
 
-
-## Get and Build Hallway
-
-Once NodeJS and NPM are installed, clone the hallway source code from github using the 
+Once the dependencies are installed, clone the source code from github using the
 following command:
 
     git clone https://github.com/Singly/hallway.git
 
-Now move into the hallway directory and install the Express webapp framework.
+Now go to the hallway directory and run make:
 
     cd hallway
-    npm install
+    make
 
-Hallway is a nodejs/express application.  Using the install command, npm will install 
-all node package dependencies for the hallway application as defined in the 
-package.json file in the root directory of the webapp.
-
-You can now run the following command to ensure node has installed all packages 
+You can now run the following command to ensure node has installed all packages
 correctly:
 
     make test
 
-This should return without errors.
+This should complete without errors.
 
 ## Database Setup
 
-You should have setup mysql server in the initial install or you should already have a 
-mysql server running.  Use the following command to create the Hallway database and tables.
+You will need to create a MySQL user and database for Hallway. Using the `mysql`
+command line tool, run the following command, substituting your own values for
+<mysql_username> and <mysql_password>:
 
-    mysqladmin create hallway_development
-    mysql -u <admin_username> -p <admin_password> hallway_development < create_tables.sql
+    mysql> create database hallway_dev;
+    mysql> create user <mysql_username> identified by '<mysql_password>';
+    mysql> grant all on hallway_dev.* to hallway;
 
-The create_tables.sql script is in the Hallway root directory.  The database name, 
-hallway_development, must match with the configuration we will do later.  You can change 
-the name if desired as long as it matches.  Once the tables and database are created you 
-can verify they exist by logging in and doing a show tables.
+Once this is done, you can then use the following command to create the necessary tables:
 
-    mysql -u <admin_username> -p <admin_password> hallway_development
-    show tables
+    mysql -u <mysql_username> -p hallway_dev < create_tables.sql
+
+The create_tables.sql script is in the Hallway root directory.  The database
+name, `hallway_dev`, must match with the configuration we will do later.  Once
+the tables and database are created you can verify they exist by logging in and
+doing a show tables:
+
+    mysqlshow -u <mysql_username> -p hallway_dev
 
 You should see all the hallway tables.
 
 ## Redis Setup
 
-Redis should have been setup during the initial install.  You can verify that it is 
-everything is setup and working by running the following commands:
+Redis should have been setup during the initial install.  You can verify that it
+is everything is setup and working by running the following commands:
 
-    redis-cl
+    redis-cli
     info
 
 If everything is up and running you should see an info output.
 
 ## Hallway Configuration
 
-Now we need to configure hallway.  Change to the Config directory in hallway and copy 
-over the apikeys and config files from their examples.
+Now we need to configure hallway.  Change to the Config directory in hallway and
+copy over the apikeys and config files from their examples.
 
     cd Config
-    cp apikeys.json.example apikeys.json
     cp config.json.example config.json
+    cp apikeys.json.example apikeys.json
 
 ### The config.json File
 
-The first section is the mysql server setup.  Notice the database name here needs to 
-match the database you setup previously.  Also as strange as it may seem it does need 
-both user and username for migrations.
+The first section is the MySQL server setup.  Note that the database name and
+username needs to match the one used in the prior section.
 
-    {
      "database": {
         "driver": "mysql",
         "hostname":"localhost",
-        "username":"<your database user>",
-        "user":"<your database user>",
-        "password":"<your database password>",
-        "database":"hallway_development"
+        "username":"<mysql_username>",
+        "password":"<mysql_password>",
+        "database":"hallway_dev"
       },
-    }
 
-If running dawg you will need the following sections:
+Out of the box, hallway uses the file system to store blobs of JSON data
+retrieved from different services. This is configured via the `ijod_backend` and
+`ijod_path` parameters, respectively. You can use S3 for blob storage by
+changing the configuration to the following:
 
-    "dawg": {
-        "password": "PASSWORD",
-        "port": 8050
-    },
-    "ec2" : {
-        "accessKeyId":"VALUE",
-        "secretKey":"VALUE"
-    },
-
-If running taskman you will need to setup a taskman section and your S3 key and bucket 
-for storage.  This will be changing in the near future where Hallway data can be stored 
-locally.  Notice taskman also uses the local redis server.  If using a remote server 
-those settings can be changed here.
-
-    "taskman": {
-        "numWorkers": 10,
-        "redis": {
-            "host": "localhost",
-            "port": 6379
-        }
-    },
+    "ijod_backend": "s3",
     "s3" : {
-        "key":"VALUE",
-        "secret":"VALUE",
-        "bucket":"VALUE"
+        "key":    "<s3_access_key>",
+        "secret": "<s3_secret>",
+        "bucket": "<s3_bucket>"
     },
 
-You can change the ip address, port, and context path that Hallway runs on using the 
-lockerHost, lockerPort, externalHost, and externalPort settings.
+You can change the ip address, port, and context path that Hallway runs on using
+the lockerHost, lockerPort, externalHost, and externalPort settings.
 
     "lockerListenIP": "0.0.0.0",
     "lockerHost": "<your local ip address>",
@@ -150,14 +123,14 @@ lockerHost, lockerPort, externalHost, and externalPort settings.
     "externalPath": "<your context path>",
     "externalPort": 8042
 
-You can find other options to set in the defaults.json file.
+You can find other options to set in the `Config/defaults.json` file.
 
 ### The apikeys.json File
 
-For each service you want to use with Hallway you will need to register an app with 
-that service, get your client id and client secret, and paste them into the apikeys.json 
-file.  A full example of how to get keys per service can be
-[found here](https://github.com/LockerProject/Locker/wiki/GettingAPIKeys).
+For each service you want to use with Hallway you will need to register an app
+with that service, get your client id and client secret, and paste them into the
+apikeys.json file.  A full example of how to get keys per service can be [found
+here](https://github.com/Singly/hallway/wiki/GettingAPIKeys).
 
     {
         "twitter":{
@@ -179,41 +152,41 @@ file.  A full example of how to get keys per service can be
         ...
     }
 
-One peculiarity to note.  When setting up services the callback urls must point back to 
-your local hallway. For example, when running hallway locally the callback url would be 
+When setting up services the callback urls must point back to your local
+hallway. For example, when running hallway locally the callback url would be
 something like this.
 
     http://localhost:8042/auth/<service name>/auth.
 
 ## Hallway Startup
 
-When everything is configured you can run the following command to startup Hallway.
+Once everything is configured you can run the following command to startup
+Hallway:
 
-./hallway
+    ./hallway
 
-If everything works fine you should see logging output and then:
+You should see the following output once hallway is ready to go:
 
     [10/24/2012 11:44:34][][hallwayd] - Starting an API host
     [10/24/2012 11:44:34][][hallwayd] - Hallway is now listening at http://192.168.1.154:8042
     [10/24/2012 11:44:34][][hallwayd] - Hallway is up and running.
 
-You should now be able to use Hallway.
-
 ## Using Hallway
 
-To use hallway you will need to setup a test app in the database and then clone down 
-and use an example app.  To setup a test app in the database run the following commands 
-and sql.
+To use hallway you will need to setup a test app in the database and then clone
+down and use an example app.  To setup a test app in the database run the
+following commands and sql.
 
     mysql -u <admin_username> -p <admin_password> hallway_development
     insert into Apps (app, secret) values ('a_new_app_id', 'a_new_app_secret');
 
-You can give whatever values you like for the app and secret fields.  They become your 
-client id and client secret for your example app.
+You can give whatever values you like for the app and secret fields.  They
+become your client id and client secret for your example app.
 
-You can then follow the instructions for one of the example apps in the "Getting Started"
-section of the [Singly docs](http://singly.com/docs).  Yourclient id and client secret are
-the ones you just created and your callback url will be the local host and port that you
-have Hallway running on.
+You can then follow the instructions for one of the example apps in the "Getting
+Started" section of the [Singly docs](http://singly.com/docs).  Your client id
+and client secret are the ones you just created and your callback url will be
+the local host and port that you have Hallway running on.
 
-Here is the [NodeJS Example](https://singly.com/docs/getting_started_node) to get started.
+Here is the [NodeJS Example](https://singly.com/docs/getting_started_node) to
+get started.
