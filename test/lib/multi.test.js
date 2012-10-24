@@ -49,7 +49,7 @@ describe('Multi Requests', function() {
     });
   }
 
-  function itDoesntAcceptALotOfUrl() {
+  function itDoesntAcceptALotOfUrls() {
     it('responds with HTTP 400', function(done) {
       var lots = [];
       for(var i = 0; i < 200; i++) {
@@ -73,7 +73,7 @@ describe('Multi Requests', function() {
   });
 
   describe('when you include a urls parameter that is too long', function() {
-    itDoesntAcceptALotOfUrl(urls);
+    itDoesntAcceptALotOfUrls(urls);
   });
 
 });
