@@ -61,5 +61,6 @@
   "quiesce": 650000,
   "keys": [],
   "papertrailToken": "",
-  "papertrailGroup": 0
+  "papertrailGroup": 0,
+  "ijod_backend": "mem"
 }
