@@ -27,6 +27,7 @@
     "port": 8050,
     "password": "test-password"
   },
+  "multiLimit": 10,
   "taskman": {
     "numWorkers": 4,
     "pagingTiming": 2000,
