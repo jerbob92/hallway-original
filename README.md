@@ -159,29 +159,31 @@ that service, get your client id and client secret, and paste them into the apik
 file.  A full example of how to get keys per service can be
 [found here](https://github.com/LockerProject/Locker/wiki/GettingAPIKeys).
 
-{
-    "twitter":{
-        "appKey":"PASTE_HERE",
-        "appSecret":"PASTE_HERE"
-    },
-    "foursquare" : {
-        "appKey" : "PASTE_HERE",
-        "appSecret" : "PASTE_HERE"
-    },
-    "github" : {
-        "appKey" : "PASTE_HERE",
-        "appSecret" : "PASTE_HERE"
-    },
-    "facebook" : {
-        "appKey" : "PASTE_HERE",
-        "appSecret" : "PASTE_HERE"
-    },
-    ...
-}
+    {
+        "twitter":{
+            "appKey":"PASTE_HERE",
+            "appSecret":"PASTE_HERE"
+        },
+        "foursquare" : {
+            "appKey" : "PASTE_HERE",
+            "appSecret" : "PASTE_HERE"
+        },
+        "github" : {
+            "appKey" : "PASTE_HERE",
+            "appSecret" : "PASTE_HERE"
+        },
+        "facebook" : {
+            "appKey" : "PASTE_HERE",
+            "appSecret" : "PASTE_HERE"
+        },
+        ...
+    }
 
 One peculiarity to note.  When setting up services the callback urls must point back to 
 your local hallway. For example, when running hallway locally the callback url would be 
-something like http://localhost:8042/auth/<service name>/auth.
+something like this.
+
+    http://localhost:8042/auth/<service name>/auth.
 
 ## Hallway Startup
 
@@ -209,6 +211,9 @@ and sql.
 You can give whatever values you like for the app and secret fields.  They become your 
 client id and client secret for your example app.
 
-You can then follow the instructions for one of the example apps on the 
-http://singly.com/docs site "Getting Started" section.  Here is the 
-[NodeJS Example](https://singly.com/docs/getting_started_node).
+You can then follow the instructions for one of the example apps in the "Getting Started"
+section of the [Singly docs](http://singly.com/docs).  Yourclient id and client secret are
+the ones you just created and your callback url will be the local host and port that you
+have Hallway running on.
+
+Here is the [NodeJS Example](https://singly.com/docs/getting_started_node) to get started.
