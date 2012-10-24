@@ -49,12 +49,31 @@ describe('Multi Requests', function() {
     });
   }
 
+  function itDoesntAcceptALotOfUrl() {
+    it('responds with HTTP 400', function(done) {
+      var lots = [];
+      for(var i = 0; i < 200; i++) {
+        lots.push(urls[i%2]);
+      }
+      for(var i in urls) { urls[i] += access_token; }
+      var url = '/multi?urls=' + encodeURIComponent(lots.join(','));
+      browser(api).
+        get(url).
+        expect(400).
+        end(done);
+    });
+  }
+
   describe('when you forget the urls parameter', function() {
     itValidatesUrls({});
   });
 
   describe('when you include a valid urls parameter', function() {
     itAcceptsAFewURLs(urls);
+  });
+
+  describe('when you include a urls parameter that is too long', function() {
+    itDoesntAcceptALotOfUrl(urls);
   });
 
 });
