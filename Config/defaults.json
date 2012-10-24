@@ -50,9 +50,7 @@
   },
   "cookieExpire": 2592000,
   "logging": {
-    "level": "verbose",
-    "maxsize": 268435456,
-    "console": true
+    "level": "verbose"
   },
   "tolerance": {
     "threshold": 50,
