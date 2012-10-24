@@ -9,8 +9,6 @@
 
 exports.alive = false;
 
-var fs = require('fs');
-var path = require('path');
 var async = require('async');
 var util = require('util');
 var argv = require('optimist').argv;
@@ -18,6 +16,7 @@ var argv = require('optimist').argv;
 // lconfig has to be loaded before any other hallway modules!
 var lconfig = require('lconfig');
 
+var instruments = require('instruments');
 var logger = require('logger').logger('hallwayd');
 
 logger.info('process id:' + process.pid);
@@ -60,14 +59,14 @@ function shutdown(returnCode, callback) {
 if (lconfig.alerting && lconfig.alerting.key) {
   alerting.init(lconfig.alerting);
 
-  alerting.install(function(E) {
+  alerting.install(function (E) {
     logger.error("Uncaught exception: %s", E.message);
+
     shutdown(1);
   });
 }
 
 var taskman = require('taskman');
-var pipeline = require('pipeline');
 var profileManager = require('profileManager');
 
 var http = require('http');
@@ -81,7 +80,7 @@ function startAPIHost(cbDone) {
   var webservice = require('webservice');
 
   webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP,
-    function(hallway) {
+    function (hallway) {
     logger.info('Hallway is now listening at ' + lconfig.lockerBase);
 
     cbDone();
@@ -209,13 +208,13 @@ process.on("SIGINT", function() {
   }
 });
 
-process.on("SIGTERM", function() {
+process.on("SIGTERM", function () {
   logger.info("Shutting down via SIGTERM...");
   shutdown(0);
 });
 
 if (!process.env.LOCKER_TEST) {
-  process.on('uncaughtException', function(err) {
+  process.on('uncaughtException', function (err) {
     try {
       // copy of these in alerting.js so they don't fire alerts too
       var E = err;
@@ -223,7 +222,8 @@ if (!process.env.LOCKER_TEST) {
       if (E.toString().indexOf('Error: Parse Error') >= 0) {
         // ignoring this for now, relating to some node bug,
         // https://github.com/joyent/node/issues/2997
-        logger.warn("ignored exception",E);
+        logger.warn("ignored exception", E);
+        instruments.increment('exceptions.ignored').send();
         return;
       }
 
@@ -231,34 +231,35 @@ if (!process.env.LOCKER_TEST) {
         E.toString().indexOf('socket hang up') >= 0) {
         // THEORY: these bubble up from event emitter as uncaught errors, even
         // though the socket end event still fires and are ignorable
-        logger.warn("ignored exception",E);
+        logger.warn("ignored exception", E);
+        instruments.increment('exceptions.ignored').send();
         return;
       }
 
       if (E.toString().indexOf('ETIMEDOUT') >= 0) {
         // THEORY: these bubble up from event emitter as uncaught errors, even
         // though the socket end event still fires and are ignorable
-        logger.warn("ignored exception",E);
+        logger.warn("ignored exception", E);
+        instruments.increment('exceptions.ignored').send();
         return;
       }
 
       if (E.toString().indexOf('EADDRINFO') >= 0) {
-        logger.warn("ignored exception",E);
+        logger.warn("ignored exception", E);
+        instruments.increment('exceptions.ignored').send();
         return;
       }
+
       logger.error('Uncaught exception:');
       logger.error(util.inspect(err));
 
-      if (err && err.stack) logger.error(util.inspect(err.stack));
-      if (lconfig.airbrakeKey) {
-        var airbrake = require('airbrake').createClient(lconfig.airbrakeKey);
-        airbrake.notify(err, function(err, url) {
-          if (url) logger.error(url);
-          shutdown(1);
-        });
-      } else {
-        shutdown(1);
+      instruments.increment('exceptions.uncaught').send();
+
+      if (err && err.stack) {
+        logger.error(util.inspect(err.stack));
       }
+
+      shutdown(1);
     } catch (e) {
       try {
         console.error("Caught an exception while handling an uncaught " +
