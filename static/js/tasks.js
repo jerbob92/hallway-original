@@ -48,6 +48,12 @@ function run() {
   $.getJSON('/run/' + pid, refresh);
 }
 
+function retask() {
+  $('#rows').html('');
+
+  $.getJSON('/profiles/retask?pid=' + pid, refresh);
+}
+
 $(function() {
   setpid();
 
@@ -61,5 +67,9 @@ $(function() {
 
   $('#run').click(function() {
     run();
+  });
+
+  $('#retask').click(function() {
+    retask();
   });
 });
