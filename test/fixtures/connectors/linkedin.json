@@ -1,6 +1,7 @@
 {
-    "auth": {
-	"token":{},
-      "pid":"42@linkedin"
-    }
+  "auth": {
+  	"token":{},
+    "pid":"42@linkedin"
+  },
+  "config": {}
 }
