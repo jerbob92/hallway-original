@@ -92,8 +92,10 @@ describe('Multi Requests', function() {
         expect(200).
         end(function(err, resp) {
           for (var i in MULTI_SAFE) {
-            var err = resp.body[MULTI_SAFE[i]].error;
-            should.equal(err.toString().indexOf('mulit'), -1);
+            console.error('resp.body', resp.body);
+            console.error('MULTI_SAFE[i]', MULTI_SAFE[i]);
+            var body = resp.body[MULTI_SAFE[i]].body;
+            should.equal(body.error, 'This request requires a valid access_token.');
           }
           done();
         });
