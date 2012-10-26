@@ -1,10 +1,22 @@
 /*globals commas:true humanTimeFromSeconds:true secondsFromHumanTime:true*/
-function sortTable() {
+function percentToNum(a) {
+  a = $.text([a]);
+  if (a === 'new') return -1;
+  return parseInt(a.replace('%', ''), 10);
+}
+
+
+function sortTable(index) {
   $('table').find('td').filter(function() {
-    return $(this).index() === 4;
+    return $(this).index() === (index || 5);
   }).sortElements(function(a, b) {
-    a = parseInt($.text([a]).replace(',', ''), 10);
-    b = parseInt($.text([b]).replace(',', ''), 10);
+    if (index === 5 || index === 4) {
+      a = parseInt($.text([a]).replace(',', ''), 10);
+      b = parseInt($.text([b]).replace(',', ''), 10);
+    } else if (index === 3) {
+      a = percentToNum(a);
+      b = percentToNum(b);
+    }
 
     return a > b ? -1 : 1;
   }, function() {
@@ -78,10 +90,23 @@ function refresh() {
 
       var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
 
+      // seven day growth %
+      var percentGrowth = 'new';
+      if (!app.sevenDayGrowth) {
+        percentGrowth = '0%';
+      } else if (app.accounts > 1) {
+        var accountsBefore = app.accounts - app.sevenDayGrowth;
+        if (accountsBefore > 0) {
+          percentGrowth = app.sevenDayGrowth / accountsBefore * 100;
+          percentGrowth += '%';
+        }
+      }
+
       $('#rows').append('<tr>' +
           '<td><a href="/app/info/' + app.id + '">' + app.id + '</a></td>' +
           '<td>' + app.details.notes.appName  + '</td>' +
           '<td>' + app.details.notes.appUrl  + '</td>' +
+          '<td>' + percentGrowth + '</td>' +
           '<td>' + commas(app.accounts) + '</td>' +
           '<td>' + commas(app.profiles) + '</td>' +
           '<td>' + ratio + '</td>' +
@@ -89,7 +114,7 @@ function refresh() {
         '</tr>');
     });
     $('#total > span').text(appsAccounts.length);
-    sortTable();
+    sortTable(5);
   });
 }
 
