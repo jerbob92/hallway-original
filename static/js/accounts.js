@@ -94,7 +94,7 @@ function refresh() {
       var percentGrowth = 'new';
       if (app.accountsBefore === app.accounts) {
         percentGrowth = '0%';
-      } else if (app.accounts > 1) {
+      } else if (app.accounts > 2) {
         if (app.accountsBefore > 0) {
           var newAccounts = app.accounts - app.accountsBefore;
           percentGrowth = newAccounts / app.accountsBefore * 100;
