@@ -92,12 +92,12 @@ function refresh() {
 
       // seven day growth %
       var percentGrowth = 'new';
-      if (!app.sevenDayGrowth) {
+      if (app.accountsBefore === app.accounts) {
         percentGrowth = '0%';
       } else if (app.accounts > 1) {
-        var accountsBefore = app.accounts - app.sevenDayGrowth;
-        if (accountsBefore > 0) {
-          percentGrowth = app.sevenDayGrowth / accountsBefore * 100;
+        if (app.accountsBefore > 0) {
+          var newAccounts = app.accounts - app.accountsBefore;
+          percentGrowth = newAccounts / app.accountsBefore * 100;
           percentGrowth += '%';
         }
       }
