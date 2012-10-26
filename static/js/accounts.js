@@ -2,7 +2,7 @@
 function percentToNum(a) {
   a = $.text([a]);
   if (a === 'new') return -1;
-  return parseInt(a.replace('%', ''), 10);
+  return parseFloat(a.replace('%', ''), 10);
 }
 
 
@@ -98,6 +98,7 @@ function refresh() {
         if (app.accountsBefore > 0) {
           var newAccounts = app.accounts - app.accountsBefore;
           percentGrowth = newAccounts / app.accountsBefore * 100;
+          percentGrowth = Math.round(percentGrowth * 10) / 10;
           percentGrowth += '%';
         }
       }
