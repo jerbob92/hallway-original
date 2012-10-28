@@ -2,6 +2,7 @@ var request = require('request');
 var fs = require('fs');
 var async = require('async');
 var path = require('path');
+var colors = require('colors');
 
 var token = process.argv[2] || console.error("tolken?") || process.exit(1);
 var base = process.argv[3] || 'http://localhost:8042/';
@@ -32,8 +33,8 @@ get('profiles', function(j){
         var last = readSnapSync() || {};
         var union = unionKeys(snap, last);
         union.sort().forEach(function(k){
-          var change = (snap[k] > last[k]) ? "MORE" : "LESS";
-          if(snap[k] === last[k]) change = "SAME";
+          var change = (snap[k] > last[k]) ? "MORE".yellow : "LESS".yellow;
+          if(snap[k] === last[k]) change = "SAME".green;
           console.log(change,snap[k],last[k],k);
         });
         var end = Date.now();
