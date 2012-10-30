@@ -11,20 +11,6 @@ describe("taskman", function() {
       taskman.init(false, false, done);
     });
   });
-  describe("loadSynclets()", function() {
-    it("should not crash", function(done){
-      taskman.loadSynclets(done);
-    });
-  });
-
-  describe("getTasks()", function() {
-    it("should not crash", function(done){
-      taskman.getTasks('s611642@rdio', function(tasks) {
-        done()
-      });
-    });
-  });
-
   xdescribe("taskUpdate", function() {
     it("should not crash", function(done){
       taskman.taskUpdate(auth, done);
