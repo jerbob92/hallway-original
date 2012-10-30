@@ -25,6 +25,14 @@ describe('servezas', function() {
     });
   });
 
+  describe('synclet()', function() {
+    it('should return some data', function(done) {
+      var fb = servezas.synclet('facebook', 'photos');
+      assert.equal(typeof fb.sync, 'function');
+      done();
+    });
+  });
+
   describe('synclets()', function() {
     it('should return some data', function(done) {
       var fb = servezas.synclets('facebook');
