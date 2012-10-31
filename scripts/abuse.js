@@ -12,7 +12,7 @@ dal.query("SELECT COUNT(*) AS userCount, app.app, app.notes, app.apikeys FROM Ac
     return;
   }
   async.forEachSeries(rows, function(row, cbStep) {
-    if (row.app == "singly-dev-registration") return cbStep();
+    if (row.app == "singly-dev-registration") return process.nextTick(cbStep);
     try {
       var notes = JSON.parse(row.notes);
     } catch(E) {
@@ -20,10 +20,10 @@ dal.query("SELECT COUNT(*) AS userCount, app.app, app.notes, app.apikeys FROM Ac
     if (!notes) {
       notes = {appName:"unknown"};
     }
-    if (row.userCount < 25) return cbStep();
+    if (row.userCount < 25) return process.nextTick(cbStep);
     if (row.apiKeys === null) {
       console.error("App %s (%s) has no apiKeys set and %d users.", notes.appName, row.app, row.userCount);
-      return cbStep();
+      return process.nextTick(cbStep);
     }
     try { var apiKeys = JSON.parse(row.apikeys); } catch(E) {};
     if (!apiKeys) apiKeys = {};
