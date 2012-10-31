@@ -1,5 +1,7 @@
 {
   "name": "Google Plus",
+  "key": "Client ID",
+  "secret": "Client secret",
   "provider": "gplus",
   "provides": ["activity/gplus"],
   "synclets": [{"name": "activities", "frequency": 86400, "class":"core"}]
