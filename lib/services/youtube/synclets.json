@@ -1,15 +1,15 @@
 {
-	"name":"YouTube",
-	"desc":"Basic authentication to any YouTube user",
+  "name": "YouTube",
+  "desc": "Basic authentication to any YouTube user",
   "key": "Client ID",
   "secret": "Client secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/youtube.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/youtube.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/youtube.png"}
+    {"height": 16, "width": 16, "source": "http://assets.singly.com/service-icons/16px/youtube.png"},
+    {"height": 24, "width": 24, "source": "http://assets.singly.com/service-icons/24px/youtube.png"},
+    {"height": 32, "width": 32, "source": "http://assets.singly.com/service-icons/32px/youtube.png"}
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"},
-        {"name": "uploads",    "frequency": 86400, "class":"videos"}
-    ]
+  "synclets":[
+    {"name": "self",    "frequency": 86400, "class": "core"},
+    {"name": "uploads", "frequency": 86400, "class": "personal"}
+  ]
 }

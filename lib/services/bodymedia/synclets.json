@@ -1,6 +1,8 @@
 {
 	"name":"BodyMedia",
 	"desc":"Indexes the steps, calories, and sleep from an armband.",
+  "key": "Key",
+  "secret": "Shared Secret",
   "icons": [
     {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/bodymedia.png"},
     {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/bodymedia.png"},
