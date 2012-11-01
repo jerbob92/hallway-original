@@ -5,7 +5,8 @@
   "resourcePath": "/types",
 
   "apis": [
-  <% for (var i=0; i<types.length; i++) { %>
+  <% types = types.sort();
+  for (var i=0; i<types.length; i++) { %>
     {
       "path":"/types/<%= types[i] %>",
       "description":"<%= types[i] %> data type",
