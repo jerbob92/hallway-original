@@ -1,4 +1,4 @@
-/*globals cubism:true d3:true*/
+/*global cubism:true d3:true*/
 var context = cubism.context()
   .step(60 * 1000)
   .size(960);
@@ -12,6 +12,7 @@ var dashboards = {
   overview: [
     'stats.api.hits',
     'stats.dal.*',
+    'stats.exceptions.*',
     'stats.gauges.apps.active.*',
     'stats.gauges.workers.backlog',
     'stats.synclet.run',

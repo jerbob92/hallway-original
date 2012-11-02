@@ -5,8 +5,11 @@
   "resourcePath": "/services",
 
   "apis": [
-  <% for (var key in services) {
-      if (services.hasOwnProperty(key)) { %>
+  <% var sortedServices = Object.keys(services).sort();
+  var len = sortedServices.length;
+  for (c = 0; c < len; c++) {
+    var key = sortedServices[c];
+    if (services.hasOwnProperty(key)) { %>
     {
       "path":"/services/<%= key %>/{endpoint}",
       "description":"<%= services[key].name %>",
@@ -48,8 +51,8 @@
         }
       ]
     },
-      <% }
-      } %>
+  <% }
+  } %>
     {
       "path":"/services",
       "description":"list available services",
