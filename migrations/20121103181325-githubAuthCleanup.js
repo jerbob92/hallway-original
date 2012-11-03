@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var async = require('async');
 var dbm = require('db-migrate');
 var type = dbm.dataType;
@@ -6,26 +8,30 @@ var l = 60000;
 var get = 'SELECT * FROM Profiles WHERE service="github" AND LENGTH(auth) > '+l;
 
 exports.up = function(db, callback) {
+  var backup = fs.createWriteStream('rows_backup.txt');
   // gets all the rows with "long" (gt 60k) auth fields
   db.runSql(get, function(err, rows) {
     //console.log(rows);
     // loop over them
     async.forEachSeries(rows, function(row, cbEach) {
       //console.error('row', row);
-      var auth = row.auth;
-      var pid = row.id;
-      // fix the auth
-      var newAuth = fix(auth);
+      fs.appendFile('rows_backup.txt', JSON.stringify(row)+'\n', function(err) {
+        if (err) return cbEach('couldn\'t backup row! ' + JSON.stringify(err));
+        var auth = row.auth;
+        var pid = row.id;
+        // fix the auth
+        var newAuth = fix(auth);
 
-      // a string response is an error
-      if (typeof newAuth === 'string') {
-        console.error('fail to fix auth for', pid,':', newAuth);
-        cbEach(newAuth);
-      } else {
-        // it worked
-        console.log('saving auth for', pid, newAuth);
-        saveNewAuth(db, pid, newAuth, cbEach);
-      }
+        // a string response is an error
+        if (typeof newAuth === 'string') {
+          console.error('fail to fix auth for', pid,':', newAuth);
+          cbEach(newAuth);
+        } else {
+          // it worked
+          console.log('saving auth for', pid, newAuth);
+          saveNewAuth(db, pid, newAuth, cbEach);
+        }
+      })
     }, callback);
   });
 };
@@ -100,4 +106,3 @@ function missingFields(auth, fields) {
     if (!auth[f]) return 'no ' + f;
   }
 }
-
