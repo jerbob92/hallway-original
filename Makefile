@@ -38,7 +38,7 @@ npm_modules_dev:
 
 migrations:
 	@echo "Applying migrations"
-	./node_modules/db-migrate/bin/db-migrate -v --config config/config.json -e database up
+	./node_modules/db-migrate/bin/db-migrate -v --config Config/config.json -e database up
 .PHONY: migrations
 
 # build.json allows Hallway to report its build number and git revision at runtime
