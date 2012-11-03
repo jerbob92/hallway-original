@@ -2,35 +2,44 @@ var lconfig = require('lconfig');
 var dal = require('dal');
 var async = require('async');
 var ijod = require('ijod');
+var knox = require("knox");
+var s3 = knox.createClient({
+  key: lconfig.s3.key,
+  secret: lconfig.s3.secret,
+  bucket: lconfig.s3.bucket
+});
 
-var start = process.argv[2] || Date.now()+100000;
+var start = process.argv[2] || "0";
+var limit = parseInt(process.argv[3]) || 1000;
 ijod.initDB(function(){
-  step({at:start, total:0, del:0});
+  step({base:start, total:0, del:0});
 })
 
 var deleteme = process.argv[3] === 'MEOW';
 
 function step(arg)
 {
-  dal.query("select at, idr, base, hash from ijod where at >= (select min(at) from (select at from ijod where at < ? order by at desc limit 10000) as sq1) and at <= ?", [arg.at, arg.at], function(err, rows){
+  console.log(arg);
+  dal.query("select hex(base) as base, hex(idr) as idr, path from Entries where base > unhex(?) limit ?", [arg.base, limit], function(err, rows){
     if(err) return console.error(err, arg);
-    var min = arg.at;
+    if(rows.length == 0) return console.log("done",arg);
     arg.total += rows.length;
-    var ndx = {};
-    var dups = [];
-    rows.forEach(function(row){
-      if(row.at < min) min = parseInt(row.at);
-      var key = row.base+row.hash;
-      if(ndx[key]) {
-        dups.push([ndx[key],row.idr].join(" "));
-      }
-      ndx[key] = row.idr;
+    arg.base = rows[rows.length-1].base;
+    async.forEachLimit(rows, 100, function(row, cbRow){
+      if(!row.path || row.path.indexOf('/') == -1) return process.nextTick(cbRow);
+      s3.head(row.path).on('response', function(res){
+//        console.log(row.path,res.statusCode);
+        if(res.statusCode != 200) arg.del++;
+        cbRow();
+      }).end();
+//      ijod.getOne(row.idr, function(err, entry){
+//        if(err || !entry) arg.del++;
+//        cbRow();
+//      });
+    }, function(){
+      step(arg);
     });
-    arg.del += dups.length;
-    console.log(arg.total,arg.del,arg.at);
-    if(min == arg.at) return console.error("done?",arg);
-    arg.at = min;
-    console.log(min,"dups",dups.length);
+/* old code
     var dels = [];
     async.forEach(dups, function(dup, cb){
       var ids = dup.split(" ");
@@ -43,10 +52,11 @@ function step(arg)
       })
     }, function(){
       if(dels.length == 0) return step(arg);
-      dal.query("delete from ijod where idr in ("+dels.join(',')+")",[],function(err){
+      dal.query("delete from ijod where idr in ("+dels.join(',')+") limit",[dels.length],function(err){
         if(err) return console.error(err);
         step(arg);
       });
     });
+*/
   });
 }
