@@ -1,7 +1,10 @@
 {
   "auth": {
   	"token":{},
-    "pid":"42@linkedin"
+    "pid":"42@linkedin",
+    "apps": {
+      "12345": {}
+    }
   },
   "config": {}
 }
