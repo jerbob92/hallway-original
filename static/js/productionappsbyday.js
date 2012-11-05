@@ -18,6 +18,7 @@ function refresh() {
       $('#rows').append('<tr>' +
                         '<td>' + day.day + '</td>' +
                         '<td>' + day.appCount  + '</td>' +
+                        '<td>' + day.apps.split(',').map(function(app){ if(app){ return '<a href="/app/info/'+app+'">'+app+'</a>' }; return ''})  + '</td>' +
                         '</tr>');
     });
 
