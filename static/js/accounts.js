@@ -103,6 +103,7 @@ function refresh() {
         }
       }
 
+      var cnt = 0;
       $('#rows').append('<tr>' +
           '<td><a href="/app/info/' + app.id + '">' + app.id + '</a></td>' +
           '<td>' + app.details.notes.appName  + '</td>' +
@@ -112,6 +113,7 @@ function refresh() {
           '<td>' + commas(app.profiles) + '</td>' +
           '<td>' + ratio + '</td>' +
           '<td>' + app.created + '</td>' +
+          '<td>' + app.accountList.map(function(act){ if(act){ return '<a href="/apps/account?id='+act+'">'+(cnt++)+'</a> ' }; return ''}) + '</td>' +
         '</tr>');
     });
     $('#total > span').text(appsAccounts.length);
