@@ -42,6 +42,18 @@ function updateSelected() {
   }
 }
 
+function appact(act) {
+  $.getJSON('/apps/account', { id: act }, function(data) {
+    if (!data || !data.token) {
+      return window.alert("I AM LOST! Heeeeeeellllllllpppppp");
+    }
+
+    window.location.replace('https://api.singly.com/profile?access_token=' + data.token);
+  });
+
+  return false;
+}
+
 function refresh() {
   updateSelected();
 
@@ -113,7 +125,7 @@ function refresh() {
           '<td>' + commas(app.profiles) + '</td>' +
           '<td>' + ratio + '</td>' +
           '<td>' + app.created + '</td>' +
-          '<td>' + app.accountList.map(function(act){ if(act){ return '<a href="/apps/account?id='+act+'">'+(cnt++)+'</a> ' }; return ''}) + '</td>' +
+          '<td>' + app.accountList.map(function(act){ if(act){ return '<a href="javascript:" onClick="appact(\''+act+'\'); return false;">'+(cnt++)+'</a> ' }; return ''}) + '</td>' +
         '</tr>');
     });
     $('#total > span').text(appsAccounts.length);
