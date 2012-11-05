@@ -3,7 +3,7 @@ node_js:
     - 0.8
 notifications:
     email: false
-    hipchat: 33d0319e384ba2d38a29b40c07bfdd@Nerds
+    hipchat: 33d0319e384ba2d38a29b40c07bfdd@Alerts
 branches:
     except:
         - production
