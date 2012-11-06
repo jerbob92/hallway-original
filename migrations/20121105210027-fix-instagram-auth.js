@@ -10,7 +10,7 @@ var get = 'SELECT * FROM Profiles WHERE service="instagram" AND ' +
 exports.up = function(db, callback) {
   // gets all the rows with "long" (gt 60k) auth fields
   db.runSql(get, function(err, rows) {
-    console.log(rows);
+    //console.log(rows);
     // loop over them
     async.forEachSeries(rows, function(row, cbEach) {
       backupRow(row, function(err) {
@@ -40,20 +40,20 @@ exports.up = function(db, callback) {
 };
 
 exports.down = function(db, callback) {
-  // one way street sucka
+  throw new Error('one way street sucka');
 };
 
 var saveSql = 'UPDATE Profiles SET auth=?, config=\'{}\'' +
               'WHERE service="instagram" AND id=? LIMIT 1';
 function saveNewAuth(db, pid, auth, callback) {
-  // ensure there is a pid and it is for a github profile
+  // ensure there is a pid and it is for a instagram profile
   if (!(pid && pid.indexOf('@instagram') > 0)) {
     return process.nextTick(function() {
       callback('invalid pid: ' + pid);
     })
   }
   // just double check that auth is an object and it has a pid
-  if (!(auth && typeof auth === 'object' && auth.pid === pid)) {
+  if (!(auth && typeof(auth) === 'object' && auth.pid === pid)) {
     return process.nextTick(callback.bind(this, 'invalid auth'));
   }
   var auth = JSON.stringify(auth);
