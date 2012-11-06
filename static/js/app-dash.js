@@ -3,7 +3,7 @@ var context = cubism.context()
   .step(60 * 1000)
   .size(960);
 
-var graphite = context.graphite('http://graphic.singly.com');
+var graphite = context.graphite('http://graphic.quintuply.com');
 
 var metrics = {};
 
