@@ -10,7 +10,7 @@ p {
    margin-top: 1em;
 }
 
-.versionAlert {
+.cell-alert {
    background-color: #fb8072;
    color: white;
    padding-top: 2px;
@@ -20,7 +20,7 @@ p {
    border-radius: 2px;
 }
 
-.versionAlert a {
+.cell-alert a {
    color: white;
 }
 

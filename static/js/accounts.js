@@ -24,7 +24,7 @@ function sortTable(index) {
 }
 
 function trimString(str, maxLength) {
-  if (str.length <= maxLength) {
+  if (!str || str.length <= maxLength) {
     return str;
   }
 
