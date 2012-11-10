@@ -1,3 +1,4 @@
 .container > img {
   max-width: 250px;
+  float: right;
 }

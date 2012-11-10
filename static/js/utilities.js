@@ -1,3 +1,5 @@
+isiPhone = window.navigator && window.navigator.userAgent
+        && window.navigator.userAgent.indexOf('iPhone') !== -1;
 function commas(number) {
    return String(number).replace(/(^|[^\w.])(\d{4,})/g, function($0, $1, $2) {
       return $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, "$&,");

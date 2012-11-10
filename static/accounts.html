@@ -2,6 +2,8 @@
 <html>
  <head>
   <title>accounts - dawg</title>
+  <meta name="viewport" content="width = 480">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
@@ -10,7 +12,8 @@
 
   <link rel="stylesheet" href="/css/dawg.css" />
   <link rel="stylesheet" href="/css/accounts.css" />
-
+  <link media="only screen and (max-device-width: 480px)" href="/css/dawg-iphone.css" type= "text/css" rel="stylesheet">
+  <link media="only screen and (max-device-width: 480px)" href="/css/accounts-iphone.css" type= "text/css" rel="stylesheet">
   <script src="/lib/underscore-min.js"></script>
   <script src="/lib/moment.min.js"></script>
   <script src="/lib/jquery.ba-bbq.min.js"></script>
@@ -18,45 +21,50 @@
 
   <script src="/js/utilities.js"></script>
   <script src="/js/accounts.js"></script>
+  <script src="/js/iphone-fullscreen-links.js"></script>
  </head>
 
  <body>
   <div class="container">
-   <a href="/">Home</a>
+   <a class="btn btn-primary btn-large" href="/">Home</a>
 
    <input type="button" value="Refresh" class="btn btn-primary btn-large" id="refresh" />
 
-   <span id="app-creation">App creation:</span>
+   <div id="app-creation-box">
 
-   <a class="time" data-parameter="app" data-time="10m" href="#">10m</a> |
-   <a class="time" data-parameter="app" data-time="1h" href="#">1h</a> |
-   <a class="time" data-parameter="app" data-time="1d" href="#">1d</a> |
-   <a class="time" data-parameter="app" data-time="1w" href="#">1w</a> |
-   <a class="time" data-parameter="app" data-time="forever" href="#">∞</a>
+     <span id="app-creation">App creation:</span>
 
-   <span id="account-creation">Account creation:</span>
+     <a class="time" data-parameter="app" data-time="10m" href="#">10m</a> |
+     <a class="time" data-parameter="app" data-time="1h" href="#">1h</a> |
+     <a class="time" data-parameter="app" data-time="1d" href="#">1d</a> |
+     <a class="time" data-parameter="app" data-time="1w" href="#">1w</a> |
+     <a class="time" data-parameter="app" data-time="forever" href="#">∞</a>
+   </div>
 
-   <a class="time" data-parameter="account" data-time="10m" href="#">10m</a> |
-   <a class="time" data-parameter="account" data-time="1h" href="#">1h</a> |
-   <a class="time" data-parameter="account" data-time="1d" href="#">1d</a> |
-   <a class="time" data-parameter="account" data-time="1w" href="#">1w</a> |
-   <a class="time" data-parameter="account" data-time="28d" href="#">28d</a> |
-   <a class="time" data-parameter="account" data-time="forever" href="#">∞</a>
+   <div id="account-creation-box">
+     <span id="account-creation">Account creation:</span>
 
-   <span id="total">Total: <span></span></span>
+     <a class="time" data-parameter="account" data-time="10m" href="#">10m</a> |
+     <a class="time" data-parameter="account" data-time="1h" href="#">1h</a> |
+     <a class="time" data-parameter="account" data-time="1d" href="#">1d</a> |
+     <a class="time" data-parameter="account" data-time="1w" href="#">1w</a> |
+     <a class="time" data-parameter="account" data-time="28d" href="#">28d</a> |
+     <a class="time" data-parameter="account" data-time="forever" href="#">∞</a>
+   </div>
+   <span id="total">Total: <span>&nbsp;</span></span>
 
    <table class="table table-striped">
     <thead>
      <tr>
-      <th>App ID</th>
-      <th>App Name</th>
-      <th>URL</th>
+      <th class="app-id">App ID</th>
+      <th class="app-name">App Name</th>
+      <th class="app-url">URL</th>
       <th onclick='javascript:sortTable(3);'>7 Day</th>
       <th onclick='javascript:sortTable(4);'>Accounts</th>
       <th onclick='javascript:sortTable(5);'>Profiles</th>
-      <th>Ratio</th>
-      <th>Created</th>
-      <th>Accounts</th>
+      <th class="ratio">Ratio</th>
+      <th class="created">Created</th>
+      <th class="accounts-list">Accounts</th>
      </tr>
     </thead>
 

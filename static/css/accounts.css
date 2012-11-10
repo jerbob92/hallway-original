@@ -18,3 +18,11 @@ a.selected {
   text-decoration: none;
   color: black;
 }
+
+#account-creation-box {
+  display:inline-block;
+}
+
+#app-creation-box {
+  display: inline-block;
+}

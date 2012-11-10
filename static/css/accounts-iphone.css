@@ -1,0 +1,20 @@
+.container table {
+  width: 450px;
+}
+
+.container table td {
+  max-width: 60px;
+  overflow:hidden;
+}
+
+.container table .ratio {
+  display:none;
+}
+
+.container table .app-url {
+  display:none;
+}
+
+.container table .accounts-list {
+  display:none;
+}

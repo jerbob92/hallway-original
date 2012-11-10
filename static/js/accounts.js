@@ -28,7 +28,7 @@ function trimString(str, maxLength) {
     return str;
   }
 
-  return str.slice(0, maxLength) + '...';
+  return str.slice(0, maxLength - 1) + '…';
 }
 
 function updateSelected() {
@@ -93,8 +93,10 @@ function refresh() {
           }
         };
       } else {
+        var max = isiPhone? 16: 40;
         app.details.notes.appUrl = '<a href="' + app.details.notes.appUrl +
-          '">' + trimString(app.details.notes.appUrl, 40) + '</a>';
+          '">' + trimString(app.details.notes.appUrl, max) + '</a>';
+        app.details.notes.appName = trimString(app.details.notes.appName, max);
       }
 
       var email = '';
@@ -113,7 +115,8 @@ function refresh() {
       if (!app.created) {
         app.created = '';
       } else {
-        app.created = moment(app.created).format("M/D/YYYY h:mma");
+        var format = isiPhone? "M/D/YY" : "M/D/YYYY h:mma";
+        app.created = moment(app.created).format(format);
       }
 
       var ratio = Math.round((app.profiles / app.accounts) * 100) / 100;
@@ -134,15 +137,15 @@ function refresh() {
       var cnt = 0;
 
       $('#rows').append('<tr>' +
-        '<td><a href="/app/info/' + app.id + '">' + app.id + '</a></td>' +
-        '<td>' + app.details.notes.appName  + '</td>' +
-        '<td>' + app.details.notes.appUrl  + '</td>' +
-        '<td>' + percentGrowth + '</td>' +
-        '<td>' + commas(app.accounts) + '</td>' +
-        '<td>' + commas(app.profiles) + '</td>' +
-        '<td>' + ratio + '</td>' +
-        '<td>' + app.created + '</td>' +
-        '<td>' + app.accountList.map(function (account) {
+        '<td class="app-id"><a href="/app/info/'+app.id+'">'+app.id.substring(0,6)+'</a></td>' +
+        '<td class="app-name">' + app.details.notes.appName + '</td>' +
+        '<td class="app-url">' + app.details.notes.appUrl  + '</td>' +
+        '<td class="7-day">' + percentGrowth + '</td>' +
+        '<td class="accounts">' + commas(app.accounts) + '</td>' +
+        '<td class="profiles">' + commas(app.profiles) + '</td>' +
+        '<td class="ratio">' + ratio + '</td>' +
+        '<td class="created">' + app.created + '</td>' +
+        '<td class="accounts-list">'+app.accountList.map(function (account) {
           return '<a href="#" onClick="return appAccount(\'' + account +
           '\');">' + (++cnt) + '</a>';
         }).join(', ') + '</td>' +
