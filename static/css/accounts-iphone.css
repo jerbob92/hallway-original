@@ -1,3 +1,10 @@
+body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.container {
+  margin:0;
+}
 .container table {
   width: 450px;
 }
@@ -17,4 +24,14 @@
 
 .container table .accounts-list {
   display:none;
+}
+
+#app-creation-box {
+  height: 24px;
+  display: block;
+}
+
+#account-creation-box {
+  height: 24px;
+  display: block;
 }
