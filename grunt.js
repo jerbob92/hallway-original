@@ -1,3 +1,14 @@
+function lintFiles(grunt) {
+  var lintFiles = [];
+  grunt.file.expand(
+    'lib/**/*.js',
+    '!lib/services/zeo/oauth/**/*.js'
+  ).forEach(function(file) {
+    if (file.indexOf('zeo/oauth') === -1) lintFiles.push(file);
+  });
+  return lintFiles;
+}
+
 module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
@@ -13,7 +24,7 @@ module.exports = function(grunt) {
       }
     },
     lint: {
-      src: 'lib/**/*.js',
+      src: lintFiles(grunt),
       scripts: 'scripts/**/*.js',
       dawg: 'static/js/*.js',
       grunt: 'grunt.js',
