@@ -1,15 +1,18 @@
 function lintFiles(grunt) {
-  var lintFiles = [];
+  var filesToLint = [];
   grunt.file.expand(
-    'lib/**/*.js',
-    '!lib/services/zeo/oauth/**/*.js'
-  ).forEach(function(file) {
-    if (file.indexOf('zeo/oauth') === -1) lintFiles.push(file);
+    'lib/**/*.js'
+    // To ignore a subdirectory you'd do this:
+    //'!lib/services/zeo/oauth/**/*.js'
+  ).forEach(function (file) {
+    // And this:
+    //if (file.indexOf('zeo/oauth') === -1)
+    filesToLint.push(file);
   });
-  return lintFiles;
+  return filesToLint;
 }
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
