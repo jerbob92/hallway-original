@@ -7,6 +7,9 @@
   "externalPath": "",
   "externalPort": 8042,
   "externalSecure": false,
+  "ijod": {
+    "slowPump": 10
+  },
   "worker": {
     "listenIP": "0.0.0.0",
     "port": 8041
