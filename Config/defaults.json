@@ -8,7 +8,10 @@
   "externalPort": 8042,
   "externalSecure": false,
   "ijod": {
-    "slowPump": 20
+    "slowPump": {
+      "avg": 30,
+      "et":  1000
+    }
   },
   "worker": {
     "listenIP": "0.0.0.0",
