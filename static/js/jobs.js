@@ -50,7 +50,7 @@ function refresh() {
       Object.keys(worker.workers).forEach(function(pid) {
         worker.workers[pid].tasks.forEach(function(task){
           // already completed this task, waiting for others of the same pid
-          if (tasks.tstart < task.tdone) return;
+          if (task.tstart < task.tdone) return;
           var classes = [];
 
           if (task.tstart < Date.now() - (60 * 1000)) {
