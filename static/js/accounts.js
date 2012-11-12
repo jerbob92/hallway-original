@@ -1,4 +1,5 @@
-/*global commas:true humanTimeFromSeconds:true secondsFromHumanTime:true*/
+/*global isiPhone:true commas:true humanTimeFromSeconds:true
+  secondsFromHumanTime:true*/
 function percentToNum(a) {
   a = $.text([a]);
   if (a === 'new') return -1;
@@ -93,7 +94,8 @@ function refresh() {
           }
         };
       } else {
-        var max = isiPhone? 16: 40;
+        var max = isiPhone ? 16: 40;
+
         app.details.notes.appUrl = '<a href="' + app.details.notes.appUrl +
           '">' + trimString(app.details.notes.appUrl, max) + '</a>';
         app.details.notes.appName = trimString(app.details.notes.appName, max);
@@ -115,7 +117,8 @@ function refresh() {
       if (!app.created) {
         app.created = '';
       } else {
-        var format = isiPhone? "M/D/YY" : "M/D/YYYY h:mma";
+        var format = isiPhone ? "M/D/YY" : "M/D/YYYY h:mma";
+
         app.created = moment(app.created).format(format);
       }
 
@@ -137,7 +140,8 @@ function refresh() {
       var cnt = 0;
 
       $('#rows').append('<tr>' +
-        '<td class="app-id"><a href="/app/info/'+app.id+'">'+app.id.substring(0,6)+'</a></td>' +
+        '<td class="app-id"><a href="/app/info/' + app.id + '">' +
+          app.id.substring(0, 6) + '</a></td>' +
         '<td class="app-name">' + app.details.notes.appName + '</td>' +
         '<td class="app-url">' + app.details.notes.appUrl  + '</td>' +
         '<td class="7-day">' + percentGrowth + '</td>' +
@@ -145,7 +149,7 @@ function refresh() {
         '<td class="profiles">' + commas(app.profiles) + '</td>' +
         '<td class="ratio">' + ratio + '</td>' +
         '<td class="created">' + app.created + '</td>' +
-        '<td class="accounts-list">'+app.accountList.map(function (account) {
+        '<td class="accounts-list">' + app.accountList.map(function (account) {
           return '<a href="#" onClick="return appAccount(\'' + account +
           '\');">' + (++cnt) + '</a>';
         }).join(', ') + '</td>' +
