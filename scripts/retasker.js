@@ -12,9 +12,17 @@ var taskman = require('taskman');
 var dal = require('dal');
 var ijod = require('ijod');
 
-function retask(offset, limit, concurrent, force, callback) {
-  var sql = 'SELECT id FROM Profiles LIMIT ? OFFSET ?';
-  dal.query(sql, [limit, offset], function(err, ret) {
+function retask(offset, limit, concurrent, force, service, callback) {
+  var sql = 'SELECT id FROM Profiles ';
+  var binds = [];
+  if(service) {
+    sql += 'WHERE service=? ';
+    binds.push(service);
+  }
+  binds.push(limit);
+  binds.push(offset);
+  sql += 'LIMIT ? OFFSET ?';
+  dal.query(sql, binds, function(err, ret) {
     if(err || !ret) return callback(err);
     logger.log("doing "+ret.length+"\n");
     var i = offset;
@@ -46,7 +54,8 @@ function init(callback) {
 
 init(function(err) {
   if (err) return logger.error('err', err);
-  retask(argv.offset, argv.limit, argv.concurrent, argv.force, function(err) {
+  retask(argv.offset, argv.limit, argv.concurrent, argv.force, argv.service,
+    function(err) {
     if (err) logger.error('err', err);
     logger.log('done');
     process.exit();
