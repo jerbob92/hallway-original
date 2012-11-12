@@ -11,10 +11,10 @@
   "synclets":[
     {"name": "self",        "frequency": 86400, "class":"core"},
     {"name": "updates",     "frequency": 3600, "class":"social"},
-    {"name": "network",     "frequency": 3600, "class":"social"},
+    {"name": "network",     "frequency": 3600, "class":"core"},
     {"name": "connections",
      "frequency": 86400,
-     "class":"personal",
+     "class":"core",
      "freshInstead":"network"}
   ]
 }
