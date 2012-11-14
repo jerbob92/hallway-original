@@ -28,7 +28,7 @@ request.get({url:host+'/productionappsactive', headers:req.headers, json:true}, 
       var alist = Object.keys(acts).slice(0,3);
       async.forEach(alist, function(act, cbAct){
         request.get({url:host+'/proxy/'+act+'/profile', headers:req.headers, json:true}, function(err, resp, profile){
-          console.log(app.app,act,profile.name,profile.url);
+          console.log(app.app,act,profile.name,profile.url," ");
           cbAct();
         });
       },cbApp);

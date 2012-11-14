@@ -28,12 +28,12 @@ step(function(){
     });
   }, function(){
     var acts = Object.keys(accounts);
-    acts.sort(function(a,b){ return accounts[b] - accounts[a] });
+    acts.sort(function(a,b){ return accounts[b] - accounts[a]; });
     acts.forEach(function(act){
-      console.log(act, accounts[act], actprofile[act].name, actprofile[act].url);
+      console.log(act, accounts[act], actprofile[act].name, actprofile[act].url, " ");
     });    
   });
-})
+});
 
 function step(cb)
 {
