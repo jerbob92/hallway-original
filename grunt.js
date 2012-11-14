@@ -29,7 +29,6 @@ module.exports = function (grunt) {
     lint: {
       src: lintFiles(grunt),
       scripts: 'scripts/**/*.js',
-      dawg: 'static/js/*.js',
       grunt: 'grunt.js',
       tests: 'test/**/*.js'
     },
