@@ -47,7 +47,7 @@ function shutdown(returnCode, callback) {
 
   shuttingDown_ = true;
   process.stdout.write("\n");
-  logger.info("Shutting down...");
+  logger.info('Shutting down...');
 
   if (callback) {
     return callback(returnCode);
@@ -60,8 +60,8 @@ if (lconfig.alerting && lconfig.alerting.key) {
   alerting.init(lconfig.alerting);
 
   alerting.install(function (E) {
-    logger.error("Uncaught exception: %s", E.message);
-
+    logger.warn('Uncaught exception: %s', E.message);
+    logger.error(E);
     shutdown(1);
   });
 }
