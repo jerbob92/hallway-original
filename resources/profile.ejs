@@ -1,0 +1,30 @@
+{
+  "apiVersion": "1",
+  "swaggerVersion": "1.1",
+  "basePath": "https://api.singly.com",
+  "resourcePath": "/profile",
+
+  "apis": [
+    {
+      "path":"/profile",
+      "description":"the unified profile",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "nickname":"profile",
+          "parameters":[
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            }
+          ],
+          "summary":"Get the unified profile (name, email, thumbnail, links)"
+        }
+      ]
+    }
+  ]
+}

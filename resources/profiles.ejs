@@ -1,0 +1,85 @@
+{
+  "apiVersion": "1",
+  "swaggerVersion": "1.1",
+  "basePath": "https://api.singly.com",
+  "resourcePath": "/profiles",
+
+  "apis": [
+    {
+      "path":"/profiles",
+      "description":"list connected profiles",
+      "operations":[
+        {
+          "httpMethod":"GET",
+          "nickname":"profiles",
+          "parameters":[
+            {
+              "name": "verify",
+              "description": "Specify whether to return auth data, defaults to false",
+              "paramType": "query",
+              "required": false,
+              "allowMultiple": false,
+              "dataType": "string",
+              "allowableValues":{
+                "valueType":"LIST",
+                "values":[
+                  "false",
+                  "true"
+                ]
+              }
+            },
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            }
+          ],
+          "summary":"list connected profiles and profile IDs"
+        }
+      ]
+    },
+    {
+      "path":"/profiles/{service}",
+      "description":"Return meta-data on a particular service",
+      "operations":[
+
+        {
+          "httpMethod":"GET",
+          "nickname":"service profile",
+          "parameters":[
+            {
+              "name": "service",
+              "description": "The service to return meta-data on (user must have the service connected)",
+              "paramType": "path",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string",
+              "allowableValues":{
+                "valueType":"LIST",
+                "values":[
+                  <%
+                  var list = [];
+                  for (var i=0; i<serviceNames.length; i++) list.push('"'+serviceNames[i]+'"');
+                  %>
+                  <%- list.join(',') %>
+                ]
+              }
+            },
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            }
+          ],
+          "summary":"Returns user info and IDs"
+        }
+      ]
+    }
+  ]
+}
