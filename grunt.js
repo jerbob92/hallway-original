@@ -1,20 +1,25 @@
-var LIB_BLOCKLIST = [
-  /services/,
-  'lib/firebase-auth-server.js'
-];
+var _ = require('underscore');
+
+function filterFiles(grunt, pattern, blacklist) {
+  var files = grunt.file.expand(pattern);
+  return _.reject(files, function(file) {
+    return _.any(blacklist, function(ignored) {
+      return file === ignored || file.match(ignored);
+    });
+  });
+}
 
 function libFiles(grunt) {
-  var filesToLint = [];
-  grunt.file.expand(
-    'lib/**/*.js'
-  ).forEach(function (file) {
-    var blocked = false;
-    LIB_BLOCKLIST.forEach(function(blocker) {
-      if (file === blocker || file.match(blocker)) blocked = true;
-    });
-    if (!blocked) filesToLint.push(file);
-  });
-  return filesToLint;
+  return filterFiles(grunt, 'lib/**/*.js', [
+    /services/,
+    'lib/firebase-auth-server.js'
+  ]);
+}
+
+function serviceFiles(grunt) {
+  return filterFiles(grunt, 'lib/services/**/*.js', [
+    'lib/services/gmail/imap/xregexp.js'
+  ]);
 }
 
 module.exports = function (grunt) {
@@ -34,7 +39,7 @@ module.exports = function (grunt) {
     lint: {
       grunt    : 'grunt.js',
       lib      : libFiles(grunt),
-      services : 'lib/services/**/*.js',
+      services : serviceFiles(grunt),
       tests    : 'test/**/*.js',
       scripts  : 'scripts/**/*.js'
     },
