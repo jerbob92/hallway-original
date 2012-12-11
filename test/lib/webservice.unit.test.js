@@ -199,17 +199,17 @@ describe('API host', function () {
     TYPE_GETS.forEach(function (url) {
       describe(url, function () {
         failOnBadAccessToken(url);
-      });
 
-      it('should return an empty array', function (done) {
-        browser(webservice)
-        .get(url)
-        .query({
-          access_token: GOOD_ACCESS_TOKEN
-        })
-        .expect('Content-Type', /json/)
-        .expect([])
-        .end(done);
+        it('should return an empty array', function (done) {
+          browser(webservice)
+          .get(url)
+          .query({
+            access_token: GOOD_ACCESS_TOKEN
+          })
+          .expect('Content-Type', /json/)
+          .expect([])
+          .end(done);
+        });
       });
     });
 
