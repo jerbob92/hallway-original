@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "grunt-simple-mocha": "*",
-    "mocha": "1.6.x",
+    "mocha": "1.7.x",
     "should": "1.2.x",
     "fakeredis": "0.0.14"
   },
