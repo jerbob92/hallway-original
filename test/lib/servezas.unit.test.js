@@ -4,8 +4,8 @@ var servezas = require('servezas');
 
 describe('servezas', function() {
   describe('load()', function() {
-    it('should not crash', function(done){
-      servezas.load(done);
+    it('should not crash', function(){
+      servezas.load();
     });
   });
 
