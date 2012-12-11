@@ -1,6 +1,7 @@
 export GIT_REVISION?=$(shell git rev-parse --short --default HEAD)
 # if not provided by Jenkins, then just use the gitrev
 export BUILD_NUMBER?=git-$(GIT_REVISION)
+export SUPPRESS_LOGS=true
 
 .PHONY: deps build build_dev npm_modules npm_modules_dev
 
