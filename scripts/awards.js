@@ -17,7 +17,6 @@ exports.init = function(_host, _auth, _log, _error) {
 };
 
 function getFileLogger(filename) {
-  fs.writeFileSync(filename, '');
   return fs.appendFileSync.bind(fs, filename);
 }
 
