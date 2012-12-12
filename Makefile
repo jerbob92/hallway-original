@@ -42,7 +42,7 @@ migrations:
 	./node_modules/db-migrate/bin/db-migrate -v --config Config/config.json -e database up
 .PHONY: migrations
 
-MOCHA = ./node_modules/.bin/mocha
+MOCHA = ./node_modules/.bin/mocha -R dot
 MOCHA_TESTS=$(shell find test -name "*.test.js" | sort)
 ltest:
 	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib:test/lib" \
