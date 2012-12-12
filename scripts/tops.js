@@ -12,7 +12,8 @@ var req = {
   qs: {
     key:argv['app-id'],
     limit:100,
-    offset:0
+    offset:0,
+    since: (Date.now() - (argv.hours * 3600 * 1000))
   },
   headers: {
    Authorization:"Basic " + new Buffer(argv.auth).toString("base64")
@@ -30,7 +31,7 @@ log('<table><tr>');
 log('<td>Account</td><td>Hits</td><td>Name</td><td>Social Prof</td><td>Loc</td><td>Email</td>');
 log('</tr>');
 
-step(function() {
+getPage(function() {
   async.forEachLimit(Object.keys(accounts), 10, function(act, cbAct) {
     request.get({url: argv.host + '/proxy/'+act+'/profile',
       headers:req.headers, json:true}, function(err, resp, profile) {
@@ -61,12 +62,10 @@ function logRow(id, count, profile) {
   log(line);
 }
 
-function step(cb) {
+function getPage(cb) {
   request.get(req, function(err, res, logs) {
     if(err || !Array.isArray(logs)) return cb();
-    var older = false;
     logs.forEach(function(log) {
-      if(log.at < until) older = true;
       if(!Array.isArray(log.data)) return;
       log.data.forEach(function(hit) {
         if(!hit.act || hit.act === 'auth') return;
@@ -74,9 +73,9 @@ function step(cb) {
         accounts[hit.act]++;
       });
     });
-    if(older) return cb();
+    if (logs.length === 0 ) return cb();
     req.qs.offset += req.qs.limit;
-    step(cb);
+    getPage(cb);
   });
 }
 
