@@ -1,6 +1,7 @@
 var LIB_BLOCKLIST = [
   /services/,
-  'lib/firebase-auth-server.js'
+  'lib/firebase-auth-server.js',
+  'lib/firebase-token-generator-node.js'
 ];
 
 function libFiles(grunt) {
@@ -9,7 +10,7 @@ function libFiles(grunt) {
     'lib/**/*.js'
   ).forEach(function (file) {
     var blocked = false;
-    LIB_BLOCKLIST.forEach(function(blocker) {
+    LIB_BLOCKLIST.forEach(function (blocker) {
       if (file === blocker || file.match(blocker)) blocked = true;
     });
     if (!blocked) filesToLint.push(file);
