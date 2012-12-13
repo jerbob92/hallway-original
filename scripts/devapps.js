@@ -43,7 +43,6 @@ exports.devapps = function(hours, callback) {
   request.get(req, function(err, resp, apps) {
     if (err) return callback(err);
     if(!Array.isArray(apps)) return callback('no apps returned');
-    apps = apps.slice(0, 3);
     async.forEachSeries(apps, function(app, cbApp) {
       getAppDevs(app, until, function(err, appdevs) {
         if (err) return callback(err);
