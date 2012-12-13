@@ -1,6 +1,5 @@
 var path = require('path');
 var temp = require('temp');
-var wrench = require('wrench');
 var fs = require('fs');
 var util = require('util');
 
