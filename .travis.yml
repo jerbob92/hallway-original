@@ -4,6 +4,8 @@ node_js:
 notifications:
     email: false
     hipchat: 33d0319e384ba2d38a29b40c07bfdd@Alerts
+services:
+    - redis-server
 branches:
     except:
         - production
