@@ -1,19 +1,29 @@
 var fs = require('fs');
+var nodemailer = require('nodemailer');
 
 var tops = require('./tops');
 var devapps = require('./devapps');
 
 var auth, host;
 var error, log;
+var output = '';
 
-exports.init = function(_host, _auth, _log, _error) {
-  tops.init(_host, _auth);
-  devapps.init(_host, _auth);
+exports.init = function(options) {
+  tops.init(options.host, options.auth);
+  devapps.init(options.host, options.auth);
 
-  if (_error) error = getFileLogger(_error);
+  if (options.error) error = getFileLogger(options.error);
   else error = console.error;
-  if (_log) log = getFileLogger(_log);
-  else log = console.log;
+
+  if (options.to && options.user && options.pass) {
+    log = function(str) {
+      output += str;
+    };
+  } else if (options.log) {
+    log = getFileLogger(options.log);
+  } else {
+    log = console.log;
+  }
 };
 
 function getFileLogger(filename) {
@@ -34,6 +44,28 @@ exports.awards = function(appID, hours, callback) {
   });
 };
 
+function sendMail(options) {
+  var smtpTransport = nodemailer.createTransport("SMTP", {
+    service: options.service || "SendGrid",
+    auth: {
+      user: options.user,
+      pass: options.pass
+    }
+  });
+
+  var mailOptions = {
+    from: options.from,
+    to: options.to,
+    subject: options.subject || "Daily Dev Awards",
+    html: output
+  };
+
+  smtpTransport.sendMail(mailOptions, function(err, response){
+    if(err) error(err);
+    smtpTransport.close();
+  });
+}
+
 
 function main() {
   var argv = require('optimist')
@@ -43,12 +75,15 @@ function main() {
       .usage('node scripts/awards.js --auth dawguser:dawgpass --app-id appid')
       .argv;
 
-  exports.init(argv.host, argv.auth, argv.log, argv.error);
+  exports.init(argv);
 
   log('<html><body>');
   log('<h2>Evening Dev Awards produced at ' + new Date() + '</h2><br>');
   exports.awards(argv['app-id'], argv.hours, function(err) {
     log('</body></html>');
+    if (argv.to && argv.user && argv.pass) {
+      sendMail(argv);
+    }
   });
 }
 
