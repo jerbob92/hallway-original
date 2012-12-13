@@ -47,6 +47,7 @@ exports.tops = function(appID, hours, callback) {
 
   getHits(appID, hours, function(err, accounts) {
     if (err) return callback(err);
+    if (!accounts) return callback('account is not an Object' + accounts);
     async.forEachLimit(Object.keys(accounts), 10, function(act, cbAct) {
       request.get({
         url: host + '/proxy/'+act+'/profile',
@@ -107,7 +108,6 @@ function main() {
   exports.init(argv.host, argv.auth);
 
   exports.tops(argv['app-id'], argv.hours, function(err, rows) {
-    console.error('rows', rows);
     if (err) return console.error(err);
     exports.print(rows, console.log, console.error);
   });
