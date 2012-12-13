@@ -6,7 +6,7 @@
 
   "apis": [
   <% var sortedServices = Object.keys(services).sort();
-     for (c = 0; c < sortedServices.length; c++) {
+     for (var c = 0; c < sortedServices.length; c++) {
        var key = sortedServices[c]; %>
     {
       "path":"/services/<%= key %>/{endpoint}",
