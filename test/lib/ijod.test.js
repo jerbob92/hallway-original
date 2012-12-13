@@ -181,7 +181,7 @@ describe("ijod", function () {
       // Verify reading back through API functions as expected
       getAllOnes(TESTDATA, function () {
         // Verify that the Entries tables contains all the data
-        testdb.query("SELECT COUNT(*) as count FROM ENTRIES", [], function (rows) {
+        testdb.query("SELECT COUNT(*) as count FROM Entries", [], function (rows) {
           assert.equal(TESTDATA.length, rows[0].count);
           done();
         });
