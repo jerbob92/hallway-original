@@ -15,48 +15,51 @@
     "lib": "./lib"
   },
   "engines": {
-    "node": ">=0.8.7 <=0.8.8"
+    "node": ">=0.8.7 <=0.8.15"
   },
   "scripts": {
     "test": "make test",
     "start": "./hallway"
   },
   "devDependencies": {
+    "chai": "1.1.x",
+    "cover": "https://github.com/kristjan/node-cover/tarball/master",
+    "fakeredis": "0.0.14",
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
+    "node-fakeweb": "=0.0.7",
     "should": "1.2.x",
-    "fakeredis": "0.0.14"
+    "supertest": ""
   },
   "dependencies": {
-    "apparatus": "",
     "async": "=0.1.15",
     "aws-lib": "0.1.4",
-    "chai": "1.1.x",
     "colors": "",
     "compress-buffer": "",
-    "connect": "=1.8.5",
-    "cover": "https://github.com/kristjan/node-cover/tarball/master",
+    "connect": "=2.7.1",
     "db-migrate": "https://github.com/Singly/node-db-migrate/tarball/master",
     "ejs": "=0.8.3",
+    "ejs-locals": "~1.0.2",
+    "encoding": "=0.1.4",
     "ent": "",
     "express": "=3.0.4",
     "facebook-js": "=1.0.0",
-    "flickr-js": "=0.0.3",
     "fitbit-js": "=0.1.0",
-    "fivebeans": "0.2.x",
+    "flickr-js": "=0.0.3",
     "generic-pool": "=1.0.9",
     "gift": "0.0.5",
     "hiredis": "0.1.x",
     "knox": "=0.0.9",
     "mc": "",
     "mime": "",
+    "mimelib": "",
+    "mkdirp": "=0.3.4",
     "moment": "1.6.x",
     "murmurhash3": "",
     "mysql": "=2.0.0-alpha4",
     "mysql-libmysqlclient": "=1.3.3",
-    "mkdirp": "=0.3.4",
     "natural": "",
-    "node-fakeweb": "=0.0.7",
+    "nodemailer": "",
     "oauth": "=0.9.6",
     "optimist": "",
     "password-hash": "=1.2.1",
@@ -69,14 +72,8 @@
     "sprintf": "",
     "temp": ">=0.4.0",
     "tumblrwks": "https://github.com/Singly/tumblrwks/tarball/master",
-    "supertest": "",
     "underscore": ">=1.3.0",
     "underscore.string": ">=2.3.0",
-    "winston": "=0.5.2",
-    "encoding": "=0.1.4",
-    "mimelib": "",
-    "xml2js": "=0.2.2",
-    "nodemailer": "",
-    "ejs-locals": "~1.0.2"
+    "xml2js": "=0.2.2"
   }
 }
