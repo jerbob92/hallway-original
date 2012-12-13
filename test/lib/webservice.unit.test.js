@@ -135,24 +135,27 @@ var SIMPLE_GETS = [
   '/types/statuses_feed'
 ];
 
+var BROWSER;
+
 before(function (done) {
   acl.init(function () {
     tokenz.init(function () {
       done();
     });
   });
+
+  BROWSER = browser(webservice);
 });
 
 function failOnBadAccessToken(url) {
   it('should fail on a bad access token', function (done) {
-    browser(webservice)
-    .get(url)
-    .query({
-      access_token: BAD_ACCESS_TOKEN
-    })
-    .expect('Content-Type', /json/)
-    .expect(400, /Invalid OAuth access token\./)
-    .end(done);
+    BROWSER.get(url)
+      .query({
+        access_token: BAD_ACCESS_TOKEN
+      })
+      .expect('Content-Type', /json/)
+      .expect(400, /Invalid OAuth access token\./)
+      .end(done);
   });
 }
 
@@ -160,8 +163,7 @@ describe('API host', function () {
   describe('private endpoints', function () {
     SIMPLE_GETS.forEach(function (url) {
       it(url + ' requires an access token', function (done) {
-        browser(webservice)
-          .get(url)
+        BROWSER.get(url)
           .expect('Content-Type', /json/)
           .expect(401, /access_token/)
           .end(done);
@@ -171,8 +173,7 @@ describe('API host', function () {
     describe('/profile', function () {
       it('should return data from the access token',
         function (done) {
-        browser(webservice)
-          .get('/profile')
+        BROWSER.get('/profile')
           .query({
             access_token: GOOD_ACCESS_TOKEN
           })
@@ -185,8 +186,7 @@ describe('API host', function () {
     describe('/profiles', function () {
       it('should return data from the fake profiles',
         function (done) {
-        browser(webservice)
-          .get('/profiles')
+        BROWSER.get('/profiles')
           .query({
             access_token: GOOD_ACCESS_TOKEN
           })
@@ -201,14 +201,13 @@ describe('API host', function () {
         failOnBadAccessToken(url);
 
         it('should return an empty array', function (done) {
-          browser(webservice)
-          .get(url)
-          .query({
-            access_token: GOOD_ACCESS_TOKEN
-          })
-          .expect('Content-Type', /json/)
-          .expect([])
-          .end(done);
+          BROWSER.get(url)
+            .query({
+              access_token: GOOD_ACCESS_TOKEN
+            })
+            .expect('Content-Type', /json/)
+            .expect([])
+            .end(done);
         });
       });
     });
@@ -219,24 +218,23 @@ describe('API host', function () {
 
         // XXX: Ideally we'd return one or the other all the time!
         it('should return an empty array or an error', function (done) {
-          browser(webservice)
-          .get(url)
-          .query({
-            access_token: GOOD_ACCESS_TOKEN
-          })
-          .expect('Content-Type', /json/)
-          .end(function (err, res) {
-            if (_.isEqual(res.body, []) && res.statusCode === 200) {
-              return done();
-            }
+          BROWSER.get(url)
+            .query({
+              access_token: GOOD_ACCESS_TOKEN
+            })
+            .expect('Content-Type', /json/)
+            .end(function (err, res) {
+              if (_.isEqual(res.body, []) && res.statusCode === 200) {
+                return done();
+              }
 
-            if (_.isEqual(res.body, { error: 'No data or profile found' }) &&
-              res.statusCode === 404) {
-              return done();
-            }
+              if (_.isEqual(res.body, { error: 'No data or profile found' }) &&
+                res.statusCode === 404) {
+                return done();
+              }
 
-            throw new Error('body must be an empty array or a JSON error');
-          });
+              throw new Error('body must be an empty array or a JSON error');
+            });
         });
       });
     });
@@ -245,8 +243,7 @@ describe('API host', function () {
   describe('public endpoints', function () {
     PUBLIC_GETS.forEach(function (url) {
       it(url + ' doesn\'t require an access token', function (done) {
-        browser(webservice)
-          .get(url)
+        BROWSER.get(url)
           .expect('Content-Type', /json/)
           .expect(200, /.*/)
           .end(done);
@@ -257,8 +254,7 @@ describe('API host', function () {
       // XXX: Add additional checking here? Should this even be public?
       it('should return an object',
         function (done) {
-        browser(webservice)
-          .get('/types')
+        BROWSER.get('/types')
           .expect('Content-Type', /json/)
           .end(done);
       });
@@ -267,8 +263,7 @@ describe('API host', function () {
 
   describe('/auth/merge', function () {
     it('should return a 500 with no arguments', function (done) {
-      browser(webservice)
-        .get('/auth/merge')
+      BROWSER.get('/auth/merge')
         .expect('Content-Type', /json/)
         .expect(500, /.*/)
         .end(done);
@@ -277,8 +272,7 @@ describe('API host', function () {
 
   describe('/multi', function () {
     it('should return a 400 with no arguments', function (done) {
-      browser(webservice)
-        .get('/multi')
+      BROWSER.get('/multi')
         .expect('Content-Type', /json/)
         .expect(400, /.*/)
         .end(done);
@@ -287,8 +281,7 @@ describe('API host', function () {
 
   describe('/resources.json', function () {
     it('should return a valid resource description', function (done) {
-      browser(webservice)
-        .get('/resources.json')
+      BROWSER.get('/resources.json')
         .expect('Content-Type', /json/)
         .expect(200, /apiVersion/)
         .end(done);
