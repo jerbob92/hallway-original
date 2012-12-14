@@ -1,8 +1,9 @@
 export GIT_REVISION?=$(shell git rev-parse --short --default HEAD)
 # if not provided by Jenkins, then just use the gitrev
 export BUILD_NUMBER?=git-$(GIT_REVISION)
+export SUPPRESS_LOGS=true
 
-.PHONY: deps build build_dev npm_modules npm_modules_dev
+.PHONY: deps build npm_modules
 
 all: build
 	@echo
@@ -26,31 +27,26 @@ check_deps:
 # Get Hallway ready to run
 build: check_deps npm_modules
 
-build_dev: check_deps npm_modules_dev
-
 # install node dependencies via npm
 npm_modules:
 	@. scripts/use-deps.sh && \
 	npm install
-
-npm_modules_dev:
-	npm install --dev
 
 migrations:
 	@echo "Applying migrations"
 	./node_modules/db-migrate/bin/db-migrate -v --config Config/config.json -e database up
 .PHONY: migrations
 
-MOCHA = ./node_modules/.bin/mocha
+MOCHA = ./node_modules/.bin/mocha -R dot
 MOCHA_TESTS=$(shell find test -name "*.test.js" | sort)
 ltest:
 	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib:test/lib" \
 	$(MOCHA) $(MOCHA_TESTS)
 
-test: build_dev ltest
+test: build ltest
 
 MOCHA_UNIT_TESTS=$(shell find test -name "*.unit.test.js" | sort)
-unittest: build_dev
+unittest: build
 	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib" \
 		$(MOCHA) $(MOCHA_UNIT_TESTS)
 

@@ -1,6 +1,292 @@
-var path = require('path');
-var helper = require(path.join(__dirname, '..', 'support', 'locker-helper'));
+var browser = require('supertest');
+var _ = require('underscore');
 
-helper.configurate();
+var lconfig = require('lconfig');
 
-var webservice = require('webservice');
+lconfig.authSecrets.crypt = 'abc';
+lconfig.authSecrets.sign = '123';
+
+var dalFake = require('dal-fake');
+var dal = require('dal');
+
+var PROFILES = [
+  { profile: '123.123@wordpress' },
+  { profile: '123%40N01@flickr' },
+  { profile: '123@dropbox' },
+  { profile: '123@facebook' },
+  { profile: '123@fitbit' },
+  { profile: '123@foursquare' },
+  { profile: '123@github' },
+  { profile: '123@instagram' },
+  { profile: '123@klout' },
+  { profile: '123@linkedin' },
+  { profile: '123@meetup' },
+  { profile: '123@runkeeper' },
+  { profile: '123@stocktwits' },
+  { profile: '123@twitter' },
+  { profile: '123@withings' },
+  { profile: '123@zeo' },
+  { profile: 's123@rdio' },
+  { profile: 'test%40example.com@gcontacts' },
+  { profile: 'test@tumblr' }
+];
+
+var PROFILE_RESPONSE = {
+  id: 'test-account',
+  wordpress: ['123.123'],
+  flickr: ['123%40N01'],
+  dropbox: ['123'],
+  facebook: ['123'],
+  fitbit: ['123'],
+  foursquare: ['123'],
+  github: ['123'],
+  instagram: ['123'],
+  klout: ['123'],
+  linkedin: ['123'],
+  meetup: ['123'],
+  runkeeper: ['123'],
+  stocktwits: ['123'],
+  twitter: ['123'],
+  withings: ['123'],
+  zeo: ['123'],
+  rdio: ['s123'],
+  gcontacts: ['test%40example.com'],
+  tumblr: ['test']
+};
+
+dalFake.reset();
+
+dalFake.addFake(/SELECT TRUE/i, [{ TRUE: '1' }]);
+dalFake.addFake(/SELECT conv/i, []);
+dalFake.addFake(/SELECT path, offset, len/i, [{ path: 'abc', offset: 0, len: 1 }]);
+dalFake.addFake('SELECT app, secret, apikeys, notes FROM Apps WHERE app = ? ' +
+  'LIMIT 1',  [{}]);
+dalFake.addFake('SELECT profile FROM Accounts WHERE account = ?', PROFILES);
+
+dal.setBackend('fake');
+
+var acl = require('acl');
+var tokenz = require('tokenz');
+
+var webservice = require('webservice').api;
+
+var BAD_ACCESS_TOKEN = 'abcdefghijklmnopqrstuvwxyz';
+var GOOD_ACCESS_TOKEN = process.env.ACCESS_TOKEN || 'JrY54j9w8SToWDYFDPDykSZr' +
+  'sR4.EKO8Xl-m96c3fbe6b28d240122e5858622d1afc7096bebdb0133ee03d334a3fa7d4bb6' +
+  '804a76c76a26fa5697852b8dd07aa32fa65766f6a7d27746a5456fe357b8fa3017';
+
+var SERVICE_GETS = [];
+
+var servezas = require('servezas');
+
+servezas.load();
+
+servezas.serviceList().forEach(function (service) {
+  servezas.services()[service].synclets.forEach(function (synclet) {
+    SERVICE_GETS.push('/services/' + service + '/' + synclet.name);
+  });
+});
+
+var TYPE_GETS = [
+  '/types/photos',
+  '/types/photos_feed',
+  '/types/news',
+  '/types/news_feed',
+  '/types/videos',
+  '/types/videos_feed',
+  '/types/checkins',
+  '/types/checkins_feed',
+  '/types/statuses',
+  '/types/statuses_feed',
+  '/types/contacts',
+  '/types/all',
+  '/types/all_feed'
+];
+
+var PUBLIC_GETS = [
+  '/enoch',
+  '/resources/friends',
+  '/resources.json',
+  '/resources/profile',
+  '/resources/profiles',
+  '/resources/services',
+  '/resources/types',
+  '/services',
+  '/state',
+  '/types'
+];
+
+var SIMPLE_GETS = [
+  '/apps',
+  '/friends',
+  '/logout',
+  '/profile',
+  '/profiles',
+  '/push',
+  '/services/reset',
+  '/types/contacts',
+  '/types/photos',
+  '/types/photos_feed',
+  '/types/checkins',
+  '/types/checkins_feed',
+  '/types/news',
+  '/types/news_feed',
+  '/types/videos',
+  '/types/videos_feed',
+  '/types/statuses',
+  '/types/statuses_feed'
+];
+
+var BROWSER;
+
+before(function (done) {
+  acl.init(function () {
+    tokenz.init(function () {
+      done();
+    });
+  });
+
+  BROWSER = browser(webservice);
+});
+
+function failOnBadAccessToken(url) {
+  it('should fail on a bad access token', function (done) {
+    BROWSER.get(url)
+      .query({
+        access_token: BAD_ACCESS_TOKEN
+      })
+      .expect('Content-Type', /json/)
+      .expect(400, /Invalid OAuth access token\./)
+      .end(done);
+  });
+}
+
+describe('API host', function () {
+  describe('private endpoints', function () {
+    SIMPLE_GETS.forEach(function (url) {
+      it(url + ' requires an access token', function (done) {
+        BROWSER.get(url)
+          .expect('Content-Type', /json/)
+          .expect(401, /access_token/)
+          .end(done);
+      });
+    });
+
+    describe('/profile', function () {
+      it('should return data from the access token',
+        function (done) {
+        BROWSER.get('/profile')
+          .query({
+            access_token: GOOD_ACCESS_TOKEN
+          })
+          .expect('Content-Type', /json/)
+          .expect({ id: 'test-account', services: {} })
+          .end(done);
+      });
+    });
+
+    describe('/profiles', function () {
+      it('should return data from the fake profiles',
+        function (done) {
+        BROWSER.get('/profiles')
+          .query({
+            access_token: GOOD_ACCESS_TOKEN
+          })
+          .expect('Content-Type', /json/)
+          .expect(PROFILE_RESPONSE)
+          .end(done);
+      });
+    });
+
+    TYPE_GETS.forEach(function (url) {
+      describe(url, function () {
+        failOnBadAccessToken(url);
+
+        it('should return an empty array', function (done) {
+          BROWSER.get(url)
+            .query({
+              access_token: GOOD_ACCESS_TOKEN
+            })
+            .expect('Content-Type', /json/)
+            .expect([])
+            .end(done);
+        });
+      });
+    });
+
+    SERVICE_GETS.forEach(function (url) {
+      describe(url, function () {
+        failOnBadAccessToken(url);
+
+        // XXX: Ideally we'd return one or the other all the time!
+        it('should return an empty array or an error', function (done) {
+          BROWSER.get(url)
+            .query({
+              access_token: GOOD_ACCESS_TOKEN
+            })
+            .expect('Content-Type', /json/)
+            .end(function (err, res) {
+              if (_.isEqual(res.body, []) && res.statusCode === 200) {
+                return done();
+              }
+
+              if (_.isEqual(res.body, { error: 'No data or profile found' }) &&
+                res.statusCode === 404) {
+                return done();
+              }
+
+              throw new Error('body must be an empty array or a JSON error');
+            });
+        });
+      });
+    });
+  });
+
+  describe('public endpoints', function () {
+    PUBLIC_GETS.forEach(function (url) {
+      it(url + ' doesn\'t require an access token', function (done) {
+        BROWSER.get(url)
+          .expect('Content-Type', /json/)
+          .expect(200, /.*/)
+          .end(done);
+      });
+    });
+
+    describe('/types', function () {
+      // XXX: Add additional checking here? Should this even be public?
+      it('should return an object',
+        function (done) {
+        BROWSER.get('/types')
+          .expect('Content-Type', /json/)
+          .end(done);
+      });
+    });
+  });
+
+  describe('/auth/merge', function () {
+    it('should return a 500 with no arguments', function (done) {
+      BROWSER.get('/auth/merge')
+        .expect('Content-Type', /json/)
+        .expect(500, /.*/)
+        .end(done);
+    });
+  });
+
+  describe('/multi', function () {
+    it('should return a 400 with no arguments', function (done) {
+      BROWSER.get('/multi')
+        .expect('Content-Type', /json/)
+        .expect(400, /.*/)
+        .end(done);
+    });
+  });
+
+  describe('/resources.json', function () {
+    it('should return a valid resource description', function (done) {
+      BROWSER.get('/resources.json')
+        .expect('Content-Type', /json/)
+        .expect(200, /apiVersion/)
+        .end(done);
+    });
+  });
+});

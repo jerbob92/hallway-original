@@ -25,7 +25,7 @@ describe("when creating an OAuth flow", function () {
 
   before(function (done) {
     fakeDB.addNoOp(/INSERT INTO Profiles \(id, service, worker\) VALUES/);
-    app = express.createServer();
+    app = express();
 
     app.get('/', function (req, res) {
       var tw = querystring.stringify({
