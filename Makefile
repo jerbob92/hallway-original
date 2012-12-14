@@ -37,18 +37,11 @@ migrations:
 	./node_modules/db-migrate/bin/db-migrate -v --config Config/config.json -e database up
 .PHONY: migrations
 
-MOCHA = ./node_modules/.bin/mocha -R dot
-MOCHA_TESTS=$(shell find test -name "*.test.js" | sort)
 ltest:
-	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib:test/lib" \
-	$(MOCHA) $(MOCHA_TESTS)
+	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" \
+		scripts/test-harness.sh
 
 test: build ltest
-
-MOCHA_UNIT_TESTS=$(shell find test -name "*.unit.test.js" | sort)
-unittest: build
-	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" NODE_PATH="lib" \
-		$(MOCHA) $(MOCHA_UNIT_TESTS)
 
 _MOCHA=./node_modules/.bin/_mocha
 COVER=./node_modules/cover/bin/cover
