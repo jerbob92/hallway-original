@@ -1,8 +1,9 @@
-var browser = require('supertest');
+var request = require('supertest');
 var _ = require('underscore');
 
 var lconfig = require('lconfig');
 
+// Set the authSecrets so that we can provide our own access token
 lconfig.authSecrets.crypt = 'abc';
 lconfig.authSecrets.sign = '123';
 
@@ -70,6 +71,10 @@ var tokenz = require('tokenz');
 
 var webservice = require('webservice').api;
 
+// Listen on an OS-specified port, this works around a hardcoded port in
+// supertest (3456)
+webservice.listen(0);
+
 var BAD_ACCESS_TOKEN = 'abcdefghijklmnopqrstuvwxyz';
 var GOOD_ACCESS_TOKEN = process.env.ACCESS_TOKEN || 'JrY54j9w8SToWDYFDPDykSZr' +
   'sR4.EKO8Xl-m96c3fbe6b28d240122e5858622d1afc7096bebdb0133ee03d334a3fa7d4bb6' +
@@ -79,6 +84,8 @@ var SERVICE_GETS = [];
 
 var servezas = require('servezas');
 
+// We're going to generate tests based on all of the services and synclets we
+// support
 servezas.load();
 
 servezas.serviceList().forEach(function (service) {
@@ -137,7 +144,7 @@ var SIMPLE_GETS = [
   '/types/statuses_feed'
 ];
 
-var BROWSER;
+var REQUEST;
 
 before(function (done) {
   acl.init(function () {
@@ -146,12 +153,12 @@ before(function (done) {
     });
   });
 
-  BROWSER = browser(webservice);
+  REQUEST = request(webservice);
 });
 
 function failOnBadAccessToken(url) {
   it('should fail on a bad access token', function (done) {
-    BROWSER.get(url)
+    REQUEST.get(url)
       .query({
         access_token: BAD_ACCESS_TOKEN
       })
@@ -165,7 +172,7 @@ describe('API host', function () {
   describe('private endpoints', function () {
     SIMPLE_GETS.forEach(function (url) {
       it(url + ' requires an access token', function (done) {
-        BROWSER.get(url)
+        REQUEST.get(url)
           .expect('Content-Type', /json/)
           .expect(401, /access_token/)
           .end(done);
@@ -175,7 +182,7 @@ describe('API host', function () {
     describe('/profile', function () {
       it('should return data from the access token',
         function (done) {
-        BROWSER.get('/profile')
+        REQUEST.get('/profile')
           .query({
             access_token: GOOD_ACCESS_TOKEN
           })
@@ -188,7 +195,7 @@ describe('API host', function () {
     describe('/profiles', function () {
       it('should return data from the fake profiles',
         function (done) {
-        BROWSER.get('/profiles')
+        REQUEST.get('/profiles')
           .query({
             access_token: GOOD_ACCESS_TOKEN
           })
@@ -203,7 +210,7 @@ describe('API host', function () {
         failOnBadAccessToken(url);
 
         it('should return an empty array', function (done) {
-          BROWSER.get(url)
+          REQUEST.get(url)
             .query({
               access_token: GOOD_ACCESS_TOKEN
             })
@@ -220,7 +227,7 @@ describe('API host', function () {
 
         // XXX: Ideally we'd return one or the other all the time!
         it('should return an empty array or an error', function (done) {
-          BROWSER.get(url)
+          REQUEST.get(url)
             .query({
               access_token: GOOD_ACCESS_TOKEN
             })
@@ -245,7 +252,7 @@ describe('API host', function () {
   describe('public endpoints', function () {
     PUBLIC_GETS.forEach(function (url) {
       it(url + ' doesn\'t require an access token', function (done) {
-        BROWSER.get(url)
+        REQUEST.get(url)
           .expect('Content-Type', /json/)
           .expect(200, /.*/)
           .end(done);
@@ -256,7 +263,7 @@ describe('API host', function () {
       // XXX: Add additional checking here? Should this even be public?
       it('should return an object',
         function (done) {
-        BROWSER.get('/types')
+        REQUEST.get('/types')
           .expect('Content-Type', /json/)
           .end(done);
       });
@@ -265,7 +272,7 @@ describe('API host', function () {
 
   describe('/auth/merge', function () {
     it('should return a 500 with no arguments', function (done) {
-      BROWSER.get('/auth/merge')
+      REQUEST.get('/auth/merge')
         .expect('Content-Type', /json/)
         .expect(500, /.*/)
         .end(done);
@@ -274,7 +281,7 @@ describe('API host', function () {
 
   describe('/multi', function () {
     it('should return a 400 with no arguments', function (done) {
-      BROWSER.get('/multi')
+      REQUEST.get('/multi')
         .expect('Content-Type', /json/)
         .expect(400, /.*/)
         .end(done);
@@ -283,7 +290,7 @@ describe('API host', function () {
 
   describe('/resources.json', function () {
     it('should return a valid resource description', function (done) {
-      BROWSER.get('/resources.json')
+      REQUEST.get('/resources.json')
         .expect('Content-Type', /json/)
         .expect(200, /apiVersion/)
         .end(done);

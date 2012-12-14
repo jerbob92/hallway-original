@@ -33,11 +33,11 @@ function getFileLogger(filename) {
 exports.awards = function(appID, hours, callback) {
   log('<h3> Top developers on singly.com </h3>');
   tops.tops(appID, hours, function(err, rows) {
-    if (err) return error(err);
+    if (err) return error('tops error', err);
     tops.print(rows, log, error);
     log('<h3> Active app accounts likely to be developers </h3>');
     devapps.devapps(hours, function(err, rows) {
-      if (err) return error(err);
+      if (err) return error('devapps error', err);
       devapps.print(rows, log, error);
       callback();
     });
