@@ -54,6 +54,8 @@ var PROFILE_RESPONSE = {
   tumblr: ['test']
 };
 
+dalFake.reset();
+
 dalFake.addFake(/SELECT TRUE/i, [{ TRUE: '1' }]);
 dalFake.addFake(/SELECT conv/i, []);
 dalFake.addFake(/SELECT path, offset, len/i, [{ path: 'abc', offset: 0, len: 1 }]);
