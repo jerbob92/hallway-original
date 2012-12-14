@@ -46,7 +46,7 @@ exports.tops = function(appID, hours, callback) {
   var actprofile = {};
 
   getHits(appID, hours, function(err, accounts) {
-    if (err) return callback(err);
+    if (err) return callback('getHits err' + JSON.stringify(err));
     if (!accounts) return callback('account is not an Object' + accounts);
     async.forEachLimit(Object.keys(accounts), 10, function(act, cbAct) {
       request.get({
@@ -74,7 +74,7 @@ exports.tops = function(appID, hours, callback) {
   });
 };
 
-exports.print = function(rows, log, error) {
+exports.print = function(rows, log) {
   function logRow(id, count, profile) {
     var line = '<tr>';
     line += '<td><a href="https://dawg.singly.com/apps/account?id='+id+'">' +

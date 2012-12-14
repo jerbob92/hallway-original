@@ -22,7 +22,7 @@ function getAppDevs(app, until, callback) {
     var alist = Object.keys(acts).slice(0,3);
     async.forEach(alist, function(act, cbAct) {
       getProfile(act, function(err, profile) {
-        if(err) return callback(err);
+        if(err) return cbAct(err);
         appdevs.push({
           app: app,
           account: act,
@@ -45,7 +45,7 @@ exports.devapps = function(hours, callback) {
     if(!Array.isArray(apps)) return callback('no apps returned');
     async.forEachSeries(apps, function(app, cbApp) {
       getAppDevs(app, until, function(err, appdevs) {
-        if (err) return callback(err);
+        if (err) return cbApp(err);
         appdevs.forEach(function(appdev) {
           devapps.push(appdev);
         });
@@ -84,7 +84,7 @@ function accounts(app, until, cb) {
   });
 }
 
-exports.print = function(rows, log, error) {
+exports.print = function(rows, log) {
 
   function logRow(app, act, profile) {
      var html = '<tr>';
