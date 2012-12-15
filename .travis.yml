@@ -6,6 +6,9 @@ notifications:
     hipchat: 33d0319e384ba2d38a29b40c07bfdd@Alerts
 services:
     - redis-server
+    - mysql
 branches:
     except:
         - production
+before_script:
+    - cp test/resources/config.travis.json test/resources/config.json
