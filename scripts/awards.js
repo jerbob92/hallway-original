@@ -57,7 +57,15 @@ function sendMail(options) {
     from: options.from,
     to: options.to,
     subject: options.subject || "Daily Dev Awards",
-    html: output
+    html: output,
+    headers: {
+      "X-SMTPAPI": {
+        filters: {
+          clicktrack: { settings: { enable:0 } },
+          opentrack: { settings: { enable:0 } }
+        }
+      }
+    }
   };
 
   smtpTransport.sendMail(mailOptions, function(err, response){

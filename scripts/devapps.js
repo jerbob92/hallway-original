@@ -95,9 +95,8 @@ exports.print = function(rows, log) {
      html += '<td>';
      html += '<a href="https://dawg.singly.com/apps/account?id=' + act;
      html += '">' + act.substring(0, 6) + '</a></td>';
-     html += '<td>' + (profile.name || '') + '</td>';
-     html += '<td><a href="' + profile.url + '">';
-     html += (profile.handle || '') + '</a></td>';
+     html += '<td><a href="' + profile.url + '">' +
+       (profile.name || '-') + '</a></td>';
      html += '<td>' + (profile.location || '') + '</td>';
      html += '<td>' + (profile.email || '') + '</td>';
      html += '</tr>';
@@ -105,7 +104,7 @@ exports.print = function(rows, log) {
   }
 
   log('<table><tr>');
-  log('<td>App ID</td><td>Account</td><td>Name</td><td>Social Prof</td><td>Loc</td><td>Email</td>');
+  log('<td>App ID</td><td>Account</td><td>Name</td><td>Loc</td><td>Email</td>');
   log('</tr>');
   rows.forEach(function(row) {
     logRow(row.app, row.account, row.profile);
