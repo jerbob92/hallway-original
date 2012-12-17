@@ -1,0 +1,14 @@
+{
+ "debug": true,
+
+ "database": {
+    "driver": "mysql",
+    "hostname": "localhost",
+    "username": "root",
+    "password": "",
+    "database": "test"
+  },
+
+  "ijod_backend": "file",
+  "ijod_path": "/tmp/hallway"
+}

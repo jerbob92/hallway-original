@@ -80,8 +80,8 @@ exports.print = function(rows, log) {
     line += '<td><a href="https://dawg.singly.com/apps/account?id='+id+'">' +
       id.substring(0, 6) + '</a></td>';
     line += '<td>'+count+'</td>';
-    line += '<td>'+(profile.name||'&nbsp;')+'</td>';
-    line += '<td><a href="'+profile.url+'">' + profile.handle + '</a></td>';
+    line += '<td><a href="'+profile.url+'">' +
+      (profile.name||'-') + '</a></td>';
     line += '<td>'+(profile.location||'&nbsp;')+'</td>';
     line += '<td>'+(profile.email||'&nbsp;')+'</td>';
     line += '</tr>';
@@ -89,7 +89,7 @@ exports.print = function(rows, log) {
   }
 
   log('<table><tr>');
-  log('<td>Account</td><td>Hits</td><td>Name</td><td>Social Prof</td><td>Loc</td><td>Email</td>');
+  log('<td>Account</td><td>Hits</td><td>Name</td><td>Loc</td><td>Email</td>');
   log('</tr>');
   rows.forEach(function(row) {
     logRow(row.id, row.hits, row.profile);

@@ -42,7 +42,7 @@
     "numWorkers": 4,
     "pagingTiming": 2000,
     "defaultScanTime": 5000,
-    "attempts": 5,
+    "attempts": 8,
     "redis": {
       "host": "localhost",
       "port": 6379
