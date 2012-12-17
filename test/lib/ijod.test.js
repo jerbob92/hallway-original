@@ -34,6 +34,7 @@ var ijod = require("ijod");
 var dal = require("dal");
 var idr = require("idr");
 var partition = require('partition');
+var ijodEvent = require('ijod-event');
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //
@@ -176,6 +177,9 @@ describe("ijod", function () {
 
     // Insert all the data
     ijod.batchSmartAdd(TESTDATA, function (err) {
+      // Manually exercise ijod-event pump
+      ijodEvent.pump(TESTDATA, function () {});
+
       assert.ifError(err);
 
       // Verify reading back through API functions as expected
