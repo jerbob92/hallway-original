@@ -18,11 +18,18 @@ function getProfile(act, callback) {
 function getAppDevs(app, until, callback) {
   var appdevs = [];
   accounts(app.app, until, function(err, acts) {
-    if (err) return callback(err);
+    if (err) {
+      console.error('devapps err getting accounts for app', app, err);
+      return callback(err);
+    }
     var alist = Object.keys(acts).slice(0,3);
     async.forEach(alist, function(act, cbAct) {
       getProfile(act, function(err, profile) {
-        if(err) return cbAct(err);
+        if(err) {
+          console.error('devapps err getting profile for app, act',
+            app, act, err);
+          return cbAct(err);
+        }
         appdevs.push({
           app: app,
           account: act,
@@ -45,7 +52,10 @@ exports.devapps = function(hours, callback) {
     if(!Array.isArray(apps)) return callback('no apps returned');
     async.forEachSeries(apps, function(app, cbApp) {
       getAppDevs(app, until, function(err, appdevs) {
-        if (err) return cbApp(err);
+        if (err) {
+          console.error('devapps error for app', app, err);
+          return cbApp();
+        }
         appdevs.forEach(function(appdev) {
           devapps.push(appdev);
         });
