@@ -81,7 +81,7 @@ exports.print = function(rows, log) {
       id.substring(0, 6) + '</a></td>';
     line += '<td>'+count+'</td>';
     line += '<td><a href="'+profile.url+'">' +
-      (profile.name||'-') + '</a></td>';
+      (profile.name||profile.handle||'--') + '</a></td>';
     line += '<td>'+(profile.location||'&nbsp;')+'</td>';
     line += '<td>'+(profile.email||'&nbsp;')+'</td>';
     line += '</tr>';
