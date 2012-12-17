@@ -2,6 +2,13 @@
 
 GLOBAL_EXIT_CODE=0
 
+interrupt() {
+   exit $?
+}
+
+# If we don't trap Ctrl-C then it's hard to exit the script since it's looping.
+trap interrupt SIGINT
+
 for FILE in `find test -name \*.test.js`; do
    echo "Running $FILE"
 
