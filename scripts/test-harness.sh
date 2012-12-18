@@ -3,7 +3,7 @@
 GLOBAL_EXIT_CODE=0
 
 interrupt() {
-   exit $?
+   exit $GLOBAL_EXIT_CODE
 }
 
 # If we don't trap Ctrl-C then it's hard to exit the script since it's looping.
