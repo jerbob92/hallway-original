@@ -7,7 +7,15 @@
     "password":"",
     "database":"test"
   },
-
+  "partition":{
+    "size":2,
+    "partdb": {
+      "hostname":"localhost",
+      "username":"root",
+      "password":"",
+      "database":"test_entries"
+    }
+  },
   "ijod_backend": "file",
 
   "ijod_file": "/tmp/ijod",
