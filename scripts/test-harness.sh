@@ -1,5 +1,6 @@
 #!/bin/bash
 
+MOCHA="node_modules/.bin/mocha -R dot"
 GLOBAL_EXIT_CODE=0
 
 interrupt() {
@@ -12,7 +13,7 @@ trap interrupt SIGINT
 for FILE in `find test -name \*.test.js`; do
    echo "Running $FILE"
 
-   env SUPPRESS_LOGS=true NODE_PATH=lib:test/lib mocha -R dot $FILE
+   env SUPPRESS_LOGS=true NODE_PATH=lib:test/lib $MOCHA $FILE
 
    EXIT_CODE=$?
 
