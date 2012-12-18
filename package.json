@@ -27,7 +27,7 @@
     "fakeredis": "0.0.14",
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
-    "node-fakeweb": "https://github.com/Singly/fakeweb/tarball/master",
+    "node-fakeweb": "=0.0.8",
     "should": "1.2.x",
     "supertest": ""
   },
