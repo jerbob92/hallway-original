@@ -1,28 +1,28 @@
-var mocha = require('mocha');
-var should = require('should');
+require('chai').should();
+
 var fakeweb = require('node-fakeweb');
 var path = require('path');
 var helper = require(path.join(__dirname, '..', '..', 'support',
   'locker-helper.js'));
 var resolve = require(path.join('services', 'links', 'resolve.js'));
-var util = require('util');
+var dMap = require('dMap');
 
-var lconfig = require("lconfig");
+var lconfig = require('lconfig');
 
 lconfig.database.maxConnections = 1;
 
-var dal = require("dal");
+var dal = require('dal');
 
-dal.setBackend("fake");
+dal.setBackend('fake');
 
-var fakeDB = dal.getBackendModule();
 var oembed = require(path.join('services', 'links', 'oembed.js'));
 
 var ijod = require('ijod');
 
-ijod.initDB(function() {});
+before(dMap.startup);
+before(ijod.initDB);
 
-describe("links services", function() {
+describe('links services', function () {
   var tweets = helper.loadFixture(path.join(__dirname, '..', '..', 'fixtures',
     'synclets', 'twitter', 'home_timeline.js'));
 
@@ -34,54 +34,48 @@ describe("links services", function() {
   var entry_yt = {
     idr: 'tweet:42@twitter/timeline#71348168469643264',
     refs: {
-      "http://www.youtube.com/watch?v=vy4ZR5nIBFs":
-        "http://www.youtube.com/watch?v=vy4ZR5nIBFs"
+      'http://www.youtube.com/watch?v=vy4ZR5nIBFs':
+        'http://www.youtube.com/watch?v=vy4ZR5nIBFs'
     }
   };
 
   var entry_raw = {
     idr: 'tweet:42@twitter/timeline#71348168469643264',
     refs: {
-      "http://jeremie.com/i/9ccd26484285318d8fb265b0dfc201ad.png":
-        "http://jeremie.com/i/013ec4348b61ef0bfff093819d2b8746.png"
+      'http://jeremie.com/i/9ccd26484285318d8fb265b0dfc201ad.png':
+        'http://jeremie.com/i/013ec4348b61ef0bfff093819d2b8746.png'
     }
   };
 
-  beforeEach(function(done) {
+  beforeEach(function () {
     fakeweb.allowNetConnect = false;
-
-    return done();
   });
 
-  afterEach(function(done) {
+  afterEach(function () {
     fakeweb.tearDown();
-
-    return done();
   });
 
-  describe("resolver pump", function() {
-    beforeEach(function(done) {
+  describe('resolver pump', function () {
+    beforeEach(function () {
       fakeweb.registerUri({ uri: 'http://bit.ly:80/jBrrAe', body: '' });
       fakeweb.registerUri({ uri: 'http://bit.ly:80/jO9Pfy', body: '' });
-
-      return done();
     });
 
-    it('can resolve stuff', function(done) {
-      resolve.pump([entry], function(err, set) {
+    it('can resolve stuff', function (done) {
+      resolve.pump([entry], function (err, set) {
         if (err) {
           return done(err);
         }
 
         Object.keys(set[0].refs).length.should.equal(2);
 
-        return done();
+        done();
       });
     });
   });
 
-  describe("oembed pump", function() {
-    beforeEach(function(done) {
+  describe('oembed pump', function () {
+    beforeEach(function () {
       fakeweb.registerUri({
         uri: 'http://www.youtube.com:80/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dvy4ZR5nIBFs',
         file: __dirname + '/../../fixtures/synclets/links/oembed_yt.json'
@@ -91,12 +85,10 @@ describe("links services", function() {
         uri: 'http://api.embed.ly:80/1/oembed?key=4f95c324c9dc11e083104040d3dc5c07&url=http%3A%2F%2Fjeremie.com%2Fi%2F9ccd26484285318d8fb265b0dfc201ad.png',
         file: __dirname + '/../../fixtures/synclets/links/oembed_raw.json'
       });
-
-      return done();
     });
 
-    it('can process youtube', function(done) {
-      oembed.pump([entry_yt], function(err, set) {
+    it('can process youtube', function (done) {
+      oembed.pump([entry_yt], function (err, set) {
         if (err) {
           return done(err);
         }
@@ -109,8 +101,8 @@ describe("links services", function() {
       });
     });
 
-    it('can process raw', function(done) {
-      oembed.pump([entry_raw], function(err, set) {
+    it('can process raw', function (done) {
+      oembed.pump([entry_raw], function (err, set) {
         if (err) {
           return done(err);
         }

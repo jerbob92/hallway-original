@@ -35,6 +35,7 @@ var dal = require("dal");
 var idr = require("idr");
 var partition = require('partition');
 var ijodEvent = require('ijod-event');
+var taskman = require('taskman');
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //
@@ -46,6 +47,9 @@ if (lconfig.database.database !== "test") {
   return;
 }
 
+before(function (done) {
+  taskman.init(false, false, done);
+});
 
 var origIJODBackend = lconfig.ijod_backend;
 var origDALBackend = dal.getBackend();
