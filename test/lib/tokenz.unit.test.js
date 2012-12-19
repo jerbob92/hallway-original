@@ -35,15 +35,6 @@ var GOOD_ACCESS_TOKEN = 'JrY54j9w8SToWDYFDPDykSZrsR4.EKO8Xl-m96c3fbe6b28d2401' +
 before(acl.init);
 before(tokenz.init);
 
-// XXX: This is a hack. If we don't prime the DAL pool here then if there are
-// exceptions in actual test cases we'll just see a timeout. The root cause is
-// that if there are 0 database connections in the pool one will be created
-// using the pool's create function, which contains a try/catch. That try/catch
-// prevents mocha from seeing the exception.
-before(function (done) {
-  dal.query('SELECT true', [], done);
-});
-
 describe('tokenz', function () {
   describe('#init', function () {
     it('should set tokenz.serializer', function () {
