@@ -22,14 +22,14 @@
     "start": "./hallway"
   },
   "devDependencies": {
-    "chai": "1.1.x",
+    "chai": "1.x",
     "cover": "https://github.com/kristjan/node-cover/tarball/master",
     "fakeredis": "0.0.14",
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
     "node-fakeweb": "=0.0.8",
     "should": "1.2.x",
-    "supertest": ""
+    "supertest": "0.5.x"
   },
   "dependencies": {
     "async": "=0.1.15",
