@@ -20,6 +20,8 @@ for FILE in `find test -name \*.test.js`; do
    GLOBAL_EXIT_CODE=$(($GLOBAL_EXIT_CODE || $EXIT_CODE))
 done
 
-echo "Exiting $GLOBAL_EXIT_CODE"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/missing-tests.sh
 
 exit $GLOBAL_EXIT_CODE
