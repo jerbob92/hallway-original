@@ -1,7 +1,13 @@
 var should = require('chai').should();
 
 var lconfig = require('lconfig');
+var logger = require('logger').logger('dal-mysql-test');
 var mysql = require('dal-mysql');
+
+if (lconfig.database.database !== 'test') {
+  logger.warn('Database name not set to \'test\'; bypassing dal-mysql tests!');
+  return;
+}
 
 describe('dal-mysql', function () {
   describe('#create', function () {
