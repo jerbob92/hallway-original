@@ -1,3 +1,10 @@
+var lconfig = require('lconfig');
+
+lconfig.ec2 = {
+  accessKeyId: 'abc',
+  secretKey: '123'
+};
+
 var dawg = require('dawg');
 
 describe('dawg', function () {
