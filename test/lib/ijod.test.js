@@ -153,6 +153,8 @@ function getRanges(dataset, callback) {
 
 
 describe("ijod", function () {
+  this.timeout(25000);
+
   before(function (done) {
     ijod.initDB(done);
     dal.setBackend("mysql");
