@@ -22,7 +22,7 @@ describe('taskmaster', function () {
       taskmaster.stop(function () {
         var stats = taskmaster.stats();
 
-        stats.stopped.should.equal(true);
+        stats.shutdown.should.equal(true);
 
         done();
       });
