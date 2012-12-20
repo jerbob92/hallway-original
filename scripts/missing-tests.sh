@@ -57,7 +57,7 @@ do
       echo -e " $DASH $UNIT_TEST"
     fi
   fi
-done < <(find lib -maxdepth 1 -type f)
+done < <(find lib -maxdepth 1 -type f | sort)
 
 if [[ ! $MISSING -gt 0 ]]
 then
