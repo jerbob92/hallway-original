@@ -13,13 +13,15 @@ contains() {
 
 MISSING=0
 
-RED="\e[1;31m"
-GREEN="\e[1;32m"
-YELLOW="\e[1;33m"
-NOTHING="\e[0m"
+ESC="\x1B"
 
-X="$RED✘$NOTHING"
-CHECK="$GREEN✔$NOTHING"
+RED="$ESC[1;31m"
+GREEN="$ESC[1;32m"
+YELLOW="$ESC[1;33m"
+NOTHING="$ESC[0m"
+
+X="$RED\xE2\x9C\x98$NOTHING"
+CHECK="$GREEN\xE2\x9C\x94$NOTHING"
 DASH="$YELLOW-$NOTHING"
 
 echo "Missing files and files missing tests:"
