@@ -10,7 +10,6 @@
 exports.alive = false;
 
 var async = require('async');
-var util = require('util');
 var argv = require('optimist').argv;
 
 // lconfig has to be loaded before any other hallway modules!
@@ -22,7 +21,6 @@ var logger = require('logger').logger('hallwayd');
 logger.info('process id:' + process.pid);
 
 var taskman = require('taskman');
-var profileManager = require('profileManager');
 var taskmaster = require('taskmaster');
 
 var http = require('http');
@@ -37,7 +35,8 @@ function startAPIHost(cbDone) {
 
   webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP,
     function (hallway) {
-    logger.info('Hallway is now listening at ' + lconfig.lockerBase);
+    logger.info('Hallway is now listening at ' + lconfig.lockerListenIP +
+      ':' + lconfig.lockerPort);
 
     cbDone();
   });
@@ -217,4 +216,3 @@ process.on('uncaughtException', function (err) {
   // None of the errors we know about -- shutdown
   process.exit(1);
 });
-
