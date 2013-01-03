@@ -3,15 +3,15 @@ require('chai').should();
 var lconfig = require('lconfig');
 
 describe('lconfig', function () {
-  it('should load configuration data from defaults.json', function () {
-    lconfig.lockerHost.should.equal('localhost');
-    lconfig.lockerPort.should.equal(8042);
+  it('should load configuration data', function () {
+    lconfig.lockerHost.should.be.a('string');
+    lconfig.lockerPort.should.be.a('number');
 
-    lconfig.externalHost.should.equal('localhost');
-    lconfig.externalPort.should.equal(8042);
+    lconfig.externalHost.should.be.a('string');
+    lconfig.externalPort.should.be.a('number');
   });
 
   it('should set externalBase', function () {
-    lconfig.externalBase.should.equal('http://localhost:8042');
+    lconfig.externalBase.should.be.a('string');
   });
 });
