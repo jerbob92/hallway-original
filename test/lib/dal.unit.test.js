@@ -1,17 +1,15 @@
-var lconfig = require("lconfig");
+require('chai').should();
+
+var lconfig = require('lconfig');
+
 if (!lconfig.database) lconfig.database = {};
-lconfig.database.maxConnections = 1;
-var dal = require("dal");
 
-dal.setBackend("fake");
+var dal = require('dal');
 
-describe("DAL", function() {
-  describe("batched queries", function() {
-    it("should be executed");
-  });
-  describe("single queries", function() {
-    it("should be executed");
-    it("should allow for argument binding");
-    it("should callback with the returned rows");
+describe('dal', function () {
+  // Query tests should be performed in the file for their specific backends,
+  // i.e. dal-mysql.unit.test.js, dal-fake.unit.test.js
+  it('should default to mysql', function () {
+    dal.getBackend().should.equal('mysql');
   });
 });
