@@ -67,6 +67,7 @@ dalFake.addFake('SELECT profile FROM Accounts WHERE account = ?', PROFILES);
 dal.setBackend('fake');
 
 var acl = require('acl');
+var ijod = require('ijod');
 var tokenz = require('tokenz');
 
 var webservice = require('webservice').api;
@@ -145,6 +146,10 @@ var SIMPLE_GETS = [
 ];
 
 var REQUEST;
+
+before(function (done) {
+  ijod.initDB(done);
+});
 
 before(function (done) {
   acl.init(function () {
