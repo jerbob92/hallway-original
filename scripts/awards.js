@@ -2,15 +2,15 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 
 var tops = require('./tops');
-var devapps = require('./devapps');
+//var devapps = require('./devapps');
 
 var auth, host;
 var error, log;
 var output = '';
 
 exports.init = function(options) {
-  tops.init(options.host, options.auth);
-  devapps.init(options.host, options.auth);
+  tops.init(options.host, options.auth, options.ignore);
+  //devapps.init(options.host, options.auth);
 
   if (options.error) error = getFileLogger(options.error);
   else error = console.error;
@@ -35,12 +35,14 @@ exports.awards = function(appID, hours, callback) {
   tops.tops(appID, hours, function(err, rows) {
     if (err) return error('tops error', err);
     tops.print(rows, log, error);
-    log('<h3> Active app accounts likely to be developers </h3>');
+    return callback();
+    // not running devapps for now
+    /*log('<h3> Active app accounts likely to be developers </h3>');
     devapps.devapps(hours, function(err, rows) {
       if (err) return error('devapps error', err);
       devapps.print(rows, log, error);
       callback();
-    });
+    });*/
   });
 };
 
