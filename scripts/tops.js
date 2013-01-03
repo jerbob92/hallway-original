@@ -3,10 +3,12 @@ var async = require('async');
 
 var host;
 var auth;
+var ignoredUsers;
 
-exports.init = function(_host, _auth) {
+exports.init = function(_host, _auth, _ignoredUsers) {
   host = _host;
   auth = {Authorization:"Basic " + new Buffer(_auth).toString("base64")};
+  ignoredUsers = _ignoredUsers;
 };
 
 function getHits(appID, hours, callback) {
@@ -80,7 +82,13 @@ exports.tops = function(appID, hours, callback) {
   getHits(appID, hours, function(err, accounts) {
     if (err) return callback('getHits err' + JSON.stringify(err));
     if (!accounts) return callback('account is not an Object' + accounts);
+    for(var act in accounts) {
+      if(ignoredUsers && ignoredUsers.indexOf(act) !== -1) delete accounts[act];
+    }
     async.forEachLimit(Object.keys(accounts), 10, function(act, cbAct) {
+      /*if (ignoredUsers && ignoredUsers.indexOf(act) !== -1) {
+        return process.nextTick(cbAct);
+      }*/
       getProfile(act, function(err, profile) {
         if (err) callback('failed to proxy for profile' + JSON.stringify(err));
         if (!profile) profile = {};
@@ -146,7 +154,10 @@ function main() {
       .usage('node scripts/tops.js --auth dawguser:dawgpass --app-id appid')
       .argv;
 
-  exports.init(argv.host, argv.auth);
+  var ignored = argv.ignore || '';
+  ignored = ignored.split(',');
+  console.error(ignored);
+  exports.init(argv.host, argv.auth, ignored);
 
   exports.tops(argv['app-id'], argv.hours, function(err, rows) {
     if (err) return console.error(err);
