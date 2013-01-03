@@ -11,8 +11,16 @@ contains() {
   return 1
 }
 
-stats() {
-  git blame --line-porcelain $1 | \
+blame() {
+  git blame --line-porcelain $1 &> /dev/null
+
+  if [[ $? -gt 0 ]]; then
+    return
+  fi
+
+  echo -n "- "
+
+  git blame --line-porcelain $1 2> /dev/null | \
     grep "^author " | \
     sort | \
     uniq -c | \
@@ -52,7 +60,7 @@ do
 
   if [ ! -e "$TEST" ] && [ ! -e "$UNIT_TEST" ]
   then
-    echo -e " $X $UNIT_TEST - $(stats $FILE)"
+    echo -e " $X $UNIT_TEST $(blame $FILE)"
     MISSING=1
   else
     HAS_TESTS=0
@@ -67,7 +75,7 @@ do
 
     if [[ $HAS_TESTS -eq 0 ]]
     then
-      echo -e " $DASH $UNIT_TEST - $(stats $FILE)"
+      echo -e " $DASH $UNIT_TEST $(blame $FILE)"
     fi
   fi
 done < <(find lib -maxdepth 1 -type f | sort)
