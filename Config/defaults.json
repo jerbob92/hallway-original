@@ -4,15 +4,15 @@
   "lockerHost": "localhost",
   "lockerPort": 8042,
   "externalHost": "localhost",
-  "externalPath": "",
   "externalPort": 8042,
-  "externalSecure": false,
+  "externalProtocol": "http://",
   "ijod": {
     "slowPump": {
       "avg": 30,
       "et":  1000
     }
   },
+  "ijod_backend": "mem",
   "worker": {
     "listenIP": "0.0.0.0",
     "port": 8041
@@ -73,6 +73,5 @@
   "keys": [],
   "papertrailToken": "",
   "papertrailGroup": 0,
-  "ijod_backend": "mem",
-  "partition":{}
+  "partition": {}
 }
