@@ -11,6 +11,16 @@ contains() {
   return 1
 }
 
+stats() {
+  git blame --line-porcelain $1 | \
+    grep "^author " | \
+    sort | \
+    uniq -c | \
+    sort -rn | \
+    head -n 1 | \
+    sed "s/^.*author //"
+}
+
 MISSING=0
 
 ESC="\x1B"
@@ -24,7 +34,8 @@ X="$RED\xE2\x9C\x98$NOTHING"
 CHECK="$GREEN\xE2\x9C\x94$NOTHING"
 DASH="$YELLOW-$NOTHING"
 
-echo "Missing files and files missing tests:"
+echo "Missing files and files missing tests. The listed name is the author of "
+echo "the most lines in the file:"
 echo
 
 while read -r FILE
@@ -41,7 +52,7 @@ do
 
   if [ ! -e "$TEST" ] && [ ! -e "$UNIT_TEST" ]
   then
-    echo -e " $X $UNIT_TEST"
+    echo -e " $X $UNIT_TEST - $(stats $FILE)"
     MISSING=1
   else
     HAS_TESTS=0
@@ -56,7 +67,7 @@ do
 
     if [[ $HAS_TESTS -eq 0 ]]
     then
-      echo -e " $DASH $UNIT_TEST"
+      echo -e " $DASH $UNIT_TEST - $(stats $FILE)"
     fi
   fi
 done < <(find lib -maxdepth 1 -type f | sort)
