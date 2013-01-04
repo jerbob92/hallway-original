@@ -90,6 +90,16 @@
       "name": "mentions",
       "frequency": 600,
       "class": "social"
+    },
+    {
+      "name": "received_messages",
+      "frequency": 600,
+      "class": "personal"
+    },
+    {
+      "name": "sent_messages",
+      "frequency": 600,
+      "class": "personal"
     }
   ]
 }
