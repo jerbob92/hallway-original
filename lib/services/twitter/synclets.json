@@ -9,13 +9,14 @@
     {"height": 32, "width": 32, "source": "http://assets.singly.com/service-icons/32px/twitter.png"}
   ],
   "synclets":[
-    {"name": "self",      "frequency": 86400, "class": "core"},
-    {"name": "friends",   "frequency": 86400, "class": "core"},
-    {"name": "followers", "frequency": 21600, "class": "core"},
-    {"name": "favorites", "frequency": 600,   "class": "personal"},
-    {"name": "tweets",    "frequency": 600,   "class": "personal"},
-    {"name": "timeline",  "frequency": 120,   "class": "social"},
-    {"name": "related",   "frequency": 7000,  "class": "social"},
-    {"name": "mentions",  "frequency": 600,   "class": "social"}
+    {"name": "self",               "frequency": 86400,  "class": "core"},
+    {"name": "friends",            "frequency": 86400,  "class": "core"},
+    {"name": "followers",          "frequency": 21600,  "class": "core"},
+    {"name": "favorites",          "frequency": 600,    "class": "personal"},
+    {"name": "tweets",             "frequency": 600,    "class": "personal"},
+    {"name": "received_messages",  "frequency": 600,    "class": "personal"},
+    {"name": "timeline",           "frequency": 120,    "class": "social"},
+    {"name": "related",            "frequency": 7000,   "class": "social"},
+    {"name": "mentions",           "frequency": 600,    "class": "social"}
   ]
 }
