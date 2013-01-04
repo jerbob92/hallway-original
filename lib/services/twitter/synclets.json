@@ -15,6 +15,7 @@
     {"name": "favorites",          "frequency": 600,    "class": "personal"},
     {"name": "tweets",             "frequency": 600,    "class": "personal"},
     {"name": "received_messages",  "frequency": 600,    "class": "personal"},
+    {"name": "sent_messages",      "frequency": 600,    "class": "personal"},
     {"name": "timeline",           "frequency": 120,    "class": "social"},
     {"name": "related",            "frequency": 7000,   "class": "social"},
     {"name": "mentions",           "frequency": 600,    "class": "social"}
