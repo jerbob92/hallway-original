@@ -6,6 +6,7 @@ IGNORES=(
   "ijod-mem"
   "ijod-fs"
   "ijod-s3"
+  "instruments"
 )
 
 contains() {
