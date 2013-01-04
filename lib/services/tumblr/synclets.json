@@ -1,17 +1,75 @@
 {
-	"name":"Tumblr",
-	"desc":"Syncs blogs followed, dashboard, and all posts.",
+  "name": "Tumblr",
+  "desc": "Syncs blogs followed, dashboard, and all posts.",
   "key": "OAuth Consumer Key",
   "secret": "Secret Key",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/tumblr.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/tumblr.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/tumblr.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/tumblr.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/tumblr.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/tumblr.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/tumblr.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/tumblr.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/tumblr.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/tumblr.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/tumblr.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/tumblr.png"
+    }
   ],
   "synclets": [
-	  {"name": "self",      "frequency": 86400, "class":"core"},
-    {"name": "following", "frequency": 86400, "class":"core"},
-    {"name": "dashboard", "frequency": 600, "class":"social"},
-    {"name": "posts",     "frequency": 1200, "class":"personal"}
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "following",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "dashboard",
+      "frequency": 600,
+      "class": "social"
+    },
+    {
+      "name": "posts",
+      "frequency": 1200,
+      "class": "personal"
+    }
   ]
 }

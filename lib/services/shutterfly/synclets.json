@@ -1,14 +1,60 @@
 {
-	"name":"Shutterfly",
-	"desc":"Authentication only",
+  "name": "Shutterfly",
+  "desc": "Authentication only",
   "key": "Application Id",
   "secret": "Shared Secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/shutterfly.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/shutterfly.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/shutterfly.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/shutterfly.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/shutterfly.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/shutterfly.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/shutterfly.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/shutterfly.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/shutterfly.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/shutterfly.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/shutterfly.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/shutterfly.png"
+    }
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"}
-    ]
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    }
+  ]
 }

@@ -1,15 +1,66 @@
 {
-	"name":"Google Contacts",
-	"desc":"Syncs contacts from any Google account",
+  "name": "Google Contacts",
+  "desc": "Syncs contacts from any Google account",
   "key": "Client ID",
   "secret": "Client secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/gcontacts.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/gcontacts.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/gcontacts.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/gcontacts.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/gcontacts.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/gcontacts.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/gcontacts.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/gcontacts.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/gcontacts.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/gcontacts.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/gcontacts.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/gcontacts.png"
+    }
   ],
-  "synclets":[
-    {"name": "self", "frequency": 1700, "class":"core", "note": "frequency has to be < 30min to keep access token alive for media fetches for now, see map.js TODO"}, 
-    {"name": "contacts", "frequency": 86400, "class":"core"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 1700,
+      "class": "core",
+      "note": "frequency has to be < 30min to keep access token alive for media fetches for now, see map.js TODO"
+    },
+    {
+      "name": "contacts",
+      "frequency": 86400,
+      "class": "core"
+    }
   ]
 }

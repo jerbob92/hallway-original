@@ -1,14 +1,60 @@
 {
-  "name":"imgur",
-  "desc":"Authentication only",
+  "name": "imgur",
+  "desc": "Authentication only",
   "key": "App ID",
   "secret": "App secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/imgur.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/imgur.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/imgur.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/imgur.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/imgur.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/imgur.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/imgur.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/imgur.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/imgur.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/imgur.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/imgur.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/imgur.png"
+    }
   ],
-  "synclets":[
-    {"name": "self", "frequency": 86400, "class": "core"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    }
   ]
 }

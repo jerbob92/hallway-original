@@ -1,20 +1,76 @@
 {
-	"name":"LinkedIn",
-	"desc":"Syncs connections, shares, and the network updates news feed.",
+  "name": "LinkedIn",
+  "desc": "Syncs connections, shares, and the network updates news feed.",
   "key": "API Key",
   "secret": "Secret Key",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/linkedin.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/linkedin.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/linkedin.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/linkedin.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/linkedin.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/linkedin.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/linkedin.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/linkedin.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/linkedin.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/linkedin.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/linkedin.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/linkedin.png"
+    }
   ],
-  "synclets":[
-    {"name": "self",        "frequency": 86400, "class":"core"},
-    {"name": "updates",     "frequency": 3600, "class":"social"},
-    {"name": "network",     "frequency": 3600, "class":"core"},
-    {"name": "connections",
-     "frequency": 86400,
-     "class":"core",
-     "freshInstead":"network"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "updates",
+      "frequency": 3600,
+      "class": "social"
+    },
+    {
+      "name": "network",
+      "frequency": 3600,
+      "class": "core"
+    },
+    {
+      "name": "connections",
+      "frequency": 86400,
+      "class": "core",
+      "freshInstead": "network"
+    }
   ]
 }

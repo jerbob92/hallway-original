@@ -1,20 +1,86 @@
 {
-	"name":"Fitbit",
-	"desc":"Syncs devices, activity, sleep and weight/bodyfat",
+  "name": "Fitbit",
+  "desc": "Syncs devices, activity, sleep and weight/bodyfat",
   "key": "Consumer key",
   "secret": "Consumer secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/fitbit.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/fitbit.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/fitbit.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/fitbit.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/fitbit.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/fitbit.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/fitbit.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/fitbit.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/fitbit.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/fitbit.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/fitbit.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/fitbit.png"
+    }
   ],
   "sandbox": true,
-  "synclets":[
-    {"name":"self",       "frequency": 86400, "class": "core"},
-    {"name":"activities", "frequency": 7200,  "class": "personal"},
-    {"name":"devices",    "frequency": 86400, "class": "personal"},
-    {"name":"fat",        "frequency": 7200,  "class": "personal"},
-    {"name":"sleep",      "frequency": 7200,  "class": "personal"},
-    {"name":"weight",     "frequency": 86400, "class": "personal"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "activities",
+      "frequency": 7200,
+      "class": "personal"
+    },
+    {
+      "name": "devices",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "fat",
+      "frequency": 7200,
+      "class": "personal"
+    },
+    {
+      "name": "sleep",
+      "frequency": 7200,
+      "class": "personal"
+    },
+    {
+      "name": "weight",
+      "frequency": 86400,
+      "class": "personal"
+    }
   ]
 }

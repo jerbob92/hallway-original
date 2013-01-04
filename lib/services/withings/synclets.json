@@ -1,15 +1,65 @@
 {
-	"name":"Withings",
-	"desc":"Withings",
+  "name": "Withings",
+  "desc": "Withings",
   "key": "Client ID",
   "secret": "Client secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/withings.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/withings.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/withings.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/withings.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/withings.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/withings.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/withings.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/withings.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/withings.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/withings.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/withings.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/withings.png"
+    }
   ],
-  "synclets":[
-    {"name": "self",    "frequency": 86400, "class":"core"},
-    { "name": "measures", "frequency": 43200, "class":"personal"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "measures",
+      "frequency": 43200,
+      "class": "personal"
+    }
   ]
 }

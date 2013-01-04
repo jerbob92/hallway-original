@@ -1,23 +1,105 @@
 {
-  "name":"Facebook",
-  "desc":"Syncs data for photos, wall, news feed, and friends.",
+  "name": "Facebook",
+  "desc": "Syncs data for photos, wall, news feed, and friends.",
   "key": "App ID",
   "secret": "App Secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/facebook.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/facebook.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/facebook.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/facebook.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/facebook.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/facebook.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/facebook.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/facebook.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/facebook.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/facebook.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/facebook.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/facebook.png"
+    }
   ],
   "sandbox": true,
-  "synclets":[
-    {"name": "self",        "frequency": 86400,  "class": "core"},
-    {"name": "feed",        "frequency": 3600,  "class": "personal", "aka":"feed_self feed_others"},
-    {"name": "checkins",    "frequency": 1800,  "class": "personal"},
-    {"name": "friends",     "frequency": 86400,  "class": "core"},
-    {"name": "home",        "frequency": 600,   "class": "social", "aka":"home_photos"},
-    {"name": "home_update", "frequency": 7000,  "class": "social"},
-    {"name": "photos",      "frequency": 86400, "class": "personal", "aka":"albums"},
-    {"name": "likes",       "frequency": 86400,  "class": "personal", "aka":"url_likes stream_likes page_likes"},
-    {"name": "pages",       "frequency": 86400,  "class": "personal"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "feed",
+      "frequency": 3600,
+      "class": "personal",
+      "aka": "feed_self feed_others"
+    },
+    {
+      "name": "checkins",
+      "frequency": 1800,
+      "class": "personal"
+    },
+    {
+      "name": "friends",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "home",
+      "frequency": 600,
+      "class": "social",
+      "aka": "home_photos"
+    },
+    {
+      "name": "home_update",
+      "frequency": 7000,
+      "class": "social"
+    },
+    {
+      "name": "photos",
+      "frequency": 86400,
+      "class": "personal",
+      "aka": "albums"
+    },
+    {
+      "name": "likes",
+      "frequency": 86400,
+      "class": "personal",
+      "aka": "url_likes stream_likes page_likes"
+    },
+    {
+      "name": "pages",
+      "frequency": 86400,
+      "class": "personal"
+    }
   ]
 }

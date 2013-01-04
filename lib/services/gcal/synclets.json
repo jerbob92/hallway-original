@@ -1,15 +1,65 @@
 {
-	"name":"Google Calendar",
-	"desc":"Access to Google Calendar, sync's the calendar list",
+  "name": "Google Calendar",
+  "desc": "Access to Google Calendar, sync's the calendar list",
   "key": "Client ID",
   "secret": "Client secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/gcal.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/gcal.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/gcal.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/gcal.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/gcal.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/gcal.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/gcal.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/gcal.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/gcal.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/gcal.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/gcal.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/gcal.png"
+    }
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"},
-        {"name": "calendars",    "frequency": 86400, "class":"personal"}
-    ]
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "calendars",
+      "frequency": 86400,
+      "class": "personal"
+    }
+  ]
 }

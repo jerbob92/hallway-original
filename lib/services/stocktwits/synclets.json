@@ -1,15 +1,66 @@
 {
-	"name":"StockTwits",
-	"desc":"Connect to and authenticate with any StockTwits profile",
+  "name": "StockTwits",
+  "desc": "Connect to and authenticate with any StockTwits profile",
   "key": "Consumer key",
   "secret": "Consumer secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/stocktwits.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/stocktwits.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/stocktwits.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/stocktwits.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/stocktwits.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/stocktwits.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/stocktwits.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/stocktwits.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/stocktwits.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/stocktwits.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/stocktwits.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/stocktwits.png"
+    }
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"},
-        {"name": "users",    "frequency": 86400, "class":"core", "aka":"following followers"}
-    ]
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "users",
+      "frequency": 86400,
+      "class": "core",
+      "aka": "following followers"
+    }
+  ]
 }

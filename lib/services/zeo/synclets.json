@@ -4,14 +4,72 @@
   "key": "API Key",
   "secret": "Secret Key",
   "icons": [
-    { "height": 16, "width": 16, "source": "http://assets.singly.com/service-icons/16px/zeo.png" },
-    { "height": 24, "width": 24, "source": "http://assets.singly.com/service-icons/24px/zeo.png" },
-    { "height": 32, "width": 32, "source": "http://assets.singly.com/service-icons/32px/zeo.png" }
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/zeo.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/zeo.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/zeo.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/zeo.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/zeo.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/zeo.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/zeo.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/zeo.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/zeo.png"
+    }
   ],
-  "synclets":[
-    { "name": "self", "frequency": 86400, "class": "core" },
-    { "name": "sleep_stats", "frequency": 7200, "class": "personal" },
-    { "name": "sleep_records", "frequency": 7200, "class": "personal" },
-    { "name": "zq_scores", "frequency": 7200, "class": "personal" }
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "sleep_stats",
+      "frequency": 7200,
+      "class": "personal"
+    },
+    {
+      "name": "sleep_records",
+      "frequency": 7200,
+      "class": "personal"
+    },
+    {
+      "name": "zq_scores",
+      "frequency": 7200,
+      "class": "personal"
+    }
   ]
 }

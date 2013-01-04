@@ -1,18 +1,80 @@
 {
-	"name":"Instagram",
-	"desc":"Syncs photos, photo feed, and friends.",
+  "name": "Instagram",
+  "desc": "Syncs photos, photo feed, and friends.",
   "key": "CLIENT ID",
   "secret": "CLIENT SECRET",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/instagram.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/instagram.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/instagram.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/instagram.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/instagram.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/instagram.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/instagram.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/instagram.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/instagram.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/instagram.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/instagram.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/instagram.png"
+    }
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"},
-        {"name": "feed",    "frequency": 600, "class":"social"},
-        {"name": "follows", "frequency": 86400, "class":"core"},
-        {"name": "updated", "frequency": 4200, "class":"personal"},
-        {"name": "media",   "frequency": 3600, "class":"personal"}
-    ]
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "feed",
+      "frequency": 600,
+      "class": "social"
+    },
+    {
+      "name": "follows",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "updated",
+      "frequency": 4200,
+      "class": "personal"
+    },
+    {
+      "name": "media",
+      "frequency": 3600,
+      "class": "personal"
+    }
+  ]
 }

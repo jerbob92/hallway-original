@@ -1,19 +1,85 @@
 {
-	"name":"RunKeeper Health Graph",
-	"desc":"Connect to RunKeeper activities and devices",
+  "name": "RunKeeper Health Graph",
+  "desc": "Connect to RunKeeper activities and devices",
   "key": "Client ID",
   "secret": "Client secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/runkeeper.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/runkeeper.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/runkeeper.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/runkeeper.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/runkeeper.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/runkeeper.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/runkeeper.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/runkeeper.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/runkeeper.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/runkeeper.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/runkeeper.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/runkeeper.png"
+    }
   ],
-  "synclets":[
-    {"name": "self", "frequency": 86400, "class":"core"},
-	{"name": "fitness_activities", "frequency": 3600, "class":"personal"},
-	{"name": "strength_activities", "frequency": 3600, "class":"personal"},
-	{"name": "background_activities", "frequency": 3600, "class":"personal"},
-	{"name": "records", "frequency": 86400, "class":"personal"},
-	{"name": "street_team", "frequency": 86400, "class":"core"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "fitness_activities",
+      "frequency": 3600,
+      "class": "personal"
+    },
+    {
+      "name": "strength_activities",
+      "frequency": 3600,
+      "class": "personal"
+    },
+    {
+      "name": "background_activities",
+      "frequency": 3600,
+      "class": "personal"
+    },
+    {
+      "name": "records",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "street_team",
+      "frequency": 86400,
+      "class": "core"
+    }
   ]
 }

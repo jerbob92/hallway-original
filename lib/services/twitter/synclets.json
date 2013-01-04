@@ -4,18 +4,92 @@
   "key": "Consumer Key",
   "secret": "Consumer Secret",
   "icons": [
-    {"height": 16, "width": 16, "source": "http://assets.singly.com/service-icons/16px/twitter.png"},
-    {"height": 24, "width": 24, "source": "http://assets.singly.com/service-icons/24px/twitter.png"},
-    {"height": 32, "width": 32, "source": "http://assets.singly.com/service-icons/32px/twitter.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/twitter.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/twitter.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/twitter.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/twitter.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/twitter.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/twitter.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/twitter.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/twitter.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/twitter.png"
+    }
   ],
-  "synclets":[
-    {"name": "self",      "frequency": 86400, "class": "core"},
-    {"name": "friends",   "frequency": 86400, "class": "core"},
-    {"name": "followers", "frequency": 21600, "class": "core"},
-    {"name": "favorites", "frequency": 600,   "class": "personal"},
-    {"name": "tweets",    "frequency": 600,   "class": "personal"},
-    {"name": "timeline",  "frequency": 120,   "class": "social"},
-    {"name": "related",   "frequency": 7000,  "class": "social"},
-    {"name": "mentions",  "frequency": 600,   "class": "social"}
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "friends",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "followers",
+      "frequency": 21600,
+      "class": "core"
+    },
+    {
+      "name": "favorites",
+      "frequency": 600,
+      "class": "personal"
+    },
+    {
+      "name": "tweets",
+      "frequency": 600,
+      "class": "personal"
+    },
+    {
+      "name": "timeline",
+      "frequency": 120,
+      "class": "social"
+    },
+    {
+      "name": "related",
+      "frequency": 7000,
+      "class": "social"
+    },
+    {
+      "name": "mentions",
+      "frequency": 600,
+      "class": "social"
+    }
   ]
 }

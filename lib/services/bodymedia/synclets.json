@@ -1,19 +1,85 @@
 {
-	"name":"BodyMedia",
-	"desc":"Indexes the steps, calories, and sleep from an armband.",
+  "name": "BodyMedia",
+  "desc": "Indexes the steps, calories, and sleep from an armband.",
   "key": "Key",
   "secret": "Shared Secret",
   "icons": [
-    {"height": 16, "width": 16, "source":"http://assets.singly.com/service-icons/16px/bodymedia.png"},
-    {"height": 24, "width": 24, "source":"http://assets.singly.com/service-icons/24px/bodymedia.png"},
-    {"height": 32, "width": 32, "source":"http://assets.singly.com/service-icons/32px/bodymedia.png"}
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/bodymedia.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/bodymedia.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/bodymedia.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/bodymedia.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/bodymedia.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/bodymedia.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/bodymedia.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/bodymedia.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/bodymedia.png"
+    }
   ],
-    "synclets":[
-        {"name": "self",    "frequency": 86400, "class":"core"},
-        {"name": "steps_hour", "frequency": 86400, "class":"personal"},
-        {"name": "burn_year", "frequency": 86400, "class":"personal"},
-        {"name": "burn_day", "frequency": 43200, "class":"personal"},
-        {"name": "sleep_year", "frequency": 86400, "class":"personal"},
-        {"name": "sleep_day", "frequency": 43200, "class":"personal"}
-    ]
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 86400,
+      "class": "core"
+    },
+    {
+      "name": "steps_hour",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "burn_year",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "burn_day",
+      "frequency": 43200,
+      "class": "personal"
+    },
+    {
+      "name": "sleep_year",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "sleep_day",
+      "frequency": 43200,
+      "class": "personal"
+    }
+  ]
 }
