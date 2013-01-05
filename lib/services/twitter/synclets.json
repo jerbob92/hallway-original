@@ -94,12 +94,14 @@
     {
       "name": "received_messages",
       "frequency": 600,
-      "class": "personal"
+      "class": "personal",
+      "aka": "direct_messages"
     },
     {
       "name": "sent_messages",
       "frequency": 600,
-      "class": "personal"
+      "class": "personal",
+      "aka": "direct_messages"
     }
   ]
 }
