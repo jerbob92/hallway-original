@@ -109,6 +109,9 @@ var Roles = {
   worker: {
     startup: startWorkerWS
   },
+  workerchild: {
+    startup: startWorkerWS
+  },
   apihost: {
     startup: startAPIHost
   },
@@ -123,8 +126,12 @@ var Roles = {
 var role = Roles.apihost;
 
 function startTaskman(cbDone) {
-  var isWorker = (role === Roles.worker);
+  var isWorker = (role === Roles.worker) ? true : false;
   if (isWorker) logger.info("Starting a worker.");
+  if (role === Roles.workerchild) {
+    isWorker = "child";
+    logger.info("Starting a worker child.");
+  }
   taskman.init(isWorker, argv.once, cbDone);
 }
 
