@@ -55,6 +55,11 @@
       "name": "self",
       "frequency": 86400,
       "class": "core"
+    },
+    {
+      "name": "photos",
+      "frequency": 86400,
+      "class": "core"
     }
   ]
 }
