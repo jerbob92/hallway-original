@@ -1,19 +1,28 @@
-if (process.argv.length !== 4) {
-  console.error('testSynclet.js <profile@service> <synclet>');
+#!/usr/bin/env node
 
-  process.exit(1);
+var program = require('commander');
+
+program
+  .usage('-s <synclet> -p <profile@service>')
+  .option('-s, --synclet <synclet>', 'the synclet to test')
+  .option('-p, --profile <profile@service>', 'the profile to test against')
+  .option('-v, --verbose', 'display the full JSON output')
+  .parse(process.argv);
+
+if (!program.synclet || !program.profile) {
+  program.help();
 }
 
 var path = require('path');
-
 var async = require('async');
+
 var dal = require('dal');
+var ijod = require('ijod');
 var logger = require('logger').logger('testSynclet');
 var profileManager = require('profileManager');
-var ijod = require('ijod');
 
-var profile = process.argv[2];
-var synclet = process.argv[3];
+var profile = program.profile;
+var synclet = program.synclet;
 
 var service = profile.split('@')[1];
 
@@ -26,6 +35,24 @@ function exitWithError() {
 }
 
 var runs = 0;
+
+function terse(data) {
+  var terseData = Object.keys(data);
+
+  terseData = terseData.map(function (key) {
+    var result = {};
+
+    if (Array.isArray(data[key])) {
+      result[key] = data[key].length;
+    } else {
+      result[key] = data[key];
+    }
+
+    return result;
+  });
+
+  return terseData;
+}
 
 function runService(paginationPi, cb) {
   dal.query('SELECT service FROM Profiles WHERE id=?', [profile],
@@ -66,26 +93,18 @@ function runService(paginationPi, cb) {
 
         mod.sync(pi, function (error, data) {
           if (error) {
-            exitWithError('%s/%s returned error: %s', service, synclet, error);
+            exitWithError('%s/%s error: %s', service, synclet, error);
           }
 
-          // TODO: Check for verbose flag
-          var returned = Object.keys(data.data);
+          var returned;
 
-          returned = returned.map(function (key) {
-            var result = {};
+          if (program.verbose) {
+            returned = JSON.stringify(data.data, null, 2);
+          } else {
+            returned = JSON.stringify(terse(data.data));
+          }
 
-            if (Array.isArray(data.data[key])) {
-              result[key] = data.data[key].length;
-            } else {
-              result[key] = data.data[key];
-            }
-
-            return result;
-          });
-
-          logger.info('%d %s/%s returned: %s', runs, service, synclet,
-            JSON.stringify(returned));
+          logger.info('%d %s/%s: %s', runs, service, synclet, returned);
 
           cb(data);
         });

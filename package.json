@@ -35,6 +35,7 @@
     "async": "=0.1.15",
     "aws-lib": "0.1.4",
     "colors": "",
+    "commander": "1.1.x",
     "compress-buffer": "",
     "connect": "=2.7.1",
     "db-migrate": "https://github.com/Singly/node-db-migrate/tarball/master",
