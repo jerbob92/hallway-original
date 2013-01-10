@@ -2,11 +2,16 @@
 
 var program = require('commander');
 
+function list(val) {
+  return val.split(',');
+}
+
 program
   .usage('-s <synclet> -p <profile@service>')
   .option('-s, --synclet <synclet>', 'the synclet to test')
   .option('-p, --profile <profile@service>', 'the profile to test against')
   .option('-v, --verbose', 'display the full JSON output')
+  .option('-c, --show-config <keys>', 'display these keys from pi.config', list)
   .parse(process.argv);
 
 if (!program.synclet || !program.profile) {
@@ -105,6 +110,19 @@ function runService(paginationPi, cb) {
           }
 
           logger.info('%d %s/%s: %s', runs, service, synclet, returned);
+
+          if (program.showConfig && program.showConfig.length) {
+            var filtered = {};
+
+            Object.keys(data.config).filter(function (key) {
+              return program.showConfig.indexOf(key) !== -1;
+            }).forEach(function (key) {
+              filtered[key] = data.config[key];
+            });
+
+            logger.info('%d %s/%s: %s', runs, service, synclet,
+              JSON.stringify(filtered, null, 2));
+          }
 
           cb(data);
         });
