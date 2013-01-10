@@ -105,7 +105,7 @@ ijod.initDB(function () {
     runs++;
 
     runService(queue.pop(), function (data) {
-      if (data.config.nextRun === -1) {
+      if (data.config && data.config.nextRun === -1) {
         queue.push(data);
       }
 
