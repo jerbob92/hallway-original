@@ -57,6 +57,11 @@
       "class": "core"
     },
     {
+      "name": "photos",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
       "name": "albums",
       "frequency": 86400,
       "class": "personal"
