@@ -72,6 +72,23 @@ function startStream(cbDone) {
   });
 }
 
+function startWorkerSup(cbDone) {
+  var pcron = require('pcron');
+
+  // Dynamically update lconfig.worker to include moduleName and args for
+  // invoking node
+  lconfig.worker.moduleName = "hallwayd.js";
+  lconfig.worker.spawnArgs = ["workerchild"];
+  pcron.start_sup(lconfig.worker, cbDone);
+}
+
+function startWorkerChild(cbDone) {
+  var taskmanNG = require('taskman-ng');
+  taskmanNG.init(function () {
+    startWorkerWS(cbDone);
+  });
+}
+
 function startWorkerWS(cbDone) {
   if (!lconfig.worker || !lconfig.worker.port) {
     logger.error("You must specify a worker section with at least a port and " +
@@ -109,8 +126,11 @@ var Roles = {
   worker: {
     startup: startWorkerWS
   },
+  workersup: {
+    startup: startWorkerSup
+  },
   workerchild: {
-    startup: startWorkerWS
+    startup: startWorkerChild
   },
   apihost: {
     startup: startAPIHost
