@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 * Copyright (C) 2012-2013 Singly, Inc. All Rights Reserved.
 *
@@ -28,6 +30,16 @@
 //
 //  NODE_PATH=lib:`pwd`/node_modules node ~/ijoder.js <idr>
 
+var program = require('commander');
+var zlib = require('compress-buffer');
+
+var partition = require("partition");
+
+program
+  .usage('[-b <backend>] <idr>')
+  .option('-b, --backend <backend>', 'the backend to use, fs or s3', 's3')
+  .parse(process.argv);
+
 function toUTC(epochms) {
   var d = new Date(0);
   d.setUTCSeconds(epochms / 1000);
@@ -37,43 +49,54 @@ function toUTC(epochms) {
 // Given a idr, construct a nice little query to pull the data from the
 // appropriate table
 
-var lconfig = require("lconfig")
-var partition = require("partition")
-var zlib = require('compress-buffer');
-var s3_backend = require("ijod-s3");
-var backend = new s3_backend.backend();
+var backend;
 
-var idr = process.argv[2];
+console.log('Using', program.backend, 'backend');
+
+if (program.backend === 'fs') {
+  backend = new require("ijod-fs").backend();
+} else if (program.backend === 's3') {
+  backend = new require("ijod-s3").backend();
+} else {
+  console.log('Invalid backend specified, please specify fs or s3.');
+
+  process.exit(1);
+}
+
+var idr = program.args[0];
 var table = partition.tableize(partition.getPart(idr));
 
-var query = "SELECT path, offset, len, conv(hex(substr(base,17,6)),16,10) as at FROM " + table + " WHERE idr = unhex(\"" + partition.getHash(idr) + "\")";
+var query = "SELECT path, offset, len, conv(hex(substr(base,17,6)),16,10) " +
+  "as at FROM " + table + " WHERE idr = unhex(\"" + partition.getHash(idr) +
+  "\")";
 
 console.log("IDR: " + idr);
 console.log("Table: " + table);
 console.log("Query: " + query);
 
-partition.readFrom(idr, function(parts) {
-  parts[0].dal.query(query, [], function(err, rows) {
-    backend.get(rows[0].path, rows[0].offset, rows[0].len, function(err, buf) {
+partition.readFrom(idr, function (parts) {
+  parts[0].dal.query(query, [], function (err, rows) {
+    backend.get(rows[0].path, rows[0].offset, rows[0].len, function (err, buf) {
       var zbuf = zlib.uncompress(buf);
+
       if (zbuf) {
         var json = JSON.parse(zbuf.toString());
+
         console.log("\nSQL Row: " + JSON.stringify(rows[0]));
         console.log("\nJSON: " + JSON.stringify(json));
 
         console.log("SQL scheduled at: " + toUTC(rows[0].at));
+
         console.log("IJOD scheduled at: " + toUTC(json.at));
         console.log("IJOD created: " + toUTC(json.created));
-        console.log("IJOD queued : " + toUTC(json.queued));
-        console.log("IJOD saved  : " + toUTC(json.saved));
+        console.log("IJOD queued: " + toUTC(json.queued));
+        console.log("IJOD saved: " + toUTC(json.saved));
       } else {
         console.log("\nFailed to decompress JSON from S3!");
-        console.log("\nSQL Row: " + JSON.stringify(rows))
+        console.log("\nSQL Row: " + JSON.stringify(rows));
       }
 
       process.exit(0);
     });
   });
 });
-
-
