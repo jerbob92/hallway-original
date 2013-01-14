@@ -59,7 +59,8 @@
     {
       "name": "photos",
       "frequency": 86400,
-      "class": "core"
+      "class": "personal",
+      "aka": "albums"
     }
   ]
 }
