@@ -85,6 +85,8 @@ function runService(paginationPi, cb) {
       if (paginationPi) {
         pi = paginationPi;
         pi.config.nextRun = 0;
+      } else {
+        logger.info('Starting config: %j', pi.config);
       }
 
       try {
