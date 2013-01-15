@@ -75,11 +75,30 @@ function startStream(cbDone) {
 function startWorkerSup(cbDone) {
   var pcron = require('pcron');
 
+  // Run the pcron notifier every 5 seconds
+  setInterval(function () {
+    pcron.notify(lconfig.worker.services, Date.now(), function () {});
+  }, 5000);
+
+  // Run the GC every 10 seconds (bump erroneous items by 4 hours)
+  setInterval(function () {
+    pcron.gc_work(lconfig.worker.services, Date.now(),
+                  lconfig.worker.error_delay,
+                  function () {});
+  }, 10000);
+
   // Dynamically update lconfig.worker to include moduleName and args for
   // invoking node
+  lconfig.worker.workerId = process.env.WORKER || require("os").hostname();
   lconfig.worker.moduleName = "hallwayd.js";
   lconfig.worker.spawnArgs = ["workerchild"];
-  pcron.start_sup(lconfig.worker, cbDone);
+  pcron.start_sup(lconfig.worker, function (err) {
+    if (err) {
+      logger.error("Failed to init pcron_sup: " + err);
+      process.exit(1);
+    }
+    cbDone();
+  });
 }
 
 function startWorkerChild(cbDone) {
