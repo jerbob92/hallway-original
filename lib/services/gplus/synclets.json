@@ -8,6 +8,11 @@
       "name": "self",
       "frequency": 86400,
       "class": "core"
+    },
+    {
+      "name": "activities",
+      "frequency": 86400,
+      "class": "personal"
     }
   ],
   "icons": [
