@@ -84,8 +84,8 @@ function startWorkerSup(cbDone) {
   // Use pcron.set_master to ensure we're not running gc_work/notify too
   // often/heavily. We use a 10 second interval for simplicity; this means that
   // each worker will run this script once every 10 seconds and then, if it's
-  // master, kick off gc_work/notify. Note that the "master" key is set to 12 seconds
-  // to accomodate any lag that might happen.
+  // master, kick off gc_work/notify. Note that the "master" key is set to
+  // expire in 12 seconds to accomodate any lag that might happen.
   var loop = function () {
     pcron.set_master(lconfig.worker.workerId, 12000, function (err, result) {
       if (err) {
