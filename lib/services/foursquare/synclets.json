@@ -50,6 +50,7 @@
       "source": "http://assets.singly.com/service-icons/1024px/foursquare.png"
     }
   ],
+  "sandbox": true,
   "synclets": [
     {
       "frequency": 86400,
