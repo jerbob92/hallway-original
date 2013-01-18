@@ -1,7 +1,27 @@
-var lutil = require('lutil');
-var assert = require('chai').assert;
+var chai = require('chai');
+var assert = chai.assert;
 
-describe('lutil', function() {
+chai.should();
+
+var lutil = require('lutil');
+
+describe('lutil', function () {
+  describe('#parseProfileId()', function () {
+    it('should parse a profile with one @', function () {
+      var profile = lutil.parseProfileId('abc@picasa');
+
+      profile.id.should.equal('abc');
+      profile.service.should.equal('picasa');
+    });
+
+    it('should parse a profile with more than one @', function () {
+      var profile = lutil.parseProfileId('abc@N01@flickr');
+
+      profile.id.should.equal('abc@N01');
+      profile.service.should.equal('flickr');
+    });
+  });
+
   describe('#isTrue()', function() {
     it('should return true if true', function() {
       assert.isTrue(lutil.isTrue(true));

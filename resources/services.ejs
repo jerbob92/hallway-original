@@ -26,7 +26,7 @@
               "allowableValues":{
                 "valueType":"LIST",
                 "values":[
-                  <%- listEndpoints(key, services[key].synclets) %>
+                  <%- listEndpoints(key) %>
                 ]
               }
             },
@@ -46,6 +46,39 @@
     },
   <% } %>
     {
+      "path": "/services/{service}",
+      "description": "list available endpoints and item counts for a service",
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "nickname": "endpoints",
+          "parameters": [
+            {
+              "name": "service",
+              "description": "Name of the service from which to fetch data",
+              "paramType": "path",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string",
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [<%- listServices() %>]
+              }
+            },
+            {
+              "name": "access_token",
+              "description": "A Singly access_token",
+              "paramType": "query",
+              "required": true,
+              "allowMultiple": false,
+              "dataType": "string"
+            }
+          ],
+          "summary": "Get available endpoints and item counts"
+        }
+      ]
+    },
+    {
       "path":"/services",
       "description":"list available services",
       "operations":[
@@ -54,7 +87,7 @@
           "nickname":"services",
           "parameters":[
           ],
-          "summary":"Get Available services"
+          "summary":"Get available services"
         }
       ]
     }
