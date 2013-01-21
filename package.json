@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "chai": "1.x",
-    "cover": "https://github.com/kristjan/node-cover/tarball/master",
+    "cover": "https://github.com/beaugunderson/node-cover/tarball/master",
     "fakeredis": "0.0.14",
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
