@@ -18,7 +18,7 @@ before(function (done) {
 
 describe('anubis', function () {
   describe('#log', function () {
-    this.timeout(60000);
+    this.timeout(1000);
 
     it('should log the request', function () {
       var req = {

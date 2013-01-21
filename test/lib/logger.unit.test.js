@@ -1,3 +1,5 @@
+require('chai').should();
+
 var logger = require('logger');
 
 function hook(callback) {
@@ -18,6 +20,8 @@ function hook(callback) {
 
 describe('logger', function () {
   describe('#logger', function () {
+    this.timeout(5000);
+
     it('creates a working logger', function (done) {
       var topicLogger = logger.logger('topic');
 
