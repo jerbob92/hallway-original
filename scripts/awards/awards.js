@@ -2,6 +2,7 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 
 var tops = require('./tops');
+var newApps = require('./newApps');
 //var devapps = require('./devapps');
 
 var auth, host;
@@ -10,6 +11,7 @@ var output = '';
 
 exports.init = function(options) {
   tops.init(options.host, options.auth, options.ignore);
+  newApps.init(options.host, options.auth, options.ignore);
   //devapps.init(options.host, options.auth);
 
   if (options.error) error = getFileLogger(options.error);
@@ -31,11 +33,18 @@ function getFileLogger(filename) {
 }
 
 exports.awards = function(appID, hours, callback) {
-  log('<h3> Top developers on singly.com </h3>');
-  tops.tops(appID, hours, function(err, rows) {
+  log('<h3> ' + tops.title + ' </h3>');
+  tops.run(appID, hours, function(err, rows) {
     if (err) return error('tops error', err);
-    tops.print(rows, log, error);
-    return callback();
+    printTable(tops, rows, log);
+    log('<h3> ' + newApps.title + '</h3>');
+    newApps.run(hours, function(err, rows) {
+      if (err) return error('newApps error', err);
+      printTable(newApps, rows, log);
+      //newApps.print(rows, log, error);
+      callback();
+    });
+    //return callback();
     // not running devapps for now
     /*log('<h3> Active app accounts likely to be developers </h3>');
     devapps.devapps(hours, function(err, rows) {
@@ -45,6 +54,32 @@ exports.awards = function(appID, hours, callback) {
     });*/
   });
 };
+
+
+function printTable(script, rows, log) {
+  log('<table><tr>');
+  for (var i in script.columnNames) {
+    log('<td>' + script.columnNames[i] + '</td>');
+  }
+  log('</tr>');
+  rows.forEach(function(row) {
+    log('<tr>');
+    var rowVals = script.mapRow(row);
+    for(var i in rowVals) {
+      var text = '';
+      var type = typeof rowVals[i];
+      if (type === 'string' || type === 'number') text = rowVals[i]||'&nbsp';
+      else if (type === 'object') {
+        var href = rowVals[i].href;
+        var str = rowVals[i].text || '--';
+        if (rowVals[i].truncate) str = str.substring(0, rowVals[i].truncate);
+        text = '<a href="' + href + '">' + str + '</a>';
+      }
+      log('<td>' + text + '</td>');
+    }
+  });
+  log('</table>');
+}
 
 function sendMail(options) {
   var smtpTransport = nodemailer.createTransport("SMTP", {
@@ -88,7 +123,7 @@ function main() {
   exports.init(argv);
 
   log('<html><body>');
-  log('<h2>Evening Dev Awards produced at ' + new Date() + '</h2><br>');
+  log('<h2>Dev Awards produced at ' + new Date() + '</h2><br>');
   exports.awards(argv['app-id'], argv.hours, function(err) {
     log('</body></html>');
     if (argv.to && argv.user && argv.pass) {
