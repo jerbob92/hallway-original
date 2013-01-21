@@ -10,33 +10,29 @@ var s3 = knox.createClient({
 });
 
 var start = process.argv[2] || "0";
-var limit = parseInt(process.argv[3]) || 1000;
-ijod.initDB(function(){
-  step({base:start, total:0, del:0});
-})
+var limit = parseInt(process.argv[3], 10) || 1000;
 
-var deleteme = process.argv[3] === 'MEOW';
-
-function step(arg)
-{
+function step(arg) {
   console.log(arg);
-  dal.query("select hex(base) as base, hex(idr) as idr, path from Entries where base > unhex(?) limit ?", [arg.base, limit], function(err, rows){
-    if(err) return console.error(err, arg);
-    if(rows.length == 0) return console.log("done",arg);
+  dal.query("select hex(base) as base, hex(idr) as idr, path from Entries where base > unhex(?) limit ?", [arg.base, limit], function (err, rows) {
+    if (err) return console.error(err, arg);
+    if (rows.length === 0) return console.log("done", arg);
     arg.total += rows.length;
-    arg.base = rows[rows.length-1].base;
-    async.forEachLimit(rows, 100, function(row, cbRow){
-      if(!row.path || row.path.indexOf('/') == -1) return process.nextTick(cbRow);
-      s3.head(row.path).on('response', function(res){
+    arg.base = rows[rows.length - 1].base;
+    async.forEachLimit(rows, 100, function (row, cbRow) {
+      if (!row.path || row.path.indexOf('/') === -1) {
+        return process.nextTick(cbRow);
+      }
+      s3.head(row.path).on('response', function (res) {
 //        console.log(row.path,res.statusCode);
-        if(res.statusCode != 200) arg.del++;
+        if (res.statusCode !== 200) arg.del++;
         cbRow();
       }).end();
 //      ijod.getOne(row.idr, function(err, entry){
-//        if(err || !entry) arg.del++;
+//        if (err || !entry) arg.del++;
 //        cbRow();
 //      });
-    }, function(){
+    }, function () {
       step(arg);
     });
 /* old code
@@ -45,18 +41,22 @@ function step(arg)
       var ids = dup.split(" ");
       ijod.getOne(ids[0], function(err, entry){
         var bad;
-        if(entry.id.indexOf(ids[0]) == -1) bad = ids[0];
-        if(entry.id.indexOf(ids[1]) == -1) bad = ids[1];
-        if(bad && deleteme) dels.push("'"+bad+"'");
+        if (entry.id.indexOf(ids[0]) == -1) bad = ids[0];
+        if (entry.id.indexOf(ids[1]) == -1) bad = ids[1];
+        if (bad && deleteme) dels.push("'"+bad+"'");
         cb();
       })
     }, function(){
-      if(dels.length == 0) return step(arg);
+      if (dels.length == 0) return step(arg);
       dal.query("delete from ijod where idr in ("+dels.join(',')+") limit",[dels.length],function(err){
-        if(err) return console.error(err);
+        if (err) return console.error(err);
         step(arg);
       });
     });
 */
   });
 }
+
+ijod.initDB(function () {
+  step({ base: start, total: 0, del: 0 });
+});

@@ -2,6 +2,9 @@ var request = require('request');
 var idr = require(__dirname+'/../lib/idr.js');
 
 var url = process.argv[2];
+
+function t(x) { return parseInt(x / 1000, 10); }
+
 request.get({url:url, json:true}, function(e,r,js){
   var timez = {};
   var oldest = Date.now();
@@ -18,7 +21,4 @@ request.get({url:url, json:true}, function(e,r,js){
     console.log(service,timez[service].length,t(now-timez[service][0]),t(now-timez[service][timez[service].length-1]));
   });
   console.log(oldest, t(now-oldest));
-
 });
-
-function t(x) { return parseInt(x/1000) }
