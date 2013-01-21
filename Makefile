@@ -3,7 +3,8 @@ export GIT_REVISION?=$(shell git rev-parse --short --default HEAD)
 export BUILD_NUMBER?=git-$(GIT_REVISION)
 export SUPPRESS_LOGS=true
 
-.PHONY: deps build npm_modules
+.PHONY: deps check_deps build npm_modules migrations ltest test lcov cov \
+	bindist test-bindist clean jenkins all
 
 all: build
 	@echo
@@ -30,12 +31,11 @@ build: check_deps npm_modules
 # install node dependencies via npm
 npm_modules:
 	@. scripts/use-deps.sh && \
-	npm install
+		npm install
 
 migrations:
 	@echo "Applying migrations"
 	./node_modules/db-migrate/bin/db-migrate -v --config Config/config.json -e database up
-.PHONY: migrations
 
 ltest:
 	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" \
@@ -43,12 +43,11 @@ ltest:
 
 test: build ltest
 
-_MOCHA=./node_modules/.bin/_mocha
-COVER=./node_modules/cover/bin/cover
-cov: check_deps npm_modules
-	@env NODE_PATH="lib" \
-		$(COVER) run $(_MOCHA) $(MOCHA_TESTS)
-	$(COVER) report html
+lcov:
+	@env CONFIG_PATH="$(shell pwd)/test/resources/config.json" \
+		scripts/test-coverage.sh
+
+cov: build lcov
 
 SUBDIR=hallway-$(BUILD_NUMBER)
 DISTFILE=$(SUBDIR).tar.gz
