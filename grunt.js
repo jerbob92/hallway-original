@@ -2,17 +2,25 @@ var _ = require('underscore');
 
 function filterFiles(grunt, pattern, blacklist) {
   var files = grunt.file.expand(pattern);
-  return _.reject(files, function(file) {
-    return _.any(blacklist, function(ignored) {
+  return _.reject(files, function (file) {
+    return _.any(blacklist, function (ignored) {
       return file === ignored || file.match(ignored);
     });
   });
 }
 
+function testFiles(grunt) {
+  return filterFiles(grunt, 'test/**/*.js', [
+    'test/fixtures/synclets/twitter/related.js'
+  ]);
+}
+
+
 function libFiles(grunt) {
   return filterFiles(grunt, 'lib/**/*.js', [
     /services/,
-    'lib/firebase-auth-server.js'
+    'lib/firebase-auth-server.js',
+    'lib/firebase-token-generator-node.js'
   ]);
 }
 
@@ -40,7 +48,7 @@ module.exports = function (grunt) {
       grunt    : 'grunt.js',
       lib      : libFiles(grunt),
       services : serviceFiles(grunt),
-      tests    : 'test/**/*.js',
+      tests    : testFiles(grunt),
       scripts  : 'scripts/**/*.js'
     },
     watch: {
