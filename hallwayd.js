@@ -132,7 +132,7 @@ if (argv._.length > 0) {
   if (!Roles.hasOwnProperty(argv._[0])) {
     logger.error("The %s role is unknown.", argv._[0]);
 
-    return process.exit(1);
+    process.exit(1);
   }
 
   role = Roles[argv._[0]];
