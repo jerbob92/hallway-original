@@ -44,7 +44,7 @@ describe("linkedin connector", function () {
       self.sync(pinfo, function (err, response) {
         if (err) return done(err);
         response.data['profile:42@linkedin/self'][0].id.should.equal("42");
-        return done();
+        done();
       });
     });
   });
