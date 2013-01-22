@@ -59,6 +59,7 @@ function stop(reason) {
 
 
 function retask(pids, cbDone) {
+  var i = argv.offset;
   async.forEachLimit(pids, 100, function (row, cbLoop) {
     profileManager.authGet(row.id, null, function (err, auth) {
       if (!auth) return cbLoop();
@@ -66,7 +67,7 @@ function retask(pids, cbDone) {
         if (err) stop(row.id + " failed to update task: " + err);
         var parts = row.id.split("@");
         pcronInst.schedule(parts[1], parts[0], Date.now(), false, cbLoop);
-        logger.info(row.id);
+        logger.info(row.id + " " + (i++));
       });
     });
   }, function (err) {
