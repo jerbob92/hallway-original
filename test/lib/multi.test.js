@@ -1,4 +1,4 @@
-require('chai').should();
+var should = require('chai').should();
 
 var browser = require('supertest');
 var Socket = require('net').Socket;
