@@ -74,4 +74,6 @@ jenkins:
 clean:
 	rm -f "$(DISTFILE)"
 	rm -f "hallway-git-*.tar.gz"
+	rm -rf covershot
+	rm -rf lib-cov
 	rm -rf node_modules
