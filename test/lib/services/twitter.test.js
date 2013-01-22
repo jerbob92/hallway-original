@@ -47,7 +47,7 @@ describe('Twitter connector', function () {
         if (err) return done(err);
         response.data['contact:ctide@twitter/friends'][0].id.should
           .equal(1054551, 'response IDs should match');
-        return done();
+        done();
       });
     });
   });

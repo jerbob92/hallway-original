@@ -98,7 +98,7 @@ describe('links services', function () {
 
         set[1].data.type.should.equal('video');
 
-        return done();
+        done();
       });
     });
 
@@ -112,7 +112,7 @@ describe('links services', function () {
 
         set[1].data.type.should.equal('photo');
 
-        return done();
+        done();
       });
     });
   });
