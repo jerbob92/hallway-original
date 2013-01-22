@@ -15,7 +15,6 @@ function testFiles(grunt) {
   ]);
 }
 
-
 function libFiles(grunt) {
   return filterFiles(grunt, 'lib/**/*.js', [
     /services/,
@@ -77,14 +76,6 @@ module.exports = function (grunt) {
         process: true,
         require: true,
 
-        $: true,
-        _: true,
-        async: true,
-        moment: true,
-        google: true,
-        request: true,
-        sprintf: true,
-
         __dirname: true,
 
         btoa: true,
@@ -97,8 +88,6 @@ module.exports = function (grunt) {
 
         setInterval: true,
         clearInterval: true,
-
-        should: true,
 
         it: true,
         xit: true,
