@@ -73,7 +73,11 @@ function startStream(cbDone) {
 }
 
 function startWorkerSup(cbDone) {
+  var redis = require("redis");
+  var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
+                                   lconfig.worker.redis.host || "127.0.0.1");
   var pcron = require('pcron');
+  var pcronInst = pcron.init(rclient);
 
   // Dynamically update lconfig.worker to include moduleName and args for
   // invoking node
@@ -81,19 +85,19 @@ function startWorkerSup(cbDone) {
   lconfig.worker.moduleName = "hallwayd.js";
   lconfig.worker.spawnArgs = ["workerchild"];
 
-  // Use pcron.set_master to ensure we're not running gc_work/notify too
+  // Use pcronInsta.set_master to ensure we're not running gc_work/notify too
   // often/heavily. We use a 10 second interval for simplicity; this means that
   // each worker will run this script once every 10 seconds and then, if it's
   // master, kick off gc_work/notify. Note that the "master" key is set to
   // expire in 12 seconds to accomodate any lag that might happen.
   var loop = function () {
-    pcron.set_master(lconfig.worker.workerId, 12000, function (err, result) {
+    pcronInst.set_master(lconfig.worker.workerId, 12000, function (err, result) {
       if (err) {
         logger.error("set_master failed: " + err);
       } else if (result === 1) {
-        logger.debug("Won master lock; kicking pcron.notify/gc_work");
-        pcron.notify(lconfig.worker.services, Date.now(), function () {});
-        pcron.gc_work(lconfig.worker.services, lconfig.worker.error_delay,
+        logger.debug("Won master lock; kicking pcronInst.notify/gc_work");
+        pcronInst.notify(lconfig.worker.services, Date.now(), function () {});
+        pcronInst.gc_work(lconfig.worker.services, lconfig.worker.error_delay,
                       Date.now(), function () {});
       }
     });
@@ -101,7 +105,7 @@ function startWorkerSup(cbDone) {
   };
   loop();
 
-  pcron.start_sup(lconfig.worker, function (err) {
+  pcronInst.start_sup(lconfig.worker, function (err) {
     if (err) {
       logger.error("Failed to init pcron_sup: " + err);
       process.exit(1);
@@ -112,9 +116,7 @@ function startWorkerSup(cbDone) {
 
 function startWorkerChild(cbDone) {
   var taskmanNG = require('taskman-ng');
-  taskmanNG.init(function () {
-    startWorkerWS(cbDone);
-  });
+  taskmanNG.init(cbDone);
 }
 
 function startWorkerWS(cbDone) {
