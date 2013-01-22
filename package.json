@@ -62,6 +62,7 @@
     "oauth": "=0.9.6",
     "optimist": "",
     "password-hash": "=1.2.1",
+    "pcron": "git://github.com/Singly/pcron",
     "qs": "",
     "redis": "0.7.x",
     "request": "git+https://github.com/mikeal/request.git#d734337ad821894428fa0eabf65d0e88697dd4a2",

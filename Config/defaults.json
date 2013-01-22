@@ -43,6 +43,7 @@
     "pagingTiming": 2000,
     "defaultScanTime": 5000,
     "attempts": 8,
+    "heartbeat": 10000,
     "redis": {
       "host": "localhost",
       "port": 6379
