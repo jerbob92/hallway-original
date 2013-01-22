@@ -46,6 +46,11 @@ var ijod = require('ijod');
 var acl = require('acl');
 var taskmanNG = require('taskman-ng');
 var servezas = require('servezas');
+var redis = require("redis");
+var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
+                                 lconfig.worker.redis.host || "127.0.0.1");
+var pcron = require("pcron");
+var pcronInst = pcron.init(rclient);
 
 function stop(reason) {
   logger.error("Error: " + reason);
@@ -60,7 +65,7 @@ function retask(pids, cbDone) {
       taskmanNG.taskUpdate(auth, function (err) {
         if (err) stop(row.id + " failed to update task: " + err);
         var parts = row.id.split("@");
-        pcron.schedule(parts[1], parts[0], Date.now(), false, cbLoop);
+        pcronInst.schedule(parts[1], parts[0], Date.now(), false, cbLoop);
         logger.info(row.id);
       });
     });
@@ -76,15 +81,17 @@ function getPids(offset, limit, service, cbDone) {
   dal.query(sql, binds, cbDone);
 }
 
-
-ijod.initDB(function (err) {
-  if (err) return stop("IJOD init failed: " + err);
-  servezas.load();
-  acl.init(function (err) {
-    if (err) return stop("ACL init failed: " + err);
-    getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
-      if (err) return stop("getPids failed: " + err);
-      retask(rows, process.exit);
+rclient.select(lconfig.worker.redis.database || 0, function (err) {
+  if (err) return stop("Redis SELECT failed: " + err);
+  ijod.initDB(function (err) {
+    if (err) return stop("IJOD init failed: " + err);
+    servezas.load();
+    acl.init(function (err) {
+      if (err) return stop("ACL init failed: " + err);
+      getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
+        if (err) return stop("getPids failed: " + err);
+        retask(rows, process.exit);
+      });
     });
   });
 });
