@@ -28,7 +28,6 @@
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
     "node-fakeweb": "=0.0.8",
-    "should": "1.2.x",
     "supertest": "0.5.x"
   },
   "dependencies": {

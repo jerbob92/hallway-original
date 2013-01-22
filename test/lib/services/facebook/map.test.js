@@ -1,80 +1,73 @@
-var mocha   = require('mocha');
-var should  = require('should');
+var should = require('chai').should();
 
 var map = require('services/facebook/map');
 
-describe('GUIDs', function() {
+describe('GUIDs', function () {
   var entry;
 
-  describe('photos', function() {
-    describe('from Instagram', function() {
-      beforeEach(function(done) {
-        entry = {data: {name: 'From http://instagr.am/p/123/'}};
-        done();
+  describe('photos', function () {
+    describe('from Instagram', function () {
+      beforeEach(function () {
+        entry = { data: { name: 'From http://instagr.am/p/123/' } };
       });
 
-      it('generates the right GUID', function(done) {
+      it('generates the right GUID', function () {
         map.guid.photo(entry).should.equal('guid:instagram/#123');
-        done();
       });
     });
 
-    describe('not from Instagram', function() {
-      beforeEach(function(done) {
-        entry = {data: {name: ''}};
-        done();
+    describe('not from Instagram', function () {
+      beforeEach(function () {
+        entry = { data: { name: '' } };
       });
 
-      it('does not have a GUID', function(done) {
+      it('does not have a GUID', function () {
         should.not.exist(map.guid.photo(entry));
-        done();
       });
     });
   });
 
-  describe('posts', function() {
-    describe('without any cross-posting', function() {
-      beforeEach(function(done) {
-        entry = {data: {}};
-        done();
+  describe('posts', function () {
+    describe('without any cross-posting', function () {
+      beforeEach(function () {
+        entry = { data: {} };
       });
 
-      it('does not have a GUID', function(done) {
+      it('does not have a GUID', function () {
         should.not.exist(map.guid.post(entry));
-        done();
       });
     });
 
-    describe('linking to Instagram', function() {
-      beforeEach(function(done) {
-        entry = {refs: {
-          'http://instagr.am/p/123/': true
-        }};
-        done();
+    describe('linking to Instagram', function () {
+      beforeEach(function () {
+        entry = {
+          refs: {
+            'http://instagr.am/p/123/': true
+          }
+        };
       });
 
-      it('generates the right GUID', function(done) {
+      it('generates the right GUID', function () {
         map.guid.post(entry).should.equal('guid:instagram/#123');
-        done();
       });
     });
 
-    describe('linking to Foursquare', function() {
-      beforeEach(function(done) {
-        entry = {refs: {
-          'http://foursquare.com/kristjan/checkin/123': true
-        }};
-        done();
+    describe('linking to Foursquare', function () {
+      beforeEach(function () {
+        entry = {
+          refs: {
+            'http://foursquare.com/kristjan/checkin/123': true
+          }
+        };
       });
 
-      it('generates the right GUID', function(done) {
+      it('generates the right GUID', function () {
         map.guid.post(entry).should.equal('guid:foursquare/#123');
-        done();
       });
     });
 
-    describe('via Twitter', function() {
-      beforeEach(function(done) {
+    describe('via Twitter', function () {
+      beforeEach(function () {
         entry = {
           data: {
             application: {name: 'Twitter'},
@@ -82,30 +75,26 @@ describe('GUIDs', function() {
             message: 'Rockin Robin'
           }
         };
-        done();
       });
 
-      it('generates the right GUID', function(done) {
-        map.guid.post(entry).
-          should.equal('guid:kripet@twitter/#ff3420b9d5480411e1cc9db7a202bf56');
-        done();
+      it('generates the right GUID', function () {
+        map.guid.post(entry)
+          .should.equal('guid:kripet@twitter/#ff3420b9d5480411e1cc9db7a202bf56');
       });
     });
 
-    describe('via Foursquare', function() {
-      beforeEach(function(done) {
+    describe('via Foursquare', function () {
+      beforeEach(function () {
         entry = {
           data: {
             application: {name: 'foursquare'},
             link: 'http://foursquare.com/kristjan/checkin/123'
           }
         };
-        done();
       });
 
-      it('generates the right GUID', function(done) {
+      it('generates the right GUID', function () {
         map.guid.post(entry).should.equal('guid:foursquare/#123');
-        done();
       });
     });
   });

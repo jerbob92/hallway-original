@@ -1,25 +1,19 @@
-var mocha   = require('mocha')
-  , should  = require('should')
-  , fakeweb = require('node-fakeweb')
-  , path    = require('path')
-  , helper  = require(path.join(__dirname, '..', '..', 'support', 'locker-helper.js'))
-  , util    = require('util')
-  ;
+var fakeweb = require('node-fakeweb');
+var path = require('path');
+var helper = require(path.join(__dirname, '..', '..', 'support',
+  'locker-helper.js'));
 
 describe("Flickr connector", function () {
   var pinfo;
-  var apiBase = "https://secure.flickr.com/services/";
 
-  beforeEach(function (done) {
+  beforeEach(function () {
     fakeweb.allowNetConnect = false;
-    pinfo = helper.loadFixture(path.join(__dirname, '..', '..', 'fixtures', 'synclets', 'flickr', 'flickr.json'));
-    return done();
+
+    pinfo = helper.loadFixture(path.join(__dirname, '..', '..', 'fixtures',
+      'synclets', 'flickr', 'flickr.json'));
   });
 
-  afterEach(function (done) {
+  afterEach(function () {
     fakeweb.tearDown();
-    return done();
   });
-
-
 });
