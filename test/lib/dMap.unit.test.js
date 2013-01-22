@@ -6,9 +6,9 @@ lconfig.database.maxConnections = 1;
 
 var dMap = require("dMap");
 
-describe("dMap", function () {
-  before(dMap.startup);
+dMap.load();
 
+describe("dMap", function () {
   it("should load a services dMap");
   it("should be able to retrieve an entry field");
 

@@ -19,7 +19,8 @@ var oembed = require(path.join('services', 'links', 'oembed.js'));
 
 var ijod = require('ijod');
 
-before(dMap.startup);
+dMap.load();
+
 before(ijod.initDB);
 
 describe('links services', function () {

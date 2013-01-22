@@ -142,7 +142,11 @@ var startupTasks = [];
 
 if (role !== Roles.stream) {
   // this loads all lib/services/*/map.js
-  startupTasks.push(require('dMap').startup);
+  startupTasks.push(function (cb) {
+    require('dMap').load();
+
+    cb();
+  });
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(require('tokenz').init);
   startupTasks.push(startTaskman);
@@ -187,8 +191,7 @@ process.on("SIGTERM", function () {
 });
 
 process.on('uncaughtException', function (err) {
-
-  logger.warn('Uncaught exception: ' + err.stack);
+  logger.warn('Uncaught exception:', err.stack);
 
   instruments.increment('exceptions.uncaught').send();
 
@@ -198,12 +201,17 @@ process.on('uncaughtException', function (err) {
   // of this hack
   if (role !== Roles.taskmaster) {
     // Check for errors we are comfortable (!!) ignoring
-    var ignoredErrors = ["Error: Parse Error", // see: https://github.com/joyent/node/issues/2997
-                         "ECONNRESET",
-                         "socket hangup",
-                         "ETIMEDOUT",
-                         "EADDRINFO"];
+    var ignoredErrors = [
+      // see: https://github.com/joyent/node/issues/2997
+      "Error: Parse Error",
+      "ECONNRESET",
+      "socket hangup",
+      "ETIMEDOUT",
+      "EADDRINFO"
+    ];
+
     var errString = err.toString();
+
     for (var msg in ignoredErrors) {
       if (errString.indexOf(ignoredErrors[msg]) >= 0) {
         logger.warn("Ignored exception: ", ignoredErrors[msg]);

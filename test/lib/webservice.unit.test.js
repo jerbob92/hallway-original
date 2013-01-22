@@ -67,7 +67,9 @@ dalFake.addFake('SELECT profile FROM Accounts WHERE account = ?', PROFILES);
 dal.setBackend('fake');
 
 var acl = require('acl');
+var dMap = require('dMap');
 var ijod = require('ijod');
+var servezas = require('servezas');
 var tokenz = require('tokenz');
 
 var webservice = require('webservice').api;
@@ -83,15 +85,14 @@ var GOOD_ACCESS_TOKEN = process.env.ACCESS_TOKEN || 'JrY54j9w8SToWDYFDPDykSZr' +
 
 var SERVICE_GETS = [];
 
-var servezas = require('servezas');
-
 // We're going to generate tests based on all of the services and synclets we
 // support
 servezas.load();
+dMap.load();
 
 servezas.serviceList().forEach(function (service) {
-  servezas.services()[service].synclets.forEach(function (synclet) {
-    SERVICE_GETS.push('/services/' + service + '/' + synclet.name);
+  dMap.endpoints(service).forEach(function (endpoint) {
+    SERVICE_GETS.push('/services/' + service + '/' + endpoint);
   });
 });
 

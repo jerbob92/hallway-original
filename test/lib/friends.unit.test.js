@@ -12,9 +12,9 @@ lconfig.database.maxConnections = 1;
 var dMap = require('dMap');
 var friends = require('friends');
 
-describe('friends', function () {
-  before(dMap.startup);
+dMap.load();
 
+describe('friends', function () {
   describe('returns parallels', function () {
     it('for facebook', function () {
       var self = JSON.parse(fs.readFileSync(path.join(__dirname, '..',

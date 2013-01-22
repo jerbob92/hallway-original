@@ -3,7 +3,7 @@ require('chai').should();
 var dMap = require('dMap');
 var entries = require('entries');
 
-before(dMap.startup);
+dMap.load();
 
 describe('Entries', function () {
   describe('options', function () {
