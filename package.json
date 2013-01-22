@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "chai": "1.x",
-    "covershot": "0.1.x",
+    "covershot": "git+https://github.com/beaugunderson/node-covershot.git",
     "fakeredis": "0.0.14",
     "grunt-simple-mocha": "*",
     "mocha": "1.7.x",
@@ -37,7 +37,7 @@
     "commander": "1.1.x",
     "compress-buffer": "",
     "connect": "=2.7.1",
-    "db-migrate": "https://github.com/Singly/node-db-migrate/tarball/master",
+    "db-migrate": "git+https://github.com/Singly/node-db-migrate.git",
     "ejs": "=0.8.3",
     "ejs-locals": "~1.0.2",
     "encoding": "=0.1.4",
@@ -70,7 +70,7 @@
     "socket.io": "",
     "sprintf": "",
     "temp": ">=0.4.0",
-    "tumblrwks": "https://github.com/Singly/tumblrwks/tarball/master",
+    "tumblrwks": "git+https://github.com/Singly/tumblrwks.git",
     "underscore": ">=1.3.0",
     "underscore.string": ">=2.3.0",
     "xml2js": "=0.2.2"
