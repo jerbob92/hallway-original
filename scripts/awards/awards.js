@@ -37,6 +37,7 @@ exports.awards = function(appID, hours, callback) {
   tops.run(appID, hours, function(err, rows) {
     if (err) return error('tops error', err);
     printTable(tops, rows, log);
+    //printCSV(tops, rows, log);
     log('<h3> ' + newApps.title + '</h3>');
     newApps.run(hours, function(err, rows) {
       if (err) return error('newApps error', err);
@@ -79,6 +80,26 @@ function printTable(script, rows, log) {
     }
   });
   log('</table>');
+}
+
+function printCSV(script, rows, log) {
+  log(script.columnNames.join(','));
+  for(var i in rows) {
+    var rowVals = script.mapRow(rows[i]);
+    rowText = '';
+    for (var k in rowVals) {
+      var text = '';
+      var type = typeof rowVals[k];
+      if (type === 'string' || type === 'number') text = rowVals[k];
+      else if (type === 'object') {
+        var str = rowVals[k].text || '--';
+        if (rowVals[k].truncate) str = str.substring(0, rowVals[k].truncate);
+        text = str;
+      }
+      rowText += text + ',';
+    }
+    log(rowText);
+  }
 }
 
 function sendMail(options) {

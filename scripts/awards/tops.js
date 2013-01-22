@@ -119,7 +119,6 @@ exports.run = function(appID, hours, callback) {
 };
 
 exports.mapRow = function(row) {
-  console.error('row', row);
   var values = [
     {
       href: 'https://dawg.singly.com/apps/account?id='+row.id,
@@ -144,37 +143,6 @@ exports.mapRow = function(row) {
   values.push(appsText);
   return values;
 }
-
-exports.print = function(rows, log) {
-  function logRow(id, count, profile) {
-    var line = '<tr>';
-    line += '<td><a href="https://dawg.singly.com/apps/account?id='+id+'">' +
-      id.substring(0, 6) + '</a></td>';
-    line += '<td>'+count+'</td>';
-    line += '<td><a href="'+profile.url+'">' +
-      (profile.name||profile.handle||'--') + '</a></td>';
-    line += '<td>'+(profile.location||'&nbsp;')+'</td>';
-    line += '<td>'+(profile.email||'&nbsp;')+'</td>';
-    var appsText = '';
-    var apps = profile && profile.apps && profile.apps.slice(0, 3);
-    for (var i in apps) {
-      var app = apps[i];
-      appsText += '<a alt="' + app.appDescription + '" href="' + host + '/app/info/' + app.clientId + '">' +
-        app.appName + '</a> ';
-    }
-    line += '<td>' + appsText + '</td>';
-    line += '</tr>';
-    log(line);
-  }
-
-  log('<table><tr>');
-  log('<td>Account</td><td>Hits</td><td>Name</td><td>Loc</td><td>Email</td><td>Apps</td>');
-  log('</tr>');
-  rows.forEach(function(row) {
-    logRow(row.id, row.hits, row.profile);
-  });
-  log('</table>');
-};
 
 function main() {
   var argv = require('optimist')
