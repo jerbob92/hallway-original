@@ -4,7 +4,7 @@ export BUILD_NUMBER?=git-$(GIT_REVISION)
 export SUPPRESS_LOGS=true
 
 .PHONY: deps check_deps build npm_modules migrations ltest test lcov cov \
-	bindist test-bindist clean jenkins all
+	bindist test-bindist clean jenkins all view-cov
 
 all: build
 	@echo
@@ -48,6 +48,11 @@ lcov:
 		scripts/test-coverage.sh
 
 cov: build lcov
+
+covershot/index.html: lcov
+
+view-cov: covershot/index.html
+	@cd covershot && python -mSimpleHTTPServer
 
 SUBDIR=hallway-$(BUILD_NUMBER)
 DISTFILE=$(SUBDIR).tar.gz

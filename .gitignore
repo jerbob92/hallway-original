@@ -23,3 +23,5 @@ build.json
 cover_html/
 .env
 tmp/
+lib-cov
+covershot
