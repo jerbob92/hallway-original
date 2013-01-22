@@ -28,6 +28,6 @@ done
 echo
 echo "Generating report..."
 
-$COVERSHOT covershot/data -w covershot
+$COVERSHOT covershot/data
 
 echo "Report is available at covershot/index.html"
