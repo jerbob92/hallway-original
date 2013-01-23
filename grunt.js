@@ -57,17 +57,18 @@ module.exports = function (grunt) {
     jshint: {
       options: {
         curly: false,
-        strict: false,
-        eqeqeq: true,
-        immed: true,
         latedef: false,
+        strict: false,
+
+        boss: true,
+        eqeqeq: true,
+        eqnull: true,
+        immed: true,
         newcap: true,
         noarg: true,
+        node: true,
         sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        node: true
+        undef: true
       },
       globals: {
         exports: true,
