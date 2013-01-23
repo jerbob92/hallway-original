@@ -74,19 +74,25 @@ function printTable(script, rows, log) {
     log('<tr>');
     var rowVals = script.mapRow(row);
     for(var i in rowVals) {
-      var text = '';
-      var type = typeof rowVals[i];
-      if (type === 'string' || type === 'number') text = rowVals[i]||'&nbsp;';
-      else if (type === 'object') {
-        var href = rowVals[i].href;
-        var str = rowVals[i].text || '--';
-        if (rowVals[i].truncate) str = str.substring(0, rowVals[i].truncate);
-        text = '<a href="' + href + '">' + str + '</a>';
-      }
-      log('<td>' + text + '</td>');
+      log('<td>' + convertValToTableRow(rowVals[i]) + '</td>');
     }
   });
   log('</table>');
+}
+
+function convertValToTableRow(val) {
+  var text = '';
+  var type = typeof val;
+  if (type === 'string' || type === 'number') text = val||'&nbsp;';
+  else if (Array.isArray(val)) {
+    for(var i in val) text += convertValToTableRow(val[i]);
+  } else if (type === 'object') {
+    var href = val.href;
+    var str = val.text || '--';
+    if (val.truncate) str = str.substring(0, val.truncate);
+    text = '<a href="' + href + '">' + str + '</a>';
+  }
+  return text;
 }
 
 function printCSV(script, rows, log) {
@@ -95,18 +101,26 @@ function printCSV(script, rows, log) {
     var rowVals = script.mapRow(rows[i]);
     rowText = '';
     for (var k in rowVals) {
-      var text = '';
-      var type = typeof rowVals[k];
-      if (type === 'string' || type === 'number') text = rowVals[k];
-      else if (type === 'object') {
-        var str = rowVals[k].text || '--';
-        if (rowVals[k].truncate) str = str.substring(0, rowVals[k].truncate);
-        text = str;
-      }
-      rowText += JSON.stringify(text) + ',';
+      rowText += JSON.stringify(convertValToCSVRow(rowVals[k])) + ',';
     }
     log(rowText);
   }
+}
+
+function convertValToCSVRow(val) {
+  var text = '';
+  var type = typeof val;
+  if (type === 'string' || type === 'number') text = val;
+  else if (Array.isArray(val)) {
+    for(var i in val) {
+      text += convertValToCSVRow(val[i]);
+    }
+  } else if (type === 'object') {
+    var str = val.text || '--';
+    if (val.truncate) str = str.substring(0, val.truncate);
+    text = str;
+  }
+  return text;
 }
 
 function sendMail(options) {

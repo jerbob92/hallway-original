@@ -64,8 +64,6 @@ exports.run = function(options, callback) {
 };
 
 exports.mapRow = function(row) {
-  var id = row.id;
-  var profile = row.profile;
   var values = [
     {
       href: 'https://dawg.singly.com/apps/account?id=' + row.id,
@@ -73,21 +71,23 @@ exports.mapRow = function(row) {
       truncate: 6
     },
     {
-      href: profile.url,
-      text: profile.name||profile.handle
+      href: row.profile.url,
+      text: row.profile.name || row.profile.handle
     },
-    profile.location,
-    profile.email
+    row.profile.location,
+    row.profile.email
   ];
 
-  var appsText = '';
-  var apps = profile && profile.apps && profile.apps.slice(0, 3);
+  var appsLinks = [];
+  var apps = row.profile && row.profile.apps && row.profile.apps.slice(0, 3);
   for (var i in apps) {
     var app = apps[i];
-    appsText += '<a alt="' + app.notes.appDescription + '" href="' + host + '/app/info/' + app.app + '">' +
-      app.notes.appName + '</a> ';
+    appsLinks.push({
+      href: host + '/app/info/' + app.app,
+      text: app.notes.appName
+    });
   }
-  values.push(appsText);
+  values.push(appsLinks);
   return values;
 }
 

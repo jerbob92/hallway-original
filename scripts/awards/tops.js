@@ -135,14 +135,17 @@ exports.mapRow = function(row) {
     row.profile.location,
     row.profile.email
   ];
-  var appsText = '';
+
+  var appsLinks = [];
   var apps = row.profile && row.profile.apps && row.profile.apps.slice(0, 3);
   for (var i in apps) {
     var app = apps[i];
-    appsText += '<a alt="' + app.appDescription + '" href="' + host + '/app/info/' + app.clientId + '">' +
-      app.appName + '</a> ';
+    appsLinks.push({
+      href: host + '/app/info/' + app.clientId,
+      text: app.appName
+    });
   }
-  values.push(appsText);
+  values.push(appsLinks);
   return values;
 }
 
