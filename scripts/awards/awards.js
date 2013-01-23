@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var async = require('async');
 
 var auth, host;
-var error, log;
+var error, log, attach;
 var output = '';
 
 exports.init = function(modules, options) {
@@ -18,6 +18,9 @@ exports.init = function(modules, options) {
     log = function(str) {
       output += str;
     };
+    if (options.attachCSV) {
+      attach = getBufferLogger();
+    }
   } else if (options.log) {
     log = getFileLogger(options.log);
   } else {
@@ -28,6 +31,16 @@ exports.init = function(modules, options) {
 function getFileLogger(filename) {
   return fs.appendFileSync.bind(fs, filename);
 }
+
+function getBufferLogger() {
+  var str = '';
+  var a = function(_str) {
+    str += _str + '\n';
+  }
+  a.get = function() { return str; }
+  return a;
+}
+
 
 exports.awards = function(appID, hours, format, modules, callback) {
   var options = {
@@ -41,6 +54,7 @@ exports.awards = function(appID, hours, format, modules, callback) {
       if (err) return error(script + ' error', err);
       if (format === 'email') {
         printTable(script, rows, log);
+        if (attach) printCSV(script, rows, attach);
       } else printCSV(script, rows, log);
       return cbScript();
     });
@@ -119,6 +133,13 @@ function sendMail(options) {
     }
   };
 
+  if (attach) {
+    mailOptions.attachments = [{
+      fileName: new Date() + '.csv',
+      contents: attach.get()
+    }];
+  }
+
   smtpTransport.sendMail(mailOptions, function(err, response){
     if(err) error(err);
     smtpTransport.close();
@@ -132,6 +153,8 @@ function main() {
       ['default']('host', 'https://dawg.singly.com')
       ['default']('format', 'email')
       ['default']('reports', 'tops,newApps')
+      .boolean('attach-csv')
+      .alias('attach-csv', 'attachCSV')
       .demand(['auth', 'app-id'])
       .usage('node awards.js --auth dawguser:dawgpass --app-id appid')
       .argv;
