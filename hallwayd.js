@@ -34,7 +34,7 @@ function startAPIHost(cbDone) {
   var webservice = require('webservice');
 
   webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP,
-    function (hallway) {
+    function () {
     logger.info('Hallway is now listening at ' + lconfig.lockerListenIP +
       ':' + lconfig.lockerPort);
 
@@ -55,7 +55,7 @@ function startDawg(cbDone) {
 
   var dawg = require('dawg');
 
-  dawg.startService(lconfig.dawg.port, lconfig.dawg.listenIP, function() {
+  dawg.startService(lconfig.dawg.port, lconfig.dawg.listenIP, function () {
     logger.info("The Dawg is now monitoring at port %d", lconfig.dawg.port);
 
     cbDone();
@@ -65,7 +65,7 @@ function startDawg(cbDone) {
 function startStream(cbDone) {
   logger.info("Starting a Hallway Stream -- you're in for a good time.");
 
-  require('streamer').startService(lconfig.stream, function() {
+  require('streamer').startService(lconfig.stream, function () {
     logger.info("Streaming at port %d", lconfig.stream.port);
 
     cbDone();
@@ -98,11 +98,12 @@ function startWorkerSup(cbDone) {
         logger.debug("Won master lock; kicking pcronInst.notify/gc_work");
         pcronInst.notify(lconfig.worker.services, Date.now(), function () {});
         pcronInst.gc_work(lconfig.worker.services, lconfig.worker.error_delay,
-                      Date.now(), function () {});
+          Date.now(), function () {});
       }
     });
     setTimeout(loop, 10000);
   };
+
   loop();
 
   pcronInst.start_sup(lconfig.worker, function (err) {
@@ -127,7 +128,7 @@ function startWorkerWS(cbDone) {
   }
   var worker = require("worker");
   if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
-  worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function() {
+  worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function () {
     logger.info("Starting a Hallway Worker, thou shalt be digitized",
       lconfig.worker);
     cbDone();
@@ -136,15 +137,22 @@ function startWorkerWS(cbDone) {
 
 function startTaskmaster(cbDone) {
   if (!lconfig.taskmaster || !lconfig.taskmaster.port) {
-    logger.error("You must specify a taskmaster section with at least a port and password to run.");
+    logger.error("You must specify a taskmaster section with at least a port " +
+      "and password to run.");
     process.exit(1);
   }
-  var worker = require("worker"); // reuse this for now, common things should be refactored someday
+
+  // reuse this for now, common things should be refactored someday
+  var worker = require("worker");
+
   if (!lconfig.taskmaster.listenIP) lconfig.taskmaster.listenIP = "0.0.0.0";
-  worker.startService(lconfig.taskmaster.port, lconfig.taskmaster.listenIP, function() {
-    taskmaster.init(function(){
-      logger.info("Started a Hallway Taskmaster, world re-mastered!", lconfig.taskmaster);
-      cbDone();      
+
+  worker.startService(lconfig.taskmaster.port, lconfig.taskmaster.listenIP,
+    function () {
+    taskmaster.init(function () {
+      logger.info("Started a Hallway Taskmaster, world re-mastered!",
+        lconfig.taskmaster);
+      cbDone();
     });
   });
 }
@@ -213,28 +221,33 @@ if (role.startup) {
   startupTasks.push(role.startup);
 }
 
-async.series(startupTasks, function(error) {
-  // TODO:  This needs a cleanup, it's too async
+async.series(startupTasks, function (err) {
+  if (err) {
+    logger.error('Error during startup', err);
+
+    process.exit(1);
+  }
+
   logger.info("Hallway is up and running.");
 
   exports.alive = true;
 });
 
-process.on("SIGINT", function() {
+process.on("SIGINT", function () {
   logger.info("Shutting down via SIGINT...");
 
   switch (role) {
-    case Roles.worker:
-      taskman.stop(function() {
-        process.exit(0);
-      });
-      break;
-    case Roles.apihost:
+  case Roles.worker:
+    taskman.stop(function () {
       process.exit(0);
-      break;
-    default:
-      process.exit(0);
-      break;
+    });
+    break;
+  case Roles.apihost:
+    process.exit(0);
+    break;
+  default:
+    process.exit(0);
+    break;
   }
 });
 
