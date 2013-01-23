@@ -62,7 +62,7 @@ function printTable(script, rows, log) {
     for(var i in rowVals) {
       var text = '';
       var type = typeof rowVals[i];
-      if (type === 'string' || type === 'number') text = rowVals[i]||'&nbsp';
+      if (type === 'string' || type === 'number') text = rowVals[i]||'&nbsp;';
       else if (type === 'object') {
         var href = rowVals[i].href;
         var str = rowVals[i].text || '--';
