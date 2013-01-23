@@ -31,8 +31,8 @@
 var argv = require('optimist')
   .boolean('force', false)
   .demand('service')
-  .default('limit', 100)
-  .default('offset', 0)
+  ['default']('limit', 100)
+  ['default']('offset', 0)
   .argv;
 
 
