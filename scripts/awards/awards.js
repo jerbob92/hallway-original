@@ -1,18 +1,15 @@
 var fs = require('fs');
 var nodemailer = require('nodemailer');
-
-var tops = require('./tops');
-var newApps = require('./newApps');
-//var devapps = require('./devapps');
+var async = require('async');
 
 var auth, host;
 var error, log;
 var output = '';
 
-exports.init = function(options) {
-  tops.init(options.host, options.auth, options.ignore);
-  newApps.init(options.host, options.auth, options.ignore);
-  //devapps.init(options.host, options.auth);
+exports.init = function(modules, options) {
+  for (var i in modules) {
+    modules[i].init(options.host, options.auth, options.ignore);
+  }
 
   if (options.error) error = getFileLogger(options.error);
   else error = console.error;
@@ -32,27 +29,23 @@ function getFileLogger(filename) {
   return fs.appendFileSync.bind(fs, filename);
 }
 
-exports.awards = function(appID, hours, callback) {
-  log('<h3> ' + tops.title + ' </h3>');
-  tops.run(appID, hours, function(err, rows) {
-    if (err) return error('tops error', err);
-    printTable(tops, rows, log);
-    //printCSV(tops, rows, log);
-    log('<h3> ' + newApps.title + '</h3>');
-    newApps.run(hours, function(err, rows) {
-      if (err) return error('newApps error', err);
-      printTable(newApps, rows, log);
-      //newApps.print(rows, log, error);
-      callback();
+exports.awards = function(appID, hours, format, modules, callback) {
+  var options = {
+    appID: appID,
+    hours: hours
+  };
+
+  async.forEachSeries(modules, function(script, cbScript) {
+    if (format === 'email') log('<h3> ' + script.title + ' </h3>');
+    script.run(options, function(err, rows) {
+      if (err) return error(script + ' error', err);
+      if (format === 'email') {
+        printTable(script, rows, log);
+      } else printCSV(script, rows, log);
+      return cbScript();
     });
-    //return callback();
-    // not running devapps for now
-    /*log('<h3> Active app accounts likely to be developers </h3>');
-    devapps.devapps(hours, function(err, rows) {
-      if (err) return error('devapps error', err);
-      devapps.print(rows, log, error);
-      callback();
-    });*/
+  }, function(err) {
+    callback();
   });
 };
 
@@ -96,7 +89,7 @@ function printCSV(script, rows, log) {
         if (rowVals[k].truncate) str = str.substring(0, rowVals[k].truncate);
         text = str;
       }
-      rowText += text + ',';
+      rowText += JSON.stringify(text) + ',';
     }
     log(rowText);
   }
@@ -137,16 +130,26 @@ function main() {
   var argv = require('optimist')
       ['default']('hours', 24)
       ['default']('host', 'https://dawg.singly.com')
+      ['default']('format', 'email')
+      ['default']('reports', 'tops,newApps')
       .demand(['auth', 'app-id'])
-      .usage('node scripts/awards.js --auth dawguser:dawgpass --app-id appid')
+      .usage('node awards.js --auth dawguser:dawgpass --app-id appid')
       .argv;
 
-  exports.init(argv);
+  argv.reports = argv.reports.split(',');
+  var modules = [];
+  for (var i in argv.reports) {
+    modules.push(require(__dirname + '/' + argv.reports[i]));
+  }
 
-  log('<html><body>');
-  log('<h2>Dev Awards produced at ' + new Date() + '</h2><br>');
-  exports.awards(argv['app-id'], argv.hours, function(err) {
-    log('</body></html>');
+  exports.init(modules, argv);
+
+  if (argv.format === 'email') {
+    log('<html><body>');
+    log('<h2>Dev Awards produced at ' + new Date() + '</h2><br>');
+  }
+  exports.awards(argv['app-id'], argv.hours, argv.format, modules, function(err) {
+    if (argv.format === 'email') log('</body></html>');
     if (argv.to && argv.user && argv.pass) {
       sendMail(argv);
     }

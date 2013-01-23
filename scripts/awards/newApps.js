@@ -23,7 +23,8 @@ function getProfile(act, callback) {
   });
 }
 
-exports.run = function(hours, callback) {
+exports.run = function(options, callback) {
+  var hours = options.hours;
   request.get({
     url: host + '/apps/list',
     qs: { since: Date.now() - (hours * 3600000)},
@@ -105,7 +106,7 @@ function main() {
   console.error(ignored);
   exports.init(argv.host, argv.auth, ignored);
 
-  exports.run(argv.hours, function(err, rows) {
+  exports.run({hours:argv.hours}, function(err, rows) {
     if (err) return console.error(err);
     exports.print(rows, console.log, console.error);
   });

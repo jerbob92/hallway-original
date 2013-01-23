@@ -79,7 +79,9 @@ function getProfile(act, callback) {
   });
 }
 
-exports.run = function(appID, hours, callback) {
+exports.run = function(options, callback) {
+  var appID = options.appID;
+  var hours = options.hours;
   var actprofile = {};
 
   getHits(appID, hours, function(err, accounts) {
@@ -157,7 +159,7 @@ function main() {
   console.error(ignored);
   exports.init(argv.host, argv.auth, ignored);
 
-  exports.run(argv['app-id'], argv.hours, function(err, rows) {
+  exports.run({appID:argv['app-id'], hours:argv.hours}, function(err, rows) {
     if (err) return console.error(err);
     exports.print(rows, console.log, console.error);
   });
