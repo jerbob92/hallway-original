@@ -36,8 +36,8 @@ function getBufferLogger() {
   var str = '';
   var a = function(_str) {
     str += _str + '\n';
-  }
-  a.get = function() { return str; }
+  };
+  a.get = function() { return str; };
   return a;
 }
 
@@ -99,7 +99,7 @@ function printCSV(script, rows, log) {
   log(script.columnNames.join(','));
   for(var i in rows) {
     var rowVals = script.mapRow(rows[i]);
-    rowText = '';
+    var rowText = '';
     for (var k in rowVals) {
       rowText += JSON.stringify(convertValToCSVRow(rowVals[k])) + ',';
     }

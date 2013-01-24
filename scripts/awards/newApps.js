@@ -89,7 +89,7 @@ exports.mapRow = function(row) {
   }
   values.push(appsLinks);
   return values;
-}
+};
 
 exports.columnNames = ['Account','Name','Loc','Email','Apps'];
 

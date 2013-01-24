@@ -6,6 +6,7 @@
   "externalHost": "localhost",
   "externalPort": 8042,
   "externalProtocol": "http://",
+  "dnsReapTime":300000,
   "ijod": {
     "slowPump": {
       "avg": 30,

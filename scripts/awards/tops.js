@@ -147,7 +147,7 @@ exports.mapRow = function(row) {
   }
   values.push(appsLinks);
   return values;
-}
+};
 
 function main() {
   var argv = require('optimist')
