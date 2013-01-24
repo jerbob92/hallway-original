@@ -120,7 +120,12 @@ describe('dMap', function () {
 
   describe('#partype()', function () {
     it('should return the correct type number', function () {
+      dMap.partype('first').should.equal(1);
+      dMap.partype('last').should.equal(2);
       dMap.partype('facebook').should.equal(100);
+
+      dMap.partype(1).should.equal('first');
+      dMap.partype(2).should.equal('last');
       dMap.partype(100).should.equal('facebook');
     });
 

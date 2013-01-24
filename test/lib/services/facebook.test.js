@@ -235,7 +235,7 @@ describe('Facebook connector', function () {
       });
     });
 
-    describe('when there are albume to fetch', function () {
+    describe('when there are albums to fetch', function () {
       beforeEach(function () {
         pinfo.config.albums = helper.loadFixture(__dirname +
           '/../../fixtures/synclets/facebook/albums.json').data;

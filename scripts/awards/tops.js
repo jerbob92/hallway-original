@@ -11,6 +11,9 @@ exports.init = function(_host, _auth, _ignoredUsers) {
   ignoredUsers = _ignoredUsers;
 };
 
+exports.title = 'Top developers on singly.com';
+exports.columnNames = ['Account','Hits', 'Name','Loc','Email','Apps'];
+
 function getHits(appID, hours, callback) {
   getHitsPage(appID, hours, {}, {
       url: host + '/apps/logs',
@@ -76,7 +79,9 @@ function getProfile(act, callback) {
   });
 }
 
-exports.tops = function(appID, hours, callback) {
+exports.run = function(options, callback) {
+  var appID = options.appID;
+  var hours = options.hours;
   var actprofile = {};
 
   getHits(appID, hours, function(err, accounts) {
@@ -115,35 +120,33 @@ exports.tops = function(appID, hours, callback) {
   });
 };
 
-exports.print = function(rows, log) {
-  function logRow(id, count, profile) {
-    var line = '<tr>';
-    line += '<td><a href="https://dawg.singly.com/apps/account?id='+id+'">' +
-      id.substring(0, 6) + '</a></td>';
-    line += '<td>'+count+'</td>';
-    line += '<td><a href="'+profile.url+'">' +
-      (profile.name||profile.handle||'--') + '</a></td>';
-    line += '<td>'+(profile.location||'&nbsp;')+'</td>';
-    line += '<td>'+(profile.email||'&nbsp;')+'</td>';
-    var appsText = '';
-    var apps = profile && profile.apps && profile.apps.slice(0, 3);
-    for (var i in apps) {
-      var app = apps[i];
-      appsText += '<a alt="' + app.appDescription + '" href="' + host + '/app/info/' + app.clientId + '">' +
-        app.appName + '</a> ';
-    }
-    line += '<td>' + appsText + '</td>';
-    line += '</tr>';
-    log(line);
-  }
+exports.mapRow = function(row) {
+  var values = [
+    {
+      href: 'https://dawg.singly.com/apps/account?id='+row.id,
+      text: row.id,
+      truncate: 6
+    },
+    row.hits,
+    {
+      href: row.profile.url,
+      text: row.profile.name || row.profile.handle
+    },
+    row.profile.location,
+    row.profile.email
+  ];
 
-  log('<table><tr>');
-  log('<td>Account</td><td>Hits</td><td>Name</td><td>Loc</td><td>Email</td><td>Apps</td>');
-  log('</tr>');
-  rows.forEach(function(row) {
-    logRow(row.id, row.hits, row.profile);
-  });
-  log('</table>');
+  var appsLinks = [];
+  var apps = row.profile && row.profile.apps && row.profile.apps.slice(0, 3);
+  for (var i in apps) {
+    var app = apps[i];
+    appsLinks.push({
+      href: host + '/app/info/' + app.clientId,
+      text: app.appName
+    });
+  }
+  values.push(appsLinks);
+  return values;
 };
 
 function main() {
@@ -151,7 +154,7 @@ function main() {
       ['default']('hours', 24)
       ['default']('host', 'https://dawg.singly.com')
       .demand(['auth', 'app-id'])
-      .usage('node scripts/tops.js --auth dawguser:dawgpass --app-id appid')
+      .usage('node tops.js --auth dawguser:dawgpass --app-id appid')
       .argv;
 
   var ignored = argv.ignore || '';
@@ -159,7 +162,7 @@ function main() {
   console.error(ignored);
   exports.init(argv.host, argv.auth, ignored);
 
-  exports.tops(argv['app-id'], argv.hours, function(err, rows) {
+  exports.run({appID:argv['app-id'], hours:argv.hours}, function(err, rows) {
     if (err) return console.error(err);
     exports.print(rows, console.log, console.error);
   });
