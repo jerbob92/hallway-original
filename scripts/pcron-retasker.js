@@ -30,12 +30,11 @@
 
 var argv = require('optimist')
   .boolean('force', false)
-  .demand('service')
   .default('limit', 100)
   .default('offset', 0)
   .argv;
 
-
+var _ = require("underscore");
 var async = require('async');
 var lconfig = require('lconfig');
 var logger = require('logger').logger('retasker');
@@ -44,11 +43,13 @@ var pcron = require('pcron');
 var dal = require('dal');
 var ijod = require('ijod');
 var acl = require('acl');
-var taskmanNG = require('taskman-ng');
+var taskStore = require('taskStore');
 var servezas = require('servezas');
 var redis = require("redis");
+var locksmith = require("locksmith");
 var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
                                  lconfig.worker.redis.host || "127.0.0.1");
+rclient.debug = true
 var pcron = require("pcron");
 var pcronInst = pcron.init(rclient);
 
@@ -59,15 +60,28 @@ function stop(reason) {
 
 
 function retask(pids, cbDone) {
-  var i = argv.offset;
+  var i = 0;
   async.forEachLimit(pids, 100, function (row, cbLoop) {
     profileManager.authGet(row.id, null, function (err, auth) {
-      if (!auth) return cbLoop();
-      taskmanNG.taskUpdate(auth, function (err) {
-        if (err) stop(row.id + " failed to update task: " + err);
-        var parts = row.id.split("@");
-        pcronInst.schedule(parts[1], parts[0], Date.now(), false, cbLoop);
-        logger.info(row.id + " " + (i++));
+      if (!auth || !auth.apps) return cbLoop();
+
+      var parts = row.id.split("@");
+      var service = parts[1];
+      var user = parts[0];
+
+      taskStore.getTasks(auth.pid, false, function (err, tasks) {
+        if (err) {
+          console.log("Unable to get tasks for " + row.id + " : " + err);
+          return cbLoop();
+        }
+
+        var minObj = _.min(_.values(tasks), function (t) { return t.at; });
+        if (minObj === undefined) {
+          console.log("Undefined minObj " + row.id + " Tasks: " + tasks.length);
+          return cbLoop();
+        }
+        pcronInst.schedule(service, user, minObj.at, false, cbLoop);
+        logger.info(i++ + ": " + row.id + " scheduled for " + minObj.at);
       });
     });
   }, function (err) {
@@ -77,21 +91,39 @@ function retask(pids, cbDone) {
 }
 
 function getPids(offset, limit, service, cbDone) {
-  var sql = 'SELECT id FROM Profiles WHERE service=? LIMIT ? OFFSET ?';
-  var binds = [service, limit, offset];
+  var sql = 'SELECT id FROM Profiles WHERE service=?';
+  var binds = [service];
+  if (limit > 0) {
+    sql += " LIMIT ? ";
+    binds.push(limit);
+
+    sql += " OFFSET ?";
+    binds.push(offset);
+  }
+
+  console.log(sql + " " + JSON.stringify(binds));
   dal.query(sql, binds, cbDone);
 }
 
 rclient.select(lconfig.worker.redis.database || 0, function (err) {
   if (err) return stop("Redis SELECT failed: " + err);
-  ijod.initDB(function (err) {
-    if (err) return stop("IJOD init failed: " + err);
-    servezas.load();
-    acl.init(function (err) {
-      if (err) return stop("ACL init failed: " + err);
-      getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
-        if (err) return stop("getPids failed: " + err);
-        retask(rows, process.exit);
+  locksmith.init("pcronretasker", function (err) {
+    if (err) return stop("locksmith init failed: " + err);
+    ijod.initDB(function (err) {
+      if (err) return stop("IJOD init failed: " + err);
+      servezas.load();
+      acl.init(function (err) {
+        if (err) return stop("ACL init failed: " + err);
+        if (argv.id) {
+          console.log("Retasking id!");
+          retask([{id: argv.id}], process.exit);
+        } else {
+          console.log("Retasking pids");
+          getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
+            if (err) return stop("getPids failed: " + err);
+            retask(rows, process.exit);
+          });
+        }
       });
     });
   });
