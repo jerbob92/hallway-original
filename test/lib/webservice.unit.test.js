@@ -178,6 +178,49 @@ function failOnBadAccessToken(url) {
 }
 
 describe('API host', function () {
+  describe('endpoints without their own OPTIONS', function () {
+    var paths = [];
+
+    Object.keys(webservice.routes).forEach(function (verb) {
+      webservice.routes[verb].forEach(function (route) {
+        if (webservice.routes.options &&
+          webservice.routes.options.some(function (optionsRoute) {
+          return optionsRoute.path === route.path;
+        })) {
+          return;
+        }
+
+        paths.push(route.path);
+      });
+    });
+
+    paths = _.uniq(paths);
+
+    paths.forEach(function (path) {
+      it(path + ' should respond to OPTIONS', function (done) {
+        REQUEST.options(path)
+          .expect('Allow', /GET|PUT|POST|DELETE/)
+          .expect(200)
+          .end(done);
+      });
+    });
+  });
+
+  describe('endpoints that provide their own OPTIONS', function () {
+    var paths = webservice.routes.options.map(function (route) {
+      return route.path;
+    });
+
+    paths.forEach(function (path) {
+      it(path + ' should require authentication', function (done) {
+        REQUEST.options(path)
+          .expect('Content-Type', /json/)
+          .expect(401, /access_token/)
+          .end(done);
+      });
+    });
+  });
+
   describe('private endpoints', function () {
     SIMPLE_GETS.forEach(function (url) {
       it(url + ' requires an access token', function (done) {
