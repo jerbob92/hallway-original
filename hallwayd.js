@@ -25,6 +25,10 @@ var taskmaster = require('taskmaster');
 
 var http = require('http');
 
+var dnsCache = require("dns-cache");
+var dns = require("dns");
+dns.lookup = dnsCache.cachedLookup;
+
 // Set our globalAgent sockets higher
 http.globalAgent.maxSockets = 800;
 
