@@ -25,6 +25,15 @@ var taskmaster = require('taskmaster');
 
 var http = require('http');
 
+var dnsCache = require("dns-cache");
+var dns = require("dns");
+dns.lookup = dnsCache.cachedLookup;
+// Reap the dns cache every 5m to refresh and prevent ram waste
+setInterval(function() {
+  logger.info("Reaping dns cache.");
+  dnsCache.clearCache();
+}, lconfig.dnsReapTime);
+
 // Set our globalAgent sockets higher
 http.globalAgent.maxSockets = 800;
 
