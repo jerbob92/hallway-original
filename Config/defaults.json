@@ -16,7 +16,10 @@
   "ijod_backend": "mem",
   "worker": {
     "listenIP": "0.0.0.0",
-    "port": 8041
+    "port": 8041,
+    "redis": { "host": "localhost",
+               "port": 6379,
+               "database": 0}
   },
   "taskmaster": {
     "listenIP": "0.0.0.0",
