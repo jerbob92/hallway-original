@@ -24,7 +24,7 @@ if (!lconfig.ec2 || !lconfig.ec2.accessKeyId || !lconfig.ec2.secretKey) {
 
     describe('#instanceAddresses', function () {
       it('should return valid data', function (done) {
-        dawgAws.instanceAddresses('worker', function (err, data) {
+        dawgAws.instanceAddresses('workersup', function (err, data) {
           if (err) return done(err);
 
           data.should.be.an('array');
