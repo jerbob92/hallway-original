@@ -126,7 +126,9 @@ function startWorkerSup(cbDone) {
 
 function startWorkerChild(cbDone) {
   var taskmanNG = require('taskman-ng');
-  taskmanNG.init(cbDone);
+  taskmanNG.init(function () {
+    startWorkerWS(cbDone);
+  });
 }
 
 function startWorkerWS(cbDone) {
