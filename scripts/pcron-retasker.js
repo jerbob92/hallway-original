@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 * Copyright (C) 2012-2013 Singly, Inc. All Rights Reserved.
 *
@@ -30,8 +32,8 @@
 
 var argv = require('optimist')
   .boolean('force', false)
-  .default('limit', 100)
-  .default('offset', 0)
+  .options('limit', { 'default': 100 })
+  .options('offset', { 'default': 0 })
   .argv;
 
 var _ = require("underscore");
@@ -49,7 +51,7 @@ var redis = require("redis");
 var locksmith = require("locksmith");
 var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
                                  lconfig.worker.redis.host || "127.0.0.1");
-rclient.debug = true
+rclient.debug = true;
 var pcron = require("pcron");
 var pcronInst = pcron.init(rclient);
 
@@ -57,7 +59,6 @@ function stop(reason) {
   logger.error("Error: " + reason);
   process.exit(1);
 }
-
 
 function retask(pids, cbDone) {
   var i = 0;
