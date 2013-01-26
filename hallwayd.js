@@ -94,6 +94,15 @@ function startWorkerSup(cbDone) {
   lconfig.worker.moduleName = "hallwayd.js";
   lconfig.worker.spawnArgs = ["workerchild"];
 
+  // Monitor all services if unspecified
+  if (!lconfig.worker.services) {
+    var servezas = require('servezas');
+
+    servezas.load();
+
+    lconfig.worker.services = servezas.serviceList();
+  }
+
   // Use pcronInsta.set_master to ensure we're not running gc_work/notify too
   // often/heavily. We use a 10 second interval for simplicity; this means that
   // each worker will run this script once every 10 seconds and then, if it's
