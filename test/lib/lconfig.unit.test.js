@@ -7,6 +7,8 @@ describe('lconfig', function () {
     lconfig.lockerHost.should.be.a('string');
     lconfig.lockerPort.should.be.a('number');
 
+    lconfig.lockerPort.should.equal(8042);
+
     lconfig.externalHost.should.be.a('string');
     lconfig.externalPort.should.be.a('number');
   });
