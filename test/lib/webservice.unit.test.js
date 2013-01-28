@@ -178,6 +178,17 @@ function failOnBadAccessToken(url) {
 }
 
 describe('API host', function () {
+  describe('applying auth', function () {
+    it('should not crash', function (done) {
+      REQUEST.get('/auth/facebook/apply')
+        .query({
+          access_token: GOOD_ACCESS_TOKEN
+        })
+        .expect(404)
+        .end(done);
+    });
+  });
+
   describe('endpoints without their own OPTIONS', function () {
     var paths = [];
 

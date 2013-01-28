@@ -7,6 +7,9 @@
   "externalPort": 8042,
   "externalProtocol": "http://",
   "dnsReapTime":300000,
+  "backlog": {
+    "threshold": 3500
+  },
   "ijod": {
     "slowPump": {
       "avg": 30,
