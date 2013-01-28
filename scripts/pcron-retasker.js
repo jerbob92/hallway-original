@@ -81,8 +81,9 @@ function retask(pids, cbDone) {
           console.log("Undefined minObj " + row.id + " Tasks: " + tasks.length);
           return cbLoop();
         }
-        pcronInst.schedule(service, user, minObj.at, false, cbLoop);
-        logger.info(i++ + ": " + row.id + " scheduled for " + minObj.at);
+        var scheduledTime = argv.at || minObj.at;
+        pcronInst.schedule(service, user, scheduledTime, false, cbLoop);
+        logger.info(i++ + ": " + row.id + " scheduled for " + scheduledTime);
       });
     });
   }, function (err) {
