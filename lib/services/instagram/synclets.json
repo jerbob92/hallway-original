@@ -50,6 +50,7 @@
       "source": "http://assets.singly.com/service-icons/1024px/instagram.png"
     }
   ],
+  "sandbox": true,
   "synclets": [
     {
       "name": "self",
