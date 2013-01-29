@@ -70,20 +70,22 @@ function retask(pids, cbDone) {
       var service = parts[1];
       var user = parts[0];
 
-      taskStore.getTasks(auth.pid, false, function (err, tasks) {
-        if (err) {
-          console.log("Unable to get tasks for " + row.id + " : " + err);
-          return cbLoop();
-        }
+      taskStore.reconcileTasks(auth, true, function(err) {
+        taskStore.getTasks(auth.pid, false, function (err, tasks) {
+          if (err) {
+            console.log("Unable to get tasks for " + row.id + " : " + err);
+            return cbLoop();
+          }
 
-        var minObj = _.min(_.values(tasks), function (t) { return t.at; });
-        if (minObj === undefined) {
-          console.log("Undefined minObj " + row.id + " Tasks: " + tasks.length);
-          return cbLoop();
-        }
-        var scheduledTime = argv.at || minObj.at;
-        pcronInst.schedule(service, user, scheduledTime, false, cbLoop);
-        logger.info(i++ + ": " + row.id + " scheduled for " + scheduledTime);
+          var minObj = _.min(_.values(tasks), function (t) { return t.at; });
+          if (minObj === undefined) {
+            console.log("Undefined minObj " + row.id + " Tasks: " + tasks.length);
+            return cbLoop();
+          }
+          var scheduledTime = argv.at || minObj.at;
+          pcronInst.schedule(service, user, scheduledTime, false, cbLoop);
+          logger.info(i++ + ": " + row.id + " scheduled for " + scheduledTime);
+        });
       });
     });
   }, function (err) {
