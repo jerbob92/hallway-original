@@ -22,7 +22,7 @@ var ijod = require('ijod');
 var locksmith = require('locksmith');
 var profileManager = require('profileManager');
 var servezas = require('servezas');
-var taskStore = require('taskStore');
+var taskList = require('taskList');
 
 
 if (!program.profile) program.help();
@@ -31,10 +31,12 @@ var service = program.profile.split('@')[1];
 
 function initialize(callback) {
   ijod.initDB(function() {
-    locksmith.init('clearProfile', function() {
-      servezas.load();
-      dMap.load();
-      callback();
+    taskList.init(function() {
+      locksmith.init('clearProfile', function() {
+        servezas.load();
+        dMap.load();
+        callback();
+      });
     });
   });
 }
@@ -68,7 +70,7 @@ function resetConfig(callback) {
 
 function deleteTasks(callback) {
   logger.info('Deleting all tasks');
-  taskStore.detask(program.profile, callback);
+  taskList.del(program.profile, callback);
 }
 
 function error(err) {
