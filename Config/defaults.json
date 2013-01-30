@@ -6,10 +6,8 @@
   "externalHost": "localhost",
   "externalPort": 8042,
   "externalProtocol": "http://",
-  "dnsReapTime":300000,
-  "backlog": {
-    "threshold": 3500
-  },
+  "dnsReapTime": 300000,
+  "backlogThresholds": {},
   "ijod": {
     "slowPump": {
       "avg": 30,
