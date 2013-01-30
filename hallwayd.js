@@ -216,12 +216,13 @@ if (role !== Roles.stream) {
   // this loads all lib/services/*/map.js
   startupTasks.push(function (cb) {
     require('dMap').load();
+    require('servezas').load();
 
     cb();
   });
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(require('tokenz').init);
-  startupTasks.push(startTaskman);
+  startupTasks.push(require('taskList').init);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {

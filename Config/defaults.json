@@ -49,6 +49,10 @@
     "defaultScanTime": 5000,
     "attempts": 8,
     "heartbeat": 10000,
+    "store": {
+      "type": "riak",
+      "servers": ["localhost:8098"]
+    },
     "redis": {
       "host": "localhost",
       "port": 6379
