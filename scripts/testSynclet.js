@@ -22,6 +22,7 @@ if (!program.synclet || !program.profile) {
 
 var path = require('path');
 var async = require('async');
+var _ = require('underscore');
 
 var dal = require('dal');
 var ijod = require('ijod');
@@ -36,7 +37,9 @@ var service = profile.split('@')[1];
 logger.info('Running %s/%s for %s', service, synclet, profile);
 
 function exitWithError() {
-  logger.info.apply(logger, arguments);
+  logger.info.apply(logger, _.map(arguments, function(arg) {
+    return (typeof(arg) === 'string') ? arg : JSON.stringify(arg);
+  }));
 
   process.exit(1);
 }
