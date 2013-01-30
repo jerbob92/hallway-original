@@ -61,7 +61,7 @@ dalFake.addFake(/SELECT TRUE/i, [{ TRUE: '1' }]);
 dalFake.addFake(/SELECT conv/i, []);
 dalFake.addFake(/SELECT path, offset, len/i, [{ path: 'abc', offset: 0, len: 1 }]);
 dalFake.addFake('SELECT app, secret, apikeys, notes FROM Apps WHERE app = ? ' +
-  'LIMIT 1',  [{}]);
+  'LIMIT 1',  [{ app: 'aaaabbbbccccdddd', secret: 'AAAABBBBCCCCDDDD' }]);
 dalFake.addFake('SELECT profile FROM Accounts WHERE account = ?', PROFILES);
 
 dal.setBackend('fake');
@@ -179,10 +179,31 @@ function failOnBadAccessToken(url) {
 
 describe('API host', function () {
   describe('applying auth', function () {
-    it('should not crash', function (done) {
+    it('should throttle when necessary', function (done) {
+      lconfig.backlogThresholds = {
+        aaaabbbbccccdddd: -1
+      };
+
       REQUEST.get('/auth/facebook/apply')
         .query({
-          access_token: GOOD_ACCESS_TOKEN
+          client_id: 'aaaabbbbccccdddd',
+          client_secret: 'AAAABBBBCCCCDDDD',
+          token: '1111222233334444',
+          token_secret: '5555666677778888'
+        })
+        .expect(503, /Throttling in effect/)
+        .end(done);
+    });
+
+    it('should not throttle when unnecessary', function (done) {
+      lconfig.backlogThresholds = {};
+
+      REQUEST.get('/auth/facebook/apply')
+        .query({
+          client_id: 'aaaabbbbccccddd',
+          client_secret: 'AAAABBBBCCCCDDDD',
+          token: '1111222233334444',
+          token_secret: '5555666677778888'
         })
         .expect(404)
         .end(done);
