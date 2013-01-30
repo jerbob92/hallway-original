@@ -7,6 +7,7 @@ notifications:
 services:
     - redis-server
     - mysql
+    - riak
 branches:
     except:
         - production
