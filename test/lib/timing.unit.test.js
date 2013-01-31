@@ -24,5 +24,12 @@ describe('timing', function () {
       cleaned.should.be.a('string');
       cleaned.should.equal('services.facebook.photos');
     });
+
+    it('should clean id URLs', function () {
+      var cleaned = timing.cleanPath('/id/aaaabbbbccccdddd');
+
+      cleaned.should.be.a('string');
+      cleaned.should.equal('id');
+    });
   });
 });
