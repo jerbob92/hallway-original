@@ -1,4 +1,4 @@
-#!/usr/bin/env/node
+#!/usr/bin/env node
 
 var async = require('async');
 var program = require('commander');
@@ -16,7 +16,7 @@ lconfig.logging = {
 };
 var logger = require('logger').logger('clearProfile');
 
-var dMap = require('dmap');
+var dMap = require('dMap');
 var entries = require('entries');
 var ijod = require('ijod');
 var locksmith = require('locksmith');
