@@ -22,7 +22,7 @@ for FILE in `find test -name \*.test.js`; do
   echo "- $FILE"
 
   env SUPPRESS_LOGS=true NODE_PATH=lib-cov:test/lib $MOCHA $FILE | \
-    perl -0777 -pe "s/(?s).*?{/{/" > covershot/data/$(uuid).json
+    perl -0777 -pe "s/(?s).*?{\n/{\n/" > covershot/data/$(uuid).json
 done
 
 echo
