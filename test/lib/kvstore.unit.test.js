@@ -35,10 +35,11 @@ describe("kvstore", function () {
                   riak: {servers: ["127.0.0.1:8098"]}};
 
   _.keys(backends).forEach(function (name) {
-    it("should complete JSON put/get in " + name + " successfully", function (cbDone) {
+    it("should complete JSON put/get in " + name + " successfully",
+      function (cbDone) {
       var value = {a: 123, b: "abcdef"};
       var store = kvstore.instance(name, backends[name]);
-      console.log(JSON.stringify(store));
+      //console.log(JSON.stringify(store));
       store.put("testb1", "testk1", value, function (err) {
         assert.ifError(err);
         store.get("testb1", "testk1", {}, function (err, data) {
@@ -59,4 +60,3 @@ describe("kvstore", function () {
     });
   });
 });
-
