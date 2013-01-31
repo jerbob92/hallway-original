@@ -54,8 +54,8 @@ while read -r FILE
 do
   BASE=`basename ${FILE} .js`
 
-  TEST="test/lib/${BASE}.test.js"
-  UNIT_TEST="test/lib/${BASE}.unit.test.js"
+  TEST="test/${FILE%.*}.test.js"
+  UNIT_TEST="test/${FILE%.*}.unit.test.js"
 
   if contains $BASE "${IGNORES[@]}"
   then
@@ -82,7 +82,7 @@ do
       echo -e " $DASH $UNIT_TEST $(blame $FILE)"
     fi
   fi
-done < <(find lib -maxdepth 1 -type f | sort)
+done < <(find lib -maxdepth 1 -type f; find lib/api-host -type f | sort)
 
 if [[ ! $MISSING -gt 0 ]]
 then
