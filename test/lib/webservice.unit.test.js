@@ -63,6 +63,22 @@ dalFake.addFake(/SELECT path, offset, len/i, [{ path: 'abc', offset: 0, len: 1 }
 dalFake.addFake('SELECT app, secret, apikeys, notes FROM Apps WHERE app = ? ' +
   'LIMIT 1',  [{ app: 'aaaabbbbccccdddd', secret: 'AAAABBBBCCCCDDDD' }]);
 dalFake.addFake('SELECT profile FROM Accounts WHERE account = ?', PROFILES);
+dalFake.addFake('SELECT Apps.app, Apps.secret, Apps.apikeys, Apps.notes ' +
+  'FROM Apps, Owners WHERE Apps.app = Owners.app and Owners.account = ?', [{
+  app: 'aaaabbbbccccdddd',
+  secret: 'AAAABBBBCCCCDDDD',
+  notes: '',
+  apikeys: ''
+}]);
+dalFake.addFake(/INSERT into Profiles/i, []);
+dalFake.addFake(/SELECT auth FROM Profiles/i, [{
+  auth: {
+    apps: {
+      aaaabbbbccccdddd: {}
+    }
+  }
+}]);
+dalFake.addFake(/^UPDATE/i, []);
 
 dal.setBackend('fake');
 
@@ -259,6 +275,34 @@ describe('API host', function () {
         REQUEST.get(url)
           .expect('Content-Type', /json/)
           .expect(401, /access_token/)
+          .end(done);
+      });
+    });
+
+    SIMPLE_GETS.filter(function (url) {
+      // push needs a fake IJOD backend before it's testable
+      // logout redirects
+      return url !== '/push' &&
+        url !== '/logout';
+    }).forEach(function (url) {
+      it(url + ' should not error with a good access token', function (done) {
+        REQUEST.get(url)
+          .query({
+            access_token: GOOD_ACCESS_TOKEN
+          })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(done);
+      });
+    });
+
+    describe('/logout', function () {
+      it('should redirect', function (done) {
+        REQUEST.get('/logout')
+          .query({
+            access_token: GOOD_ACCESS_TOKEN
+          })
+          .expect(302)
           .end(done);
       });
     });
