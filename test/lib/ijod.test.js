@@ -35,7 +35,6 @@ var ijodEvent = require('ijod-event');
 var lconfig = require("lconfig");
 var logger = require("logger").logger("ijod-test");
 var partition = require('partition');
-var taskman = require('taskman');
 var testdb = require("testdb");
 
 // Helper function strip keys other than idr, data from a dataset
@@ -132,10 +131,6 @@ if (lconfig.database.database !== "test") {
   logger.warn('Database name not set to \'test\'; bypassing IJOD integration ' +
     'tests!');
 } else {
-  before(function (done) {
-    taskman.init(false, false, done);
-  });
-
   var origIJODBackend = lconfig.ijod_backend;
   var origDALBackend = dal.getBackend();
 
