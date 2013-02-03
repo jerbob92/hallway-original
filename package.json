@@ -56,7 +56,7 @@
     "mkdirp": "=0.3.4",
     "moment": "1.6.x",
     "murmurhash3": "",
-    "mysql": "=2.0.0-alpha4",
+    "mysql": "=2.0.0-alpha6",
     "mysql-libmysqlclient": "=1.3.3",
     "natural": "",
     "nodemailer": "",
