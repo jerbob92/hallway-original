@@ -176,7 +176,7 @@ if (lconfig.database.database !== "test") {
       partition.init();
 
       // Insert all the data
-      ijod.batchSmartAdd(TESTDATA, function (err) {
+      ijod.pump(TESTDATA, function (err) {
         // Manually exercise ijod-event pump
         ijodEvent.pump(TESTDATA, function () {});
 
@@ -204,7 +204,7 @@ if (lconfig.database.database !== "test") {
         partition.init();
 
         // Insert all the data
-        ijod.batchSmartAdd(TESTDATA, function (err) {
+        ijod.pump(TESTDATA, function (err) {
           assert.ifError(err);
 
           // Verify reading back through API functions as expected
@@ -219,7 +219,7 @@ if (lconfig.database.database !== "test") {
             partition.init();
 
             // Store updated dataset
-            ijod.batchSmartAdd(data1, function (err) {
+            ijod.pump(data1, function (err) {
               assert.ifError(err);
 
               // Verify ijod reflects latest changes
@@ -242,7 +242,7 @@ if (lconfig.database.database !== "test") {
       partition.init();
 
       // Insert all the data
-      ijod.batchSmartAdd(TESTDATA, function (err) {
+      ijod.pump(TESTDATA, function (err) {
         assert.ifError(err);
 
         // Mutate every other entry in the dataset and generate
@@ -266,7 +266,7 @@ if (lconfig.database.database !== "test") {
         // Insert mutated data; there should now be data across ranges
         // in old/new tables. We want to verify that the getRange returns
         // data in both old and new
-        ijod.batchSmartAdd(changelist, function (err) {
+        ijod.pump(changelist, function (err) {
           assert.ifError(err);
 
           // Validate that getRange returns what we expect from our merged
