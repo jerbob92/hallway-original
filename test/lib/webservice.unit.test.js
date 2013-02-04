@@ -57,7 +57,7 @@ var PROFILE_RESPONSE = {
 
 dalFake.reset();
 
-dalFake.addFake(/SELECT TRUE/i, [{ TRUE: '1' }]);
+dalFake.addFake(/SELECT TRUE/i, [{ TRUE: 1 }]);
 dalFake.addFake(/SELECT conv/i, []);
 dalFake.addFake(/SELECT path, offset, len/i, [{ path: 'abc', offset: 0, len: 1 }]);
 dalFake.addFake('SELECT app, secret, apikeys, notes FROM Apps WHERE app = ? ' +
