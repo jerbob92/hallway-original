@@ -96,9 +96,24 @@ function runService(paginationPi, cb) {
         if (program.emptyConfig || !pi.config) {
           pi.config = {};
         }
-
-        logger.info('Starting config: %j', pi.config);
       }
+
+      var synclets;
+      try {
+        synclets = require(
+          path.join(__dirname, '/../lib', 'services', service, 'synclets.json')
+        );
+      } catch (e) {
+        exitWithError('%s has no synclets.json: %s', service, e);
+      }
+
+      if (synclets.sandbox) {
+        pi.all = pi.config;
+        pi.config = pi.config[synclet];
+      }
+
+      if (pi.all) logger.info('All configs: %j', pi.all);
+      logger.info('Starting config: %j', pi.config);
 
       try {
         var mod = require(path.join(__dirname, '/../lib', 'services', service,
@@ -142,7 +157,14 @@ function runService(paginationPi, cb) {
               JSON.stringify(filtered, null, 2));
           }
 
-          cb(data);
+          if (synclets.sandbox) {
+            pi.all[synclet] = data.config;
+            pi.config = pi.all;
+          } else {
+            pi = data;
+          }
+
+          cb(pi);
         });
       } catch (e) {
         exitWithError('Exception running %s/%s: %s', service, synclet, e);
