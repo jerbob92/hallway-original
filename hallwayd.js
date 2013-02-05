@@ -24,6 +24,7 @@ var taskman = require('taskman');
 var taskmaster = require('taskmaster');
 
 var http = require('http');
+var https = require('https');
 
 var dnsCache = require("dns-cache");
 var dns = require("dns");
@@ -36,6 +37,7 @@ setInterval(function() {
 
 // Set our globalAgent sockets higher
 http.globalAgent.maxSockets = 800;
+https.globalAgent.maxSockets = 800;
 
 function startAPIHost(cbDone) {
   logger.info("Starting an API host");
