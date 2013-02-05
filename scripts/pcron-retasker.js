@@ -100,18 +100,20 @@ rclient.select(lconfig.worker.redis.database || 0, function (err) {
     ijod.initDB(function (err) {
       if (err) return stop("IJOD init failed: " + err);
       servezas.load();
-      acl.init(function (err) {
-        if (err) return stop("ACL init failed: " + err);
-        if (argv.id) {
-          console.log("Retasking id!");
-          retask([{id: argv.id}], process.exit);
-        } else {
-          console.log("Retasking pids");
-          getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
-            if (err) return stop("getPids failed: " + err);
-            retask(rows, process.exit);
-          });
-        }
+      profileManager.init(function() {
+        acl.init(function (err) {
+          if (err) return stop("ACL init failed: " + err);
+          if (argv.id) {
+            console.log("Retasking id!");
+            retask([{id: argv.id}], process.exit);
+          } else {
+            console.log("Retasking pids");
+            getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
+              if (err) return stop("getPids failed: " + err);
+              retask(rows, process.exit);
+            });
+          }
+        });
       });
     });
   });
