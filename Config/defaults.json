@@ -58,6 +58,10 @@
       "port": 6379
     }
   },
+  "profiles": {
+    "type": "riak",
+    "servers": ["localhost:8098"]
+  },
   "stream": {
     "apihost": "http://localhost:8042",
     "streamhost": "http://localhost:8069",

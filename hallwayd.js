@@ -234,6 +234,7 @@ if (role !== Roles.stream) {
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(require('tokenz').init);
   startupTasks.push(require('taskList').init);
+  startupTasks.push(require('profileManager').init);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
