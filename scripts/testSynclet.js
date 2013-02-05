@@ -150,21 +150,23 @@ function runService(paginationPi, cb) {
 }
 
 ijod.initDB(function () {
-  var queue = [null];
+  profileManager.init(function() {
+    var queue = [null];
 
-  async.whilst(function () {
-    return queue.length > 0;
-  }, function (whilstCb) {
-    runs++;
+    async.whilst(function () {
+      return queue.length > 0;
+    }, function (whilstCb) {
+      runs++;
 
-    runService(queue.pop(), function (data) {
-      if (data.config && data.config.nextRun === -1) {
-        queue.push(data);
-      }
+      runService(queue.pop(), function (data) {
+        if (data.config && data.config.nextRun === -1) {
+          queue.push(data);
+        }
 
-      whilstCb();
+        whilstCb();
+      });
+    }, function () {
+      process.exit(0);
     });
-  }, function () {
-    process.exit(0);
   });
 });

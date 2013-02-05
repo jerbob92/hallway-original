@@ -31,11 +31,13 @@ var service = program.profile.split('@')[1];
 
 function initialize(callback) {
   ijod.initDB(function() {
-    taskList.init(function() {
-      locksmith.init('clearProfile', function() {
-        servezas.load();
-        dMap.load();
-        callback();
+    profileManager.init(function() {
+      taskList.init(function() {
+        locksmith.init('clearProfile', function() {
+          servezas.load();
+          dMap.load();
+          callback();
+        });
       });
     });
   });
