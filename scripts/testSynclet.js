@@ -38,7 +38,9 @@ logger.info('Running %s/%s for %s', service, synclet, profile);
 
 function exitWithError() {
   logger.info.apply(logger, _.map(arguments, function(arg) {
-    return (typeof(arg) === 'string') ? arg : JSON.stringify(arg);
+    var str = arg + '';
+    if (str === '[object Object]') arg = JSON.stringify(arg);
+    return arg;
   }));
 
   process.exit(1);
