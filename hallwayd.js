@@ -25,8 +25,7 @@ if (argv._.length === 0 || argv._[0] === "apihost") {
   if(lconfig.database && lconfig.database.maxConnections) lconfig.database.maxConnections *= 2;
 }
 
-var taskman = require('taskman');
-var taskmaster = require('taskmaster');
+var taskmanNG = require('taskman-ng');
 
 var http = require('http');
 var https = require('https');
@@ -141,7 +140,6 @@ function startWorkerSup(cbDone) {
 }
 
 function startWorkerChild(cbDone) {
-  var taskmanNG = require('taskman-ng');
   taskmanNG.init(function () {
     startWorkerWS(cbDone);
   });
@@ -162,35 +160,7 @@ function startWorkerWS(cbDone) {
   });
 }
 
-function startTaskmaster(cbDone) {
-  if (!lconfig.taskmaster || !lconfig.taskmaster.port) {
-    logger.error("You must specify a taskmaster section with at least a port " +
-      "and password to run.");
-    process.exit(1);
-  }
-
-  // reuse this for now, common things should be refactored someday
-  var worker = require("worker");
-
-  if (!lconfig.taskmaster.listenIP) lconfig.taskmaster.listenIP = "0.0.0.0";
-
-  worker.startService(lconfig.taskmaster.port, lconfig.taskmaster.listenIP,
-    function () {
-    taskmaster.init(function () {
-      logger.info("Started a Hallway Taskmaster, world re-mastered!",
-        lconfig.taskmaster);
-      cbDone();
-    });
-  });
-}
-
 var Roles = {
-  taskmaster: {
-    startup: startTaskmaster
-  },
-  worker: {
-    startup: startWorkerWS
-  },
   workersup: {
     startup: startWorkerSup
   },
@@ -209,12 +179,6 @@ var Roles = {
 };
 
 var role = Roles.apihost;
-
-function startTaskman(cbDone) {
-  var live = (role === Roles.worker);
-  logger.info("Starting a worker.");
-  taskman.init(live, argv.once, cbDone);
-}
 
 if (argv._.length > 0) {
   if (!Roles.hasOwnProperty(argv._[0])) {
@@ -267,7 +231,7 @@ process.on("SIGINT", function () {
 
   switch (role) {
   case Roles.worker:
-    taskman.stop(function () {
+    taskmanNG.stop(function () {
       process.exit(0);
     });
     break;
@@ -290,29 +254,26 @@ process.on('uncaughtException', function (err) {
 
   instruments.increment('exceptions.uncaught').send();
 
-  // For any role OTHER than taskmaster, we try to ignore "innocous"
-  // errors. This is a temporary fix until we can track down source.
-  // TODO: Track down any/all root causes so we can get rid
+  // We try to ignore "innocous" errors. This is a temporary fix until we can
+  // track down source.  TODO: Track down any/all root causes so we can get rid
   // of this hack
-  if (role !== Roles.taskmaster) {
-    // Check for errors we are comfortable (!!) ignoring
-    var ignoredErrors = [
-      // see: https://github.com/joyent/node/issues/2997
-      "Error: Parse Error",
-      "ECONNRESET",
-      "socket hangup",
-      "ETIMEDOUT",
-      "EADDRINFO"
-    ];
+  // Check for errors we are comfortable (!!) ignoring
+  var ignoredErrors = [
+    // see: https://github.com/joyent/node/issues/2997
+    "Error: Parse Error",
+    "ECONNRESET",
+    "socket hangup",
+    "ETIMEDOUT",
+    "EADDRINFO"
+  ];
 
-    var errString = err.toString();
+  var errString = err.toString();
 
-    for (var msg in ignoredErrors) {
-      if (errString.indexOf(ignoredErrors[msg]) >= 0) {
-        logger.warn("Ignored exception: ", ignoredErrors[msg]);
-        instruments.increment('exceptions.ignored').send();
-        return;
-      }
+  for (var msg in ignoredErrors) {
+    if (errString.indexOf(ignoredErrors[msg]) >= 0) {
+      logger.warn("Ignored exception: ", ignoredErrors[msg]);
+      instruments.increment('exceptions.ignored').send();
+      return;
     }
   }
 
