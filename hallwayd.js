@@ -20,6 +20,11 @@ var logger = require('logger').logger('hallwayd');
 
 logger.info('process id:' + process.pid);
 
+// temp measure to help apihosts have bigger pool
+if (argv._.length === 0 || argv._[0] === "apihost") {
+  if(lconfig.database && lconfig.database.maxConnections) lconfig.database.maxConnections *= 2;
+}
+
 var taskman = require('taskman');
 var taskmaster = require('taskmaster');
 
