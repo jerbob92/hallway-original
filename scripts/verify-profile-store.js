@@ -4,6 +4,7 @@ var program = require('commander');
 program
   .usage('[--fix]')
   .option('--fix', 'write missing config data to the KV-store')
+  .option('--exit-on-error', 'exit the script as soon as an error is detected')
   .parse(process.argv);
 
 var logger = require('logger').logger('verify-profile-store');
@@ -21,6 +22,10 @@ function reportError(pid, err) {
   logger.warn('Error', pid);
   logger.error(err);
   errors++;
+  if (program.exitOnError) {
+    printResults();
+    process.exit(1);
+  }
 }
 
 function checkProfile(pid, callback) {
