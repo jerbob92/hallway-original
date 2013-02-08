@@ -5,7 +5,10 @@ program
   .usage('[--fix]')
   .option('--fix', 'write missing config data to the KV-store')
   .option('--exit-on-error', 'exit the script as soon as an error is detected')
+  .option('--workers <num>', 'select how many workers run at once')
   .parse(process.argv);
+
+var DEFAULT_WORKERS = 5;
 
 var logger = require('logger').logger('verify-profile-store');
 var profileManager = require('profileManager');
@@ -84,8 +87,12 @@ profileManager.init(function() {
     total = pids.length;
     logger.info('Testing', total, 'profiles');
 
-    var queue = async.queue(checkProfile, 10);
+    var workers = program.workers || DEFAULT_WORKERS;
+    logger.info('Running', workers, 'workers');
+
+    var queue = async.queue(checkProfile, workers);
     queue.drain = printResults;
+
     pids.forEach(function(pid) {
       queue.push(pid, noop);
     });
