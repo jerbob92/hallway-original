@@ -1,4 +1,10 @@
 var async = require('async');
+var program = require('commander');
+
+program
+  .usage('[--fix]')
+  .option('--fix', 'write missing config data to the KV-store')
+  .parse(process.argv);
 
 var logger = require('logger').logger('verify-profile-store');
 var profileManager = require('profileManager');
@@ -9,6 +15,13 @@ var present = 0;
 var missing = 0;
 var errors  = 0;
 var empty   = 0;
+var fixed   = 0;
+
+function reportError(pid, err) {
+  logger.warn('Error', pid);
+  logger.error(err);
+  errors++;
+}
 
 function checkProfile(pid, callback) {
   if (/^\s*$/.test(pid)) {
@@ -19,15 +32,26 @@ function checkProfile(pid, callback) {
   logger.debug('Testing', pid);
   profileManager.genGetNoFallback(pid, function(err, profile) {
     if (err) {
-      logger.warn('Error', pid);
-      logger.error(err);
-      errors++;
-    } else if (!profile) {
-      logger.warn('Missing', pid);
-      missing++;
-    } else {
-      present++;
+      reportError(pid, err);
+      return callback();
     }
+
+    if (profile) {
+      present++;
+      return callback();
+    }
+
+    logger.warn('Missing', pid);
+    missing++;
+    if (program.fix) saveProfile(pid, callback);
+    else return callback();
+  });
+}
+
+function saveProfile(pid, callback) {
+  profileManager.allSet(pid, {}, {}, function(err) {
+    if (err) reportError(pid, err);
+    else fixed++;
     return callback();
   });
 }
@@ -38,6 +62,7 @@ function printResults(err) {
   logger.info('Total:',    total);
   logger.info('Present:',  present);
   logger.info('Missing:',  missing);
+  if (program.fix) logger.info('Fixed:',    fixed);
   logger.info('Errors:',   errors);
   logger.info('Empty:',    empty);
   process.exit(0);
