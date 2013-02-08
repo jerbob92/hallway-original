@@ -76,14 +76,13 @@ function printResults(err) {
 function noop() {}
 
 profileManager.init(function() {
-  dal.query('SELECT id FROM Profiles limit 10', [], function(err, rows) {
+  dal.query('SELECT id FROM Profiles', [], function(err, rows) {
     var pids = rows.map(function(row) {
       return row.id;
     });
 
     total = pids.length;
     logger.info('Testing', total, 'profiles');
-    logger.debug(pids);
 
     var queue = async.queue(checkProfile, 10);
     queue.drain = printResults;
