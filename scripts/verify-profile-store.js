@@ -38,7 +38,7 @@ function checkProfile(pid, callback) {
   }
 
   logger.debug('Testing', pid);
-  profileManager.genGetNoFallback(pid, function(err, profile) {
+  profileManager.genGetWithoutCreate(pid, function(err, profile) {
     if (err) {
       reportError(pid, err);
       return callback();
