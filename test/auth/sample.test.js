@@ -23,7 +23,7 @@ describe('when creating an OAuth flow', function () {
   var port = 8083;
 
   before(function () {
-    fakeDB.addNoOp(/INSERT INTO Profiles \(id, service, worker\) VALUES/);
+    fakeDB.addNoOp(/INSERT INTO Profiles \(id, service\) VALUES/);
 
     app = express();
 
