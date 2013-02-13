@@ -45,10 +45,8 @@ var pcron = require('pcron');
 var dal = require('dal');
 var ijod = require('ijod');
 var acl = require('acl');
-var taskStore = require('taskStore');
 var servezas = require('servezas');
 var redis = require("redis");
-var locksmith = require("locksmith");
 var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
                                  lconfig.worker.redis.host || "127.0.0.1");
 rclient.debug = true;
@@ -95,25 +93,22 @@ function getPids(offset, limit, service, cbDone) {
 
 rclient.select(lconfig.worker.redis.database || 0, function (err) {
   if (err) return stop("Redis SELECT failed: " + err);
-  locksmith.init("pcronretasker", function (err) {
-    if (err) return stop("locksmith init failed: " + err);
-    ijod.initDB(function (err) {
-      if (err) return stop("IJOD init failed: " + err);
-      servezas.load();
-      profileManager.init(function() {
-        acl.init(function (err) {
-          if (err) return stop("ACL init failed: " + err);
-          if (argv.id) {
-            console.log("Retasking id!");
-            retask([{id: argv.id}], process.exit);
-          } else {
-            console.log("Retasking pids");
-            getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
-              if (err) return stop("getPids failed: " + err);
-              retask(rows, process.exit);
-            });
-          }
-        });
+  ijod.initDB(function (err) {
+    if (err) return stop("IJOD init failed: " + err);
+    servezas.load();
+    profileManager.init(function() {
+      acl.init(function (err) {
+        if (err) return stop("ACL init failed: " + err);
+        if (argv.id) {
+          console.log("Retasking id!");
+          retask([{id: argv.id}], process.exit);
+        } else {
+          console.log("Retasking pids");
+          getPids(argv.offset, argv.limit, argv.service, function (err, rows) {
+            if (err) return stop("getPids failed: " + err);
+            retask(rows, process.exit);
+          });
+        }
       });
     });
   });

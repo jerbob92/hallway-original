@@ -38,8 +38,7 @@ CREATE TABLE IF NOT EXISTS Accounts (
 CREATE TABLE IF NOT EXISTS Profiles (
        id VARCHAR(255) PRIMARY KEY,
        service VARCHAR(32),
-       auth TEXT,
-       config TEXT,
+       pod INT(11) UNSIGNED,
        cat TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP
 );
 

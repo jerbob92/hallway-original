@@ -71,13 +71,6 @@ dalFake.addFake('SELECT Apps.app, Apps.secret, Apps.apikeys, Apps.notes ' +
   apikeys: ''
 }]);
 dalFake.addFake(/INSERT into Profiles/i, []);
-dalFake.addFake(/SELECT auth FROM Profiles/i, [{
-  auth: {
-    apps: {
-      aaaabbbbccccdddd: {}
-    }
-  }
-}]);
 dalFake.addFake(/^UPDATE/i, []);
 
 dal.setBackend('fake');
