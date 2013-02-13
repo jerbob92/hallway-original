@@ -59,6 +59,14 @@
       "pass": "deckard-B26354"
     }
   },
+  "podService": {
+    "listenIP": "0.0.0.0",
+    "port": 8070,
+    "auth": {
+      "user": "hal",
+      "pass": "openthepodbaydoors"
+    }
+  },
   "taskman": {
     "numWorkers": 4,
     "pagingTiming": 2000,

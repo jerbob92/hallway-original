@@ -86,6 +86,15 @@ function startNexus(cbDone) {
   );
 }
 
+function startPod(cbDone) {
+  logger.info('Starting a Pod so HAL can\'t hear us.');
+  require('podService').startService(
+    lconfig.podService.port,
+    lconfig.podService.listenIP,
+    cbDone
+  );
+}
+
 function startStream(cbDone) {
   logger.info("Starting a Hallway Stream -- you're in for a good time.");
 
@@ -184,6 +193,9 @@ var Roles = {
   },
   nexus: {
     startup: startNexus
+  },
+  pod: {
+    startup: startPod
   },
   stream: {
     startup: startStream
