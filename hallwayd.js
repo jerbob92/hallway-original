@@ -77,6 +77,15 @@ function startDawg(cbDone) {
   });
 }
 
+function startNexus(cbDone) {
+  logger.info('Starting a Nexus. Should last about 4 years.');
+  require('nexusService').startService(
+    lconfig.nexusService.port,
+    lconfig.nexusService.listenIP,
+    cbDone
+  );
+}
+
 function startStream(cbDone) {
   logger.info("Starting a Hallway Stream -- you're in for a good time.");
 
@@ -172,6 +181,9 @@ var Roles = {
   },
   dawg: {
     startup: startDawg
+  },
+  nexus: {
+    startup: startNexus
   },
   stream: {
     startup: startStream
