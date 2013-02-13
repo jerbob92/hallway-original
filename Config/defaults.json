@@ -43,6 +43,14 @@
     "password": "test-password"
   },
   "multiLimit": 10,
+  "nexusClient": {
+    "database": 3,
+    "url": "http://localhost:8060",
+    "auth": {
+      "user": "rick",
+      "pass": "deckard-B26354"
+    }
+  },
   "nexusService": {
     "listenIP": "0.0.0.0",
     "port": 8060,
@@ -69,6 +77,10 @@
   "profiles": {
     "type": "riak",
     "servers": ["localhost:8098"]
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379
   },
   "stream": {
     "apihost": "http://localhost:8042",
