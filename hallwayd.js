@@ -202,16 +202,18 @@ var Roles = {
   }
 };
 
-var role = Roles.apihost;
+var rolename = 'apihost';
+var role = Roles[rolename];
 
 if (argv._.length > 0) {
-  if (!Roles.hasOwnProperty(argv._[0])) {
-    logger.error("The %s role is unknown.", argv._[0]);
+  rolename = argv._[0];
 
+  if (!Roles.hasOwnProperty(rolename)) {
+    logger.error("The %s role is unknown.", rolename);
     process.exit(1);
   }
 
-  role = Roles[argv._[0]];
+  role = Roles[rolename];
 }
 
 var startupTasks = [];
@@ -230,7 +232,7 @@ if (role !== Roles.stream) {
 
   var profileManager = require('profileManager');
   startupTasks.push(profileManager.init);
-  profileManager.setRole(role);
+  profileManager.setRole(rolename);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
