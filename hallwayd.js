@@ -227,7 +227,10 @@ if (role !== Roles.stream) {
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(require('tokenz').init);
   startupTasks.push(require('taskList').init);
-  startupTasks.push(require('profileManager').init);
+
+  var profileManager = require('profileManager');
+  startupTasks.push(profileManager.init);
+  profileManager.setRole(role);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
