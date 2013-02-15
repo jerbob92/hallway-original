@@ -9,7 +9,6 @@ dal.setBackend('fake');
 var lconfig = require('lconfig');
 var profileManager = require('profileManager');
 
-
 describe('profileManager', function() {
   beforeEach(function(done) {
     dalFake.reset();
@@ -25,24 +24,26 @@ describe('profileManager', function() {
   });
 
   describe('genGet', function() {
+    var CAT = new Date().toISOString();
+
     describe('when the Profile exists', function() {
-      beforeEach(function(done) {
-        dalFake.addFake(/SELECT \* FROM Profiles/i, [{
-          id: 'id@service',
-          service: 'service',
-          pod: null
-        }]);
-
-        profileManager._kvstore().put('profiles', 'id@service', {
-          auth: 'authinfo',
-          config: 'configinfo'
-        }, done);
-      });
-
       describe('when there is no pod ID', function() {
+        beforeEach(function(done) {
+          dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+            id: 'id@service',
+            service: 'service',
+            pod: null
+          }]);
+
+          profileManager._kvstore().put('profiles', 'id@service', {
+            auth: 'authinfo',
+            config: 'configinfo'
+          }, done);
+        });
+
         it('fetches from the local KV store', function(done) {
           profileManager.allGet('id@service', function(err, profile) {
-            profile.should.deep.equal({
+            profile.should.eql({
               id: 'id@service',
               service: 'service',
               pod: null,
@@ -54,8 +55,39 @@ describe('profileManager', function() {
         });
       });
 
-      xdescribe('when there is a pod ID', function() {
-        it('fetches from the remote DB', function(done) {
+      describe('when there is a pod ID', function() {
+        beforeEach(function() {
+          dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+            id: 'id@service',
+            service: 'service',
+            pod: 1
+          }]);
+          fakeweb.registerUri({
+            uri: 'http://pod1.localhost:8070/profile?pid=id%40service',
+            method: 'GET',
+            body: JSON.stringify({
+              id: 'id@service',
+              service: 'service',
+              pod: null,
+              cat: CAT,
+              auth: 'authinfo',
+              config: 'configinfo'
+            })
+          });
+        });
+
+        it('fetches from the remote pod', function(done) {
+          profileManager.allGet('id@service', function(err, profile) {
+            profile.should.eql({
+              id: 'id@service',
+              service: 'service',
+              pod: 1,
+              auth: 'authinfo',
+              config: 'configinfo',
+              cat: CAT
+            });
+            return done();
+          });
         });
       });
     });
@@ -65,12 +97,35 @@ describe('profileManager', function() {
         dalFake.addFake(/SELECT \* FROM Profiles/i, []);
       });
 
-      xdescribe('on an apihost', function() {
+      describe('on an apihost', function() {
         beforeEach(function() {
           profileManager.setRole('apihost');
+          dalFake.addFake(/INSERT INTO Profiles \(id,service,pod\)/i, []);
+          fakeweb.registerUri({
+            uri: 'http://pod1.localhost:8070/profile?pid=id%40service',
+            method: 'POST',
+            body: JSON.stringify({
+              id: 'id@service',
+              service: 'service',
+              pod: null,
+              cat: CAT,
+              auth: {},
+              config: {}
+            })
+          });
         });
 
-        xit('creates a new Profile on a remote pod', function(done) {
+        it('creates a new Profile on a remote pod', function(done) {
+          profileManager.allGet('id@service', function(err, profile) {
+            profile.should.eql({
+              id: 'id@service',
+              service: 'service',
+              pod: 1,
+              auth: {},
+              config: {}
+            });
+            return done();
+          });
         });
       });
 
@@ -82,7 +137,7 @@ describe('profileManager', function() {
 
         it('creates a new Profile in the local DB', function(done) {
           profileManager.allGet('id@service', function(err, profile) {
-            profile.should.deep.equal({
+            profile.should.eql({
               id: 'id@service',
               service: 'service',
               auth: {},
