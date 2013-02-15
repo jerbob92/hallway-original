@@ -23,6 +23,10 @@ fs.readdir(LIB_PATH, function (err, files) {
   console.log('Finished loading Singly modules.');
 
   var repl = require('repl').start({});
+  repl.on('exit', function() {
+    console.log('Bye!');
+    process.exit(0);
+  });
 
   _.extend(repl.context, context);
 });
