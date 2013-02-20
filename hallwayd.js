@@ -204,6 +204,7 @@ if (role !== Roles.stream) {
   startupTasks.push(require('tokenz').init);
   startupTasks.push(require('taskList').init);
   startupTasks.push(require('profileManager').init);
+  startupTasks.push(require('authManager').init);
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
