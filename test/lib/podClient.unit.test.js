@@ -11,6 +11,99 @@ var lconfig        = require('lconfig');
 var profileManager = require('profileManager');
 var podClient      = require('podClient');
 
+function noop() {}
+
+function itPerformsErrorChecking(ijodFn, cbEach) {
+  describe('when the base does not contain a pid', function() {
+    it('errors', function(done) {
+      function cbDone(err, result) {
+        err.message.should.eql('No PID in base bad:base/path');
+        done();
+      }
+
+      // If cbEach exists, we pass it in and the fn gets both.
+      // Otherwise, the fn expects cbDone third and ignores number four
+      podClient[ijodFn]('bad:base/path', {}, cbEach || cbDone, cbDone);
+    });
+  });
+
+  describe('when the Profile does not exist', function() {
+    beforeEach(function() {
+      dalFake.addFake(/SELECT \* FROM Profiles/i, []);
+    });
+
+    it('errors', function(done) {
+      function cbDone(err, result) {
+        err.message.should.eql('Profile does not exist: user@service');
+        done();
+      }
+
+      podClient[ijodFn]('thing:user@service/path', {}, cbEach || cbDone, cbDone);
+    });
+  });
+}
+
+function itPassesTheRightParameters(ijodFn, endpoint, cbEach) {
+  it('passes through the parameters', function(done) {
+    fakeweb.registerUri({
+      uri: url.format({
+        protocol: 'http',
+        hostname: 'pod1.localhost',
+        port: lconfig.podService.port,
+        pathname: endpoint,
+        query: {
+          basePath: 'thing:user@service/path',
+          range: JSON.stringify({
+            my: 'range'
+          })
+        }
+      }),
+      method: 'GET',
+      body: JSON.stringify({
+        data: ['data']
+      })
+    });
+
+    // By virtue of reaching cbDone, we know we generated the right
+    // URL, or else fakeWeb would have yelled.
+    podClient[ijodFn]('thing:user@service/path', {
+      my: 'range'
+    }, cbEach || done, done);
+  });
+}
+
+function itHandlesRemoteErrors(ijodFn, endpoint, cbEach) {
+  describe('when the pod service reports an error', function() {
+    beforeEach(function() {
+      fakeweb.registerUri({
+        uri: url.format({
+          protocol: 'http',
+          hostname: 'pod1.localhost',
+          port: lconfig.podService.port,
+          pathname: endpoint,
+          query: {
+            basePath: 'thing:user@service/path',
+            range: '{}'
+          }
+        }),
+        method: 'GET',
+        body: JSON.stringify({
+          error: 'Oh no!'
+        })
+      });
+    });
+
+    it('errors', function(done) {
+      function cbDone(err, result) {
+        err.message.should.eql('Oh no!');
+        done();
+      }
+
+      podClient[ijodFn]('thing:user@service/path', {}, cbEach || cbDone, cbDone);
+    });
+  });
+}
+
 describe('podClient', function() {
   beforeEach(function(done) {
     dalFake.reset();
@@ -25,57 +118,30 @@ describe('podClient', function() {
     fakeweb.tearDown();
   });
 
-  describe('getRange', function() {
-    describe('when the base does not contain a pid', function() {
-      it('errors', function(done) {
-        podClient.getRange('bad:base/path', {}, function(item) {
-          // Pass on each
-        }, function(err) {
-          err.message.should.eql('No PID in base bad:base/path');
-          done();
-        });
-      });
-    });
-
-    describe('when the Profile does not exist', function() {
-      beforeEach(function() {
-        dalFake.addFake(/SELECT \* FROM Profiles/i, []);
-      });
-
-      it('errors', function(done) {
-        podClient.getRange('thing:user@service/path', {}, function(item) {
-          // Pass on each
-        }, function(err) {
-          err.message.should.eql('Profile does not exist: user@service');
-          done();
-        });
-      });
-    });
+  describe('getBounds', function() {
+    itPerformsErrorChecking('getBounds');
 
     describe('when there is no pod ID', function() {
-      var origGetRange;
+      var origGetBounds;
 
       beforeEach(function() {
         dalFake.addFake(/SELECT \* FROM Profiles/i, [{
           pod: null
         }]);
-        origGetRange = ijod.getRange;
-        ijod.getRange = function(basePath, range, cbEach, cbDone) {
-          cbEach('Hello');
-          return cbDone();
+        origGetBounds = ijod.getBounds;
+        ijod.getBounds = function(basePath, range, cbDone) {
+          return cbDone(null, 'result');
         };
       });
 
       afterEach(function() {
-        ijod.getRange = origGetRange;
+        ijod.getBounds = origGetBounds;
       });
 
       it('delegates to ijod', function(done) {
         var items = [];
-        podClient.getRange('thing:user@service/path', {}, function(item) {
-          items.push(item);
-        }, function(err) {
-          items.should.eql(['Hello']); // Our IJOD mock got called
+        podClient.getBounds('thing:user@service/path', {}, function(err, result) {
+          result.should.eql('result');
           done();
         });
       });
@@ -88,66 +154,81 @@ describe('podClient', function() {
         }]);
       });
 
-      it('passes through the parameters', function(done) {
-        fakeweb.registerUri({
-          uri: url.format({
-            protocol: 'http',
-            hostname: 'pod1.localhost',
-            port: lconfig.podService.port,
-            pathname: '/range',
-            query: {
-              basePath: 'thing:user@service/path',
-              range: JSON.stringify({
-                my: 'range'
-              })
-            }
-          }),
-          method: 'GET',
-          body: JSON.stringify({
-            data: ['data']
-          })
-        });
+      itPassesTheRightParameters('getBounds', '/bounds');
+      itHandlesRemoteErrors('getBounds', '/bounds');
 
-        var items = [];
-        podClient.getRange('thing:user@service/path', {
-          my: 'range'
-        }, function(item) {
-          items.push(item);
-        }, function(err) {
-          items.should.eql(['data']);
-          done();
-        });
-      });
-
-      describe('when the pod service reports an error', function() {
+      describe('when the pod service returns data', function() {
         beforeEach(function() {
           fakeweb.registerUri({
             uri: url.format({
               protocol: 'http',
               hostname: 'pod1.localhost',
               port: lconfig.podService.port,
-              pathname: '/range',
+              pathname: '/bounds',
               query: {
                 basePath: 'thing:user@service/path',
                 range: '{}'
               }
             }),
             method: 'GET',
-            body: JSON.stringify({
-              error: 'Oh no!'
-            })
+            body: JSON.stringify({result: 'result'})
           });
         });
 
-        it('errors', function(done) {
-          podClient.getRange('thing:user@service/path', {}, function(item) {
-            // Pass on each
-          }, function(err) {
-            err.message.should.eql('Oh no!');
+        it('calls cbDone with the result', function(done) {
+          podClient.getBounds('thing:user@service/path', {}, function(err, result) {
+            should.not.exist(err);
+            result.should.eql('result');
             done();
           });
         });
       });
+    });
+  });
+
+  describe('getRange', function() {
+    itPerformsErrorChecking('getRange', noop);
+
+    describe('when there is no pod ID', function() {
+      var origGetRange;
+
+      beforeEach(function() {
+        dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+          pod: null
+        }]);
+        origGetRange = ijod.getRange;
+        ijod.getRange = function(basePath, range, cbEach, cbDone) {
+          cbEach('Hello');
+          return cbDone(null, 'result');
+        };
+      });
+
+      afterEach(function() {
+        ijod.getRange = origGetRange;
+      });
+
+      it('delegates to ijod', function(done) {
+        var items = [];
+        podClient.getRange('thing:user@service/path', {}, function(item) {
+          items.push(item);
+        }, function(err, result) {
+          items.should.eql(['Hello']); // Our IJOD mock got called
+          result.should.eql('result');
+          done();
+        });
+      });
+    });
+
+    describe('when there is a pod ID', function() {
+      beforeEach(function() {
+        dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+          pod: 1
+        }]);
+      });
+
+      itPassesTheRightParameters('getRange', '/range', noop);
+      itHandlesRemoteErrors('getRange', '/range', noop);
+
 
       describe('when the pod service returns data', function() {
         beforeEach(function() {
@@ -167,7 +248,8 @@ describe('podClient', function() {
               data: [
                 'tweedledee',
                 'tweedledumb'
-              ]
+              ],
+              result: 'result'
             })
           });
         });
@@ -182,16 +264,86 @@ describe('podClient', function() {
           });
         });
 
-        it('calls cbDone without error', function(done) {
+        it('calls cbDone with the result', function(done) {
           podClient.getRange('thing:user@service/path', {}, function(item) {
             // Pass on each
-          }, function(err) {
+          }, function(err, result) {
             should.not.exist(err);
+            result.should.eql('result');
             done();
           });
         });
       });
     });
   });
+
+  describe('getTardis', function() {
+    itPerformsErrorChecking('getTardis');
+
+    describe('when there is no pod ID', function() {
+      var origGetTardis;
+
+      beforeEach(function() {
+        dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+          pod: null
+        }]);
+        origGetTardis = ijod.getTardis;
+        ijod.getTardis = function(basePath, range, cbDone) {
+          return cbDone(null, 'result');
+        };
+      });
+
+      afterEach(function() {
+        ijod.getTardis = origGetTardis;
+      });
+
+      it('delegates to ijod', function(done) {
+        var items = [];
+        podClient.getTardis('thing:user@service/path', {}, function(err, result) {
+          result.should.eql('result');
+          done();
+        });
+      });
+    });
+
+    describe('when there is a pod ID', function() {
+      beforeEach(function() {
+        dalFake.addFake(/SELECT \* FROM Profiles/i, [{
+          pod: 1
+        }]);
+      });
+
+      itPassesTheRightParameters('getTardis', '/tardis');
+      itHandlesRemoteErrors('getTardis', '/tardis');
+
+      describe('when the pod service returns data', function() {
+        beforeEach(function() {
+          fakeweb.registerUri({
+            uri: url.format({
+              protocol: 'http',
+              hostname: 'pod1.localhost',
+              port: lconfig.podService.port,
+              pathname: '/tardis',
+              query: {
+                basePath: 'thing:user@service/path',
+                range: '{}'
+              }
+            }),
+            method: 'GET',
+            body: JSON.stringify({result: 'result'})
+          });
+        });
+
+        it('calls cbDone with the result', function(done) {
+          podClient.getTardis('thing:user@service/path', {}, function(err, result) {
+            should.not.exist(err);
+            result.should.eql('result');
+            done();
+          });
+        });
+      });
+    });
+  });
+
 });
 
