@@ -85,7 +85,7 @@ function convertValToTableRow(val) {
   var type = typeof val;
   if (type === 'string' || type === 'number') text = val||'&nbsp;';
   else if (Array.isArray(val)) {
-    for(var i in val) text += convertValToTableRow(val[i]);
+    for(var i in val) text += convertValToTableRow(val[i]) + ' ';
   } else if (type === 'object') {
     var href = val.href;
     var str = val.text || '--';
