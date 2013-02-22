@@ -33,6 +33,9 @@
   },
   "ec2": {},
   "s3": {},
+  "anubis": {
+    "allowedApps":[]
+  },
   "alerting": {
     "key": 1
   },
