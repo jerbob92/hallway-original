@@ -78,6 +78,7 @@ dal.setBackend('fake');
 var acl = require('acl');
 var dMap = require('dMap');
 var ijod = require('ijod');
+var profileManager = require('profileManager');
 var servezas = require('servezas');
 var tokenz = require('tokenz');
 
@@ -167,7 +168,9 @@ before(function (done) {
 before(function (done) {
   acl.init(function () {
     tokenz.init(function () {
-      done();
+      profileManager.init(function () {
+        done();
+      });
     });
   });
 
