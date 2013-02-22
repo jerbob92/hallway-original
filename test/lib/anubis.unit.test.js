@@ -1,5 +1,6 @@
 require('chai').should();
 
+var lconfig = require('lconfig');
 var dalFake = require('dal-fake');
 var dal = require('dal');
 
@@ -21,6 +22,9 @@ describe('anubis', function () {
     this.timeout(1000);
 
     it('should log the request', function () {
+      lconfig.anubis = {
+        allowedApps : ["def"]
+      };
       var req = {
         url: '/derp',
         connection: {
