@@ -28,29 +28,6 @@
   "logging": {
     "level": "debug"
   },
-  "worker": {
-    "port": 8041,
-    "error_delay": 3000,
-    "redis": {
-      "host": "127.0.0.1",
-      "port": 6379,
-      "database": 0
-    }
-  },
-  "taskman": {
-    "numWorkers": 1,
-    "redis": {
-      "host": "localhost",
-      "port": 6379
-    },
-    "defaultScanTime": 5000,
-    "pagingTiming": 10000,
-    "staleTime": 43200000,
-    "store": {
-      "type": "riak",
-      "servers": ["localhost:8098"]
-    }
-  },
   "cache": {
     "redis": {
       "host": "localhost",
