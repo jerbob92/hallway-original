@@ -13,17 +13,34 @@ var podClient      = require('podClient');
 
 function noop() {}
 
-function itPerformsErrorChecking(ijodFn, cbEach) {
+function itFallsBackToNexusLookups(ijodFn, endpoint, cbEach) {
   describe('when the base does not contain a pid', function() {
-    it('errors', function(done) {
+    it('looks in the nexus', function(done) {
+      fakeweb.registerUri({
+        uri: url.format({
+          protocol: 'http',
+          host: url.parse(lconfig.nexusClient.url).host,
+          pathname: endpoint,
+          query: {
+            basePath: 'thing:app/path',
+            range: JSON.stringify({})
+          }
+        }),
+        method: 'GET',
+        body: JSON.stringify({
+          result: 'result'
+        })
+      });
+
       function cbDone(err, result) {
-        err.message.should.eql('No PID in base bad:base/path');
+        result.should.eql('result');
         done();
       }
 
       // If cbEach exists, we pass it in and the fn gets both.
       // Otherwise, the fn expects cbDone third and ignores number four
-      podClient[ijodFn]('bad:base/path', {}, cbEach || cbDone, cbDone);
+      if (cbEach) podClient[ijodFn]('thing:app/path', {}, cbEach, cbDone);
+      else podClient[ijodFn]('thing:app/path', {}, cbDone);
     });
   });
 
@@ -32,13 +49,29 @@ function itPerformsErrorChecking(ijodFn, cbEach) {
       dalFake.addFake(/SELECT \* FROM Profiles/i, []);
     });
 
-    it('errors', function(done) {
+    it('looks in the nexus', function(done) {
+      fakeweb.registerUri({
+        uri: url.format({
+          protocol: 'http',
+          host: url.parse(lconfig.nexusClient.url).host,
+          pathname: endpoint,
+          query: {
+            basePath: 'thing:user@app/path',
+            range: JSON.stringify({})
+          }
+        }),
+        method: 'GET',
+        body: JSON.stringify({
+          result: 'result'
+        })
+      });
+
       function cbDone(err, result) {
-        err.message.should.eql('Profile does not exist: user@service');
+        result.should.eql('result');
         done();
       }
 
-      podClient[ijodFn]('thing:user@service/path', {}, cbEach || cbDone, cbDone);
+      podClient[ijodFn]('thing:user@app/path', {}, cbEach || cbDone, cbDone);
     });
   });
 }
@@ -65,7 +98,7 @@ function itPassesTheRightParameters(ijodFn, endpoint, cbEach) {
     });
 
     // By virtue of reaching cbDone, we know we generated the right
-    // URL, or else fakeWeb would have yelled.
+    // URL, or else fakeweb would have yelled.
     podClient[ijodFn]('thing:user@service/path', {
       my: 'range'
     }, cbEach || done, done);
@@ -108,6 +141,7 @@ describe('podClient', function() {
   beforeEach(function(done) {
     dalFake.reset();
     fakeweb.allowNetConnect = false;
+    fakeweb.allowLocalConnect = false;
     lconfig.taskman.store = {
       type: 'mem'
     };
@@ -119,7 +153,7 @@ describe('podClient', function() {
   });
 
   describe('getBounds', function() {
-    itPerformsErrorChecking('getBounds');
+    itFallsBackToNexusLookups('getBounds', '/bounds');
 
     describe('when there is no pod ID', function() {
       var origGetBounds;
@@ -187,7 +221,7 @@ describe('podClient', function() {
   });
 
   describe('getRange', function() {
-    itPerformsErrorChecking('getRange', noop);
+    itFallsBackToNexusLookups('getRange', '/range', noop);
 
     describe('when there is no pod ID', function() {
       var origGetRange;
@@ -278,7 +312,7 @@ describe('podClient', function() {
   });
 
   describe('getTardis', function() {
-    itPerformsErrorChecking('getTardis');
+    itFallsBackToNexusLookups('getTardis', '/tardis');
 
     describe('when there is no pod ID', function() {
       var origGetTardis;
