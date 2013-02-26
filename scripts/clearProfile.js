@@ -43,7 +43,7 @@ function initialize(callback) {
 
 
 function clearBase(base, callback) {
-  ijod.getBounds(base, entries.options({}), function(err, bounds) {
+  podClient.getBounds(base, entries.options({}), function(err, bounds) {
     if (err) return callback(err);
 
     logger.info('Clearing', bounds.total, 'entries from', base);
