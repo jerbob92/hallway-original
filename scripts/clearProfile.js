@@ -19,7 +19,7 @@ var logger = require('logger').logger('clearProfile');
 var dMap = require('dMap');
 var entries = require('entries');
 var ijod = require('ijod');
-var locksmith = require('locksmith');
+var podClient = require('podClient');
 var profileManager = require('profileManager');
 var servezas = require('servezas');
 var taskList = require('taskList');
@@ -33,11 +33,9 @@ function initialize(callback) {
   ijod.initDB(function() {
     profileManager.init(function() {
       taskList.init(function() {
-        locksmith.init('clearProfile', function() {
-          servezas.load();
-          dMap.load();
-          callback();
-        });
+        servezas.load();
+        dMap.load();
+        callback();
       });
     });
   });
@@ -52,7 +50,7 @@ function clearBase(base, callback) {
 
     var toDelete = [];
 
-    ijod.getRange(base, {}, function(item) {
+    podClient.getRange(base, {}, function(item) {
       toDelete.push(item.idr);
     }, function(err) {
       if (err) return callback(err);
