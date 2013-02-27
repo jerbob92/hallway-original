@@ -12,7 +12,7 @@ var tweets = require(path.join('services', 'twitter', 'tweets.js'));
 var related = require(path.join('services', 'twitter', 'related.js'));
 
 describe('Twitter connector', function () {
-  var apiBase = 'https://api.twitter.com:443/1/';
+  var apiBase = 'https://api.twitter.com:443/1.1/';
   var apiSuffix = '&include_entities=true';
   var pinfo;
 
@@ -87,8 +87,8 @@ describe('Twitter connector', function () {
       });
 
       fakeweb.registerUri({
-        uri: apiBase + 'statuses/mentions.json?screen_name=ctide&since_id=1' +
-          '&path=%2Fstatuses%2Fmentions.json&count=200' + apiSuffix,
+        uri: apiBase + 'statuses/mentions_timeline.json?screen_name=ctide&since_id=1' +
+          '&path=%2Fstatuses%2Fmentions_timeline.json&count=200' + apiSuffix,
         file: __dirname + '/../../fixtures/synclets/twitter/home_timeline.js'
       });
     });
@@ -104,6 +104,7 @@ describe('Twitter connector', function () {
   });
 
   describe('related synclet', function () {
+
     beforeEach(function () {
       fakeweb.registerUri({
         uri: apiBase + 'statuses/home_timeline.json?screen_name=ctide' +
@@ -112,15 +113,8 @@ describe('Twitter connector', function () {
       });
 
       fakeweb.registerUri({
-        uri: apiBase + 'related_results/show/193779319057813505.json' +
-          '?path=%2Frelated_results%2Fshow%2F193779319057813505.json' +
-          apiSuffix,
-        file: __dirname + '/../../fixtures/synclets/twitter/related.js'
-      });
-
-      fakeweb.registerUri({
-        uri: apiBase + 'statuses/193779319057813505/retweeted_by.json' +
-          '?path=%2Fstatuses%2F193779319057813505%2Fretweeted_by.json' +
+        uri: apiBase + 'statuses/retweets/193779319057813505.json' +
+          '?path=%2Fstatuses%2Fretweets%2F193779319057813505.json' +
           apiSuffix,
         file: __dirname + '/../../fixtures/synclets/twitter/retweeted.js'
       });
@@ -129,8 +123,8 @@ describe('Twitter connector', function () {
     it('can fetch related', function (done) {
       related.sync(pinfo, function (err, response) {
         if (err) return done(err);
-        response.data['related:ctide@twitter/related'][0][0].results[0].kind
-          .should.equal('Tweet');
+        response.data['related:ctide@twitter/related'][0][0].results[0].text
+          .should.equal('It\'s 2013. I work at Singly.');
         done();
       });
     });
