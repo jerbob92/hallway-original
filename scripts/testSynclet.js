@@ -161,7 +161,7 @@ function runService(paginationPi, cb) {
             pi.all[synclet] = data.config;
             pi.config = pi.all;
           } else {
-            pi = data;
+            _.extend(pi.config, data.config);
           }
 
           cb(pi);
