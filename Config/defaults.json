@@ -43,17 +43,12 @@
     "password": "test-password"
   },
   "multiLimit": 10,
-  "nexusClient": {
+  "nexus": {
     "database": 3,
-    "url": "http://localhost:8060",
-    "auth": {
-      "user": "rick",
-      "pass": "deckard-B26354"
-    }
-  },
-  "nexusService": {
-    "listenIP": "0.0.0.0",
+    "host": "localhost",
     "port": 8060,
+    "listenIP": "0.0.0.0",
+    "url": "http://localhost:8060",
     "auth": {
       "user": "rick",
       "pass": "deckard-B26354"

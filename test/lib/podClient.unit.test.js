@@ -19,7 +19,7 @@ function itFallsBackToNexusLookups(ijodFn, endpoint, cbEach) {
       fakeweb.registerUri({
         uri: url.format({
           protocol: 'http',
-          host: url.parse(lconfig.nexusClient.url).host,
+          host: lconfig.nexus.host,
           pathname: endpoint,
           query: {
             basePath: 'thing:app/path',
@@ -53,7 +53,7 @@ function itFallsBackToNexusLookups(ijodFn, endpoint, cbEach) {
       fakeweb.registerUri({
         uri: url.format({
           protocol: 'http',
-          host: url.parse(lconfig.nexusClient.url).host,
+          host: lconfig.nexus.host,
           pathname: endpoint,
           query: {
             basePath: 'thing:user@app/path',

@@ -80,8 +80,8 @@ function startDawg(cbDone) {
 function startNexus(cbDone) {
   logger.info('Starting a Nexus. Should last about 4 years.');
   require('nexusService').startService(
-    lconfig.nexusService.port,
-    lconfig.nexusService.listenIP,
+    lconfig.nexus.port,
+    lconfig.nexus.listenIP,
     cbDone
   );
 }
