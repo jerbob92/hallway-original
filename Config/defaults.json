@@ -59,11 +59,9 @@
       "pass": "deckard-B26354"
     }
   },
-  "podClient": {
+  "pods": {
     "domain": "localhost",
-    "secure": false
-  },
-  "podService": {
+    "secure": false,
     "listenIP": "0.0.0.0",
     "port": 8070,
     "auth": {

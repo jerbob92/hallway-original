@@ -82,7 +82,7 @@ function itPassesTheRightParameters(ijodFn, endpoint, cbEach) {
       uri: url.format({
         protocol: 'http',
         hostname: 'pod1.localhost',
-        port: lconfig.podService.port,
+        port: lconfig.pods.port,
         pathname: endpoint,
         query: {
           basePath: 'thing:user@service/path',
@@ -112,7 +112,7 @@ function itHandlesRemoteErrors(ijodFn, endpoint, cbEach) {
         uri: url.format({
           protocol: 'http',
           hostname: 'pod1.localhost',
-          port: lconfig.podService.port,
+          port: lconfig.pods.port,
           pathname: endpoint,
           query: {
             basePath: 'thing:user@service/path',
@@ -197,7 +197,7 @@ describe('podClient', function() {
             uri: url.format({
               protocol: 'http',
               hostname: 'pod1.localhost',
-              port: lconfig.podService.port,
+              port: lconfig.pods.port,
               pathname: '/bounds',
               query: {
                 basePath: 'thing:user@service/path',
@@ -270,7 +270,7 @@ describe('podClient', function() {
             uri: url.format({
               protocol: 'http',
               hostname: 'pod1.localhost',
-              port: lconfig.podService.port,
+              port: lconfig.pods.port,
               pathname: '/range',
               query: {
                 basePath: 'thing:user@service/path',
@@ -356,7 +356,7 @@ describe('podClient', function() {
             uri: url.format({
               protocol: 'http',
               hostname: 'pod1.localhost',
-              port: lconfig.podService.port,
+              port: lconfig.pods.port,
               pathname: '/tardis',
               query: {
                 basePath: 'thing:user@service/path',
