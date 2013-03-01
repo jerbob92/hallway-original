@@ -19,7 +19,8 @@ function itFallsBackToNexusLookups(ijodFn, endpoint, cbEach) {
       fakeweb.registerUri({
         uri: url.format({
           protocol: 'http',
-          host: lconfig.nexus.host,
+          hostname: lconfig.nexus.host,
+          port: lconfig.nexus.port,
           pathname: endpoint,
           query: {
             basePath: 'thing:app/path',
@@ -53,7 +54,8 @@ function itFallsBackToNexusLookups(ijodFn, endpoint, cbEach) {
       fakeweb.registerUri({
         uri: url.format({
           protocol: 'http',
-          host: lconfig.nexus.host,
+          hostname: lconfig.nexus.host,
+          port: lconfig.nexus.port,
           pathname: endpoint,
           query: {
             basePath: 'thing:user@app/path',
@@ -81,7 +83,7 @@ function itPassesTheRightParameters(ijodFn, endpoint, cbEach) {
     fakeweb.registerUri({
       uri: url.format({
         protocol: 'http',
-        hostname: 'pod1.localhost',
+        hostname: 'lb.pod1.localhost',
         port: lconfig.pods.port,
         pathname: endpoint,
         query: {
@@ -111,7 +113,7 @@ function itHandlesRemoteErrors(ijodFn, endpoint, cbEach) {
       fakeweb.registerUri({
         uri: url.format({
           protocol: 'http',
-          hostname: 'pod1.localhost',
+          hostname: 'lb.pod1.localhost',
           port: lconfig.pods.port,
           pathname: endpoint,
           query: {
@@ -196,7 +198,7 @@ describe('podClient', function() {
           fakeweb.registerUri({
             uri: url.format({
               protocol: 'http',
-              hostname: 'pod1.localhost',
+              hostname: 'lb.pod1.localhost',
               port: lconfig.pods.port,
               pathname: '/bounds',
               query: {
@@ -269,7 +271,7 @@ describe('podClient', function() {
           fakeweb.registerUri({
             uri: url.format({
               protocol: 'http',
-              hostname: 'pod1.localhost',
+              hostname: 'lb.pod1.localhost',
               port: lconfig.pods.port,
               pathname: '/range',
               query: {
@@ -355,7 +357,7 @@ describe('podClient', function() {
           fakeweb.registerUri({
             uri: url.format({
               protocol: 'http',
-              hostname: 'pod1.localhost',
+              hostname: 'lb.pod1.localhost',
               port: lconfig.pods.port,
               pathname: '/tardis',
               query: {

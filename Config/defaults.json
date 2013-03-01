@@ -47,8 +47,8 @@
     "database": 3,
     "host": "localhost",
     "port": 8060,
+    "secure": false,
     "listenIP": "0.0.0.0",
-    "url": "http://localhost:8060",
     "auth": {
       "user": "rick",
       "pass": "deckard-B26354"

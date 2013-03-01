@@ -63,7 +63,7 @@ describe('profileManager', function() {
             pod: 1
           }]);
           fakeweb.registerUri({
-            uri: 'http://pod1.localhost:8070/profile?pid=id%40service',
+            uri: 'http://lb.pod1.localhost:8070/profile?pid=id%40service',
             method: 'GET',
             body: JSON.stringify({
               id: 'id@service',
@@ -102,7 +102,7 @@ describe('profileManager', function() {
           profileManager.setRole('apihost');
           dalFake.addFake(/INSERT INTO Profiles \(id,service,pod\)/i, []);
           fakeweb.registerUri({
-            uri: 'http://pod1.localhost:8070/profile?pid=id%40service',
+            uri: 'http://lb.pod1.localhost:8070/profile?pid=id%40service',
             method: 'POST',
             body: JSON.stringify({
               id: 'id@service',
