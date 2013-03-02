@@ -229,6 +229,7 @@ if (role !== Roles.stream) {
   startupTasks.push(require('ijod').initDB);
   startupTasks.push(require('tokenz').init);
   startupTasks.push(require('taskList').init);
+  startupTasks.push(require('nexusClient').init);
 
   var profileManager = require('profileManager');
   startupTasks.push(profileManager.init);
