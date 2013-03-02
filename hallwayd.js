@@ -237,7 +237,9 @@ if (role !== Roles.stream) {
 }
 
 if (role !== Roles.dawg && role !== Roles.stream) {
-  startupTasks.push(require('acl').init);
+  var acl = require('acl');
+  startupTasks.push(acl.init);
+  acl.setRole(rolename);
 }
 
 if (role.startup) {
