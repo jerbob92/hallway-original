@@ -218,6 +218,9 @@ if (argv._.length > 0) {
 
 var startupTasks = [];
 
+var podClient = require("podClient");
+podClient.setRole(rolename);
+
 if (role !== Roles.stream) {
   // this loads all lib/services/*/map.js
   startupTasks.push(function (cb) {
