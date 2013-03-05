@@ -48,7 +48,7 @@ function getAuths(profiles, callback) {
       if (data && data.auth) auths[profile] = data.auth;
       cbQueue();
     });
-  }, 1);
+  }, 50);
 
   queue.drain = function(err) {
     logger.debug('Done getting auth', err);
