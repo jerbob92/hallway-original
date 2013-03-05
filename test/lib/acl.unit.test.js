@@ -14,6 +14,7 @@ describe('acl', function () {
         var trues = 0;
         Object.keys(classes).forEach(function(key){ if(classes[key]) trues++; });
         assert(trues === 1);
+        assert(classes.core === true);
         done();
       });
     });
@@ -22,9 +23,7 @@ describe('acl', function () {
   describe('getAppClasses', function() {
     it('should return nothing', function(done) {
       acl.getAppClasses({notes:{NoSync:true}}, function(err, classes){
-        var trues = 0;
-        Object.keys(classes).forEach(function(key){ if(classes[key]) trues++; });
-        assert(trues === 0);
+        assert(Object.keys(classes).length === 0);
         done();
       });
     });
@@ -36,7 +35,8 @@ describe('acl', function () {
         var trues = 0;
         Object.keys(classes).forEach(function(key){ if(classes[key]) trues++; });
         assert(trues === 2);
-        assert(!classes.core);
+        assert(classes.facebook_self === true);
+        assert(classes.facebook_photos === true);
         done();
       });
     });
