@@ -27,6 +27,7 @@ dal.setBackend('fake');
 
 var acl = require('acl');
 var tokenz = require('tokenz');
+var nexusClient = require('nexusClient');
 
 var GOOD_ACCESS_TOKEN = 'JrY54j9w8SToWDYFDPDykSZrsR4.EKO8Xl-m96c3fbe6b28d2401' +
   '22e5858622d1afc7096bebdb0133ee03d334a3fa7d4bb6804a76c76a26fa5697852b8dd07a' +
@@ -34,6 +35,7 @@ var GOOD_ACCESS_TOKEN = 'JrY54j9w8SToWDYFDPDykSZrsR4.EKO8Xl-m96c3fbe6b28d2401' +
 
 before(acl.init);
 before(tokenz.init);
+before(nexusClient.init);
 
 describe('tokenz', function () {
   describe('#init', function () {

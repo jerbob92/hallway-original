@@ -1,1 +1,61 @@
-[]
+[
+  {
+    "text": "It's 2013. I work at Singly.",
+    "contributors": null,
+    "id": 176736821278000000,
+    "retweet_count": 4,
+    "in_reply_to_status_id_str": null,
+    "geo": null,
+    "retweeted": false,
+    "in_reply_to_user_id": null,
+    "source": "web",
+    "in_reply_to_screen_name": null,
+    "user": {
+      "profile_sidebar_border_color": "C0DEED",
+      "name": "John Smith",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_background_tile": false,
+      "created_at": "Tue Sep 27 19:48:49 +0000 2011",
+      "profile_image_url": "http://a0.twimg.com/profile_images/1234567/DD1_23_normal.jpg",
+      "location": "San Francisco, CA",
+      "follow_request_sent": false,
+      "is_translator": false,
+      "id_str": "123456789",
+      "profile_link_color": "0084B4",
+      "entities": {
+        "description": {
+          "urls": []
+        }
+      },
+      "url": null,
+      "default_profile": true,
+      "contributors_enabled": false,
+      "favourites_count": 0,
+      "utc_offset": -18000,
+      "profile_image_url_https": "https://si0.twimg.com/profile_images/1234567/DD1_23_normal.jpg",
+      "id": 381124736,
+      "listed_count": 0,
+      "profile_use_background_image": true,
+      "profile_text_color": "333333",
+      "protected": false,
+      "lang": "en",
+      "followers_count": 4,
+      "geo_enabled": false,
+      "verified": false,
+      "notifications": false,
+      "description": "",
+      "profile_background_color": "C0DEED",
+      "time_zone": "Quito",
+      "profile_background_image_url_https": "https://si0.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url": "http://a0.twimg.com/images/themes/theme1/bg.png",
+      "statuses_count": 50,
+      "default_profile_image": false,
+      "friends_count": 15,
+      "show_all_inline_media": false,
+      "screen_name": "somebodySingly",
+      "following": false
+    },
+    "place": null,
+    "in_reply_to_status_id": null
+  }
+]

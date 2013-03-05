@@ -1,6 +1,15 @@
 require('chai').should();
 
 var fakeweb = require('node-fakeweb');
+var lconfig = require('lconfig');
+var dalFake = require('dal-fake');
+var dal = require('dal');
+
+dalFake.reset();
+
+dalFake.addFake(/SELECT hex\(idr\) as idr, hash FROM/i, []);
+
+dal.setBackend('fake');
 
 var anubis = require('anubis');
 
@@ -18,6 +27,9 @@ describe('anubis', function () {
     this.timeout(1000);
 
     it('should log the request', function () {
+      lconfig.anubis = {
+        allowedApps : ["def"]
+      };
       var req = {
         url: '/derp',
         connection: {

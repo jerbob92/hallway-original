@@ -24,5 +24,15 @@
     "key":"VALUE",
     "secret":"VALUE",
     "bucket":"VALUE"
+  },
+  "logging": {
+    "level": "debug"
+  },
+  "cache": {
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "db": 2
+    }
   }
 }

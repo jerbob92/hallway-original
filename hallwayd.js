@@ -139,8 +139,8 @@ function startWorkerSup(cbDone) {
       } else if (result === 1) {
         logger.debug("Won master lock; kicking pcronInst.notify/gc_work");
         pcronInst.notify(lconfig.worker.services, Date.now(), function () {});
-        pcronInst.gc_work(lconfig.worker.services, lconfig.worker.error_delay,
-          Date.now(), function () {});
+        pcronInst.gc_work(lconfig.worker.services, Date.now(),
+          lconfig.worker.error_delay, function () {});
       }
     });
     setTimeout(loop, 10000);
