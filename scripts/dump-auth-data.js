@@ -38,14 +38,14 @@ function getProfiles(apps, callback) {
 }
 
 function getAuths(profiles, callback) {
-  var auths = [];
+  var auths = {};
 
   var queue = async.queue(function(profile, cbQueue) {
     logger.debug('Getting auth for', profile);
     profileManager.allGet(profile, function(err, data) {
       logger.debug('Got profile data', err, data);
       if (err) errorAndQuit(err);
-      if (data && data.auth) auths.push(data.auth);
+      if (data && data.auth) auths[profile] = data.auth;
       cbQueue();
     });
   }, 1);
