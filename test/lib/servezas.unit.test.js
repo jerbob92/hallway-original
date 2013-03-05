@@ -17,6 +17,22 @@ describe('servezas', function() {
     });
   });
 
+  describe('syncletList()', function() {
+    it('should return no synclets', function(done) {
+      var fb = servezas.syncletList('facebook', {});
+      assert(fb.length === 0);
+      done();
+    });
+  });
+
+  describe('syncletList()', function() {
+    it('should return some synclets', function(done) {
+      var fb = servezas.syncletList('facebook', {'facebook_self':true, 'facebook_photos':true});
+      assert(fb.length === 2);
+      done();
+    });
+  });
+
   describe('syncletData()', function() {
     it('should return some data', function(done) {
       var fb = servezas.syncletData('facebook', 'photos');
