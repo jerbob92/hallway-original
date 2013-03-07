@@ -13,7 +13,9 @@ if (!filename) {
   process.exit(1);
 }
 
+logger.info('Loading auths');
 var auths = require(path.join(process.cwd(), filename));
+logger.info('Loaded', auths.length, 'auths');
 
 function errorAndQuit(err) {
   logger.error(err);
@@ -21,12 +23,13 @@ function errorAndQuit(err) {
 }
 
 function setAuth(profile, callback) {
+  logger.debug('Setting auth for', profile);
   profileManager.allSet(profile, auths[profile], {}, callback);
 }
 
 function run() {
   var profiles = Object.keys(auths);
-  var queue = async.queue(setAuth, 50);
+  var queue = async.queue(setAuth, 100);
 
   queue.drain = function(err) {
     logger.info('Done');
