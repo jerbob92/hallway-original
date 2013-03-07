@@ -166,6 +166,7 @@ before(function (done) {
 });
 
 before(function (done) {
+  acl.setRole('nexus'); //XXX To make getApp work
   acl.init(function () {
     tokenz.init(function () {
       profileManager.init(function () {
