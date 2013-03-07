@@ -82,10 +82,12 @@ exports.mapRow = function(row) {
   var apps = row.profile && row.profile.apps && row.profile.apps.slice(0, 3);
   for (var i in apps) {
     var app = apps[i];
-    appsLinks.push({
-      href: host + '/app/info/' + app.app,
-      text: app.notes.appName
-    });
+    if (!(app.notes.appName === 'Default Singly App' || app.notes.appName === 'Singly Development Sandbox')) {
+      appsLinks.push({
+        href: host + '/app/info/' + app.app,
+        text: app.notes.appName
+      });
+    }
   }
   values.push(appsLinks);
   return values;
