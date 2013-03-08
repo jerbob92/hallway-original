@@ -60,7 +60,7 @@ function getCustomApps(account, callback) {
     var apps = accountInfo.apps;
     for (var id in apps) {
       var app = apps[id];
-      if (app.appName !== 'Default Singly App') {
+      if (!(app.appName === 'Default Singly App' || app.appName === 'Singly Development Sandbox')) {
         if (!app.clientId) app.clientId = id;
         nonDef.push(app);
       }
