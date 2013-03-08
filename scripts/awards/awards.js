@@ -166,7 +166,7 @@ function main() {
       ['default']('hours', 24)
       ['default']('host', 'https://dawg.singly.com')
       ['default']('format', 'email')
-      ['default']('reports', 'tops,newApps')
+      ['default']('reports', 'newApps,newAccounts,tops')
       .boolean('attach-csv')
       .alias('attach-csv', 'attachCSV')
       .demand(['auth', 'app-id'])
