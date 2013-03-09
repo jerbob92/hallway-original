@@ -75,4 +75,33 @@ exports.getAccounts = function(hours, filter, callback) {
   });
 }
 
+function getHitsPage(appID, hours, accounts, req, cb) {
+  request.get(req, function(err, res, logs) {
+    if(err || !Array.isArray(logs)) return cb(err, logs);
+    logs.forEach(function(log) {
+      if(!Array.isArray(log.data)) return;
+      log.data.forEach(function(hit) {
+        if(!hit.act || hit.act === 'auth') return;
+        if(!accounts[hit.act]) accounts[hit.act] = 0;
+        accounts[hit.act]++;
+      });
+    });
+    if (logs.length === 0 ) return cb(null, accounts);
+    req.qs.offset += req.qs.limit;
+    getHitsPage(appID, hours, accounts, req, cb);
+  });
+}
 
+exports.getHits = function(appID, hours, callback) {
+  getHitsPage(appID, hours, {}, {
+      url: host + '/apps/logs',
+      qs: {
+        key: appID,
+        limit:100,
+        offset:0,
+        since: (Date.now() - (hours * 3600 * 1000))
+      },
+      headers: auth,
+      json: true
+    }, callback);
+}

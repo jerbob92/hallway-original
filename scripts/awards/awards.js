@@ -83,7 +83,8 @@ function printTable(script, rows, log) {
 function convertValToTableRow(val) {
   var text = '';
   var type = typeof val;
-  if (type === 'string' || type === 'number') text = val||'&nbsp;';
+  if (type === 'string') text = val||'&nbsp;';
+  else if(type === 'number') text = val;
   else if (Array.isArray(val)) {
     for(var i in val) text += convertValToTableRow(val[i]) + ' ';
   } else if (type === 'object') {

@@ -32,8 +32,6 @@ function getHits(appID, hours, callback) {
 }
 
 function getHitsPage(appID, hours, accounts, req, cb) {
-  var until = Date.now() - (3600*hours*1000);
-
   request.get(req, function(err, res, logs) {
     if(err || !Array.isArray(logs)) return cb(err, logs);
     logs.forEach(function(log) {
