@@ -1,3 +1,10 @@
+var argv = require('optimist')
+  .usage('Usage: $0 --file <file> <appID>[, <appID> ...]')
+  .options('limit', {'default': null})
+  .options('workers', {'default': 100})
+  .demand(['file', '_'])
+  .argv;
+
 var async = require('async');
 var fs = require('fs');
 
@@ -5,19 +12,9 @@ var logger = require('logger').logger('dump-auth-data');
 var profileManager = require('profileManager');
 var dal = require('dal');
 
-console.log('Required');
-
-var outfile = process.argv[2];
-var apps = process.argv.slice(3);
+var apps = argv._;
 
 logger.info('Dumping data for ', apps);
-
-if (!outfile || apps.length === 0) {
-  logger.warn('Usage: node dump-auth-data.js <outfile> <appID>[, <appId> ...]');
-  logger.info('All profiles for the given apps will be loaded, ' +
-              'and their auth data will be written as JSON to the outfile.');
-  process.exit(1);
-}
 
 function errorAndQuit(err) {
   logger.error(err);
@@ -29,6 +26,7 @@ function getProfiles(apps, callback) {
     return "'" + app + "'";
   }).join(',');
   var sql = 'SELECT DISTINCT profile From Accounts WHERE app IN (' + appsIn + ')';
+  if (argv.limit) sql += ' LIMIT ' + argv.limit;
   dal.query(sql, null, function(err, rows) {
     var profiles = rows.map(function(row) {
       return row.profile;
@@ -48,7 +46,7 @@ function getAuths(profiles, callback) {
       if (data && data.auth) auths[profile] = data.auth;
       cbQueue();
     });
-  }, 50);
+  }, argv.workers);
 
   queue.drain = function(err) {
     logger.debug('Done getting auth', err);
@@ -63,7 +61,7 @@ function getAuths(profiles, callback) {
 }
 
 function writeAuths(auths, callback) {
-  fs.writeFile(outfile, JSON.stringify(auths), callback);
+  fs.writeFile(argv.file, JSON.stringify(auths), callback);
 }
 
 function run() {
