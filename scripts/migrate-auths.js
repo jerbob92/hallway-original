@@ -61,7 +61,6 @@ function ensureProfileExists(profile, callback) {
 }
 
 function sendProfileData(profile, data, callback) {
-  data.auth.migrated = true;
   podRequest('/profile', {
     method: 'PUT',
     qs: {
