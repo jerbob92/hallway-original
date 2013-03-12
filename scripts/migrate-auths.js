@@ -31,9 +31,10 @@ function getProfiles(apps, callback) {
   var appsIn = apps.map(function(app) {
     return "'" + app + "'";
   }).join(',');
-  var sql = 'SELECT DISTINCT profile From Accounts WHERE app IN (' + appsIn + ')';
+  var sql = 'SELECT DISTINCT profile From Accounts WHERE app IN (' + appsIn + ') ORDER BY profile';
   if (argv.limit) sql += ' LIMIT ' + argv.limit;
   dal.query(sql, null, function(err, rows) {
+    if (err) errorAndQuit(err);
     var profiles = rows.map(function(row) {
       return row.profile;
     });
