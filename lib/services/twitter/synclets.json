@@ -82,11 +82,6 @@
       "class": "social"
     },
     {
-      "name": "related",
-      "frequency": 7000,
-      "class": "social"
-    },
-    {
       "name": "mentions",
       "frequency": 600,
       "class": "social"
