@@ -66,7 +66,7 @@
     "pcron": "git://github.com/Singly/pcron",
     "qs": "",
     "redis": "0.7.x",
-    "request": "git+https://github.com/mikeal/request.git#d734337ad821894428fa0eabf65d0e88697dd4a2",
+    "request": "2.14.0",
     "riak": "git+https://github.com/Singly/node_riak",
     "sanitizer": "",
     "serializer": ">=0.0.2 <0.1.0",
