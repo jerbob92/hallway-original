@@ -50,6 +50,7 @@
     "hiredis": "0.1.x",
     "imap": "git+https://github.com/Singly/node-imap.git",
     "knox": "=0.0.9",
+    "lodash": "1.0.1",
     "mc": "",
     "mime": "",
     "mimelib": "",
