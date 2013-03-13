@@ -58,6 +58,7 @@
     }
   },
   "pods": {
+    "enabled": false,
     "domain": "localhost",
     "secure": false,
     "listenIP": "0.0.0.0",
