@@ -1,6 +1,6 @@
 {
     "lockerHost" : "localhost",
-    "lockerPort" : 8043,
+    "lockerPort" : 8042,
     "me" : "Data",
     "registryUpdate" : false,
     "requireSigned" : false,
