@@ -26,7 +26,7 @@ describe("Instagram connector", function () {
   describe("follows synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + '/users/self/follows?access_token=token',
+        uri: apiBase + '/users/self/follows?access_token=token&count=100',
         file: __dirname + '/../../fixtures/synclets/instagram/follows.json'
       });
     });
@@ -44,7 +44,7 @@ describe("Instagram connector", function () {
   describe("feed synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + '/users/self/feed?access_token=token',
+        uri: apiBase + '/users/self/feed?access_token=token&count=100',
         file: __dirname + '/../../fixtures/synclets/instagram/feed.json'
       });
     });
