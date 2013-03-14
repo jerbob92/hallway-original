@@ -1,6 +1,8 @@
 var request = require('request');
 var async = require('async');
 
+var lib = require('./lib');
+
 var host;
 var auth;
 var ignoredUsers;
@@ -9,58 +11,17 @@ exports.init = function(_host, _auth, _ignoredUsers) {
   host = _host;
   auth = {Authorization:"Basic " + new Buffer(_auth).toString("base64")};
   ignoredUsers = _ignoredUsers;
+  lib.init(_host, _auth, _ignoredUsers);
 };
 
 exports.title = 'New apps';
 
-function getProfile(act, callback) {
-  request.get({
-    url: host + '/proxy/'+act+'/profile',
-    headers: auth,
-    json:true},
-    function(err, resp, profile) {
-    return callback(err, profile);
-  });
-}
-
 exports.run = function(options, callback) {
   var hours = options.hours;
-  request.get({
-    url: host + '/apps/list',
-    qs: { since: Date.now() - (hours * 3600000)},
-    headers: auth,
-    json:true}, function(err, resp, results) {
-    if (err) return callback('getHits err' + JSON.stringify(err));
-    var apps = [];
-    for(var i in results) {
-      var act = results[i].notes && results[i].notes.account;
-      if(!ignoredUsers || ignoredUsers.indexOf(act) === -1) apps.push(results[i]);
-    }
-    var byAccount = {};
-    async.forEachLimit(apps, 10, function(app, cbAct) {
-      var act = app.notes.account;
-      getProfile(act, function(err, profile) {
-        if (err) callback('failed to proxy for profile' + JSON.stringify(err));
-        if (!profile) profile = {};
-        app.notes.profile = profile;
-        byAccount[app.notes.account] = byAccount[app.notes.account] || app;
-        profile = byAccount[app.notes.account].notes.profile;
-        profile.apps = profile.apps || [];
-        profile.apps.push(app);
-        cbAct();
-      });
-    }, function() {
-      var rows = [];
-      Object.keys(byAccount).forEach(function(account) {
-        var app = byAccount[account];
-        rows.push({
-          id: app.notes.account,
-          profile: app.notes.profile
-        });
-      });
-      return callback(null, rows);
-    });
-  });
+  lib.getAccounts(hours, function(app) {
+    return !(app.notes.appName === 'Default Singly App'
+          || app.notes.appName === 'Singly Development Sandbox');
+  }, callback);
 };
 
 exports.mapRow = function(row) {
@@ -82,10 +43,16 @@ exports.mapRow = function(row) {
   var apps = row.profile && row.profile.apps && row.profile.apps.slice(0, 3);
   for (var i in apps) {
     var app = apps[i];
-    appsLinks.push({
-      href: host + '/app/info/' + app.app,
-      text: app.notes.appName
-    });
+    if (!(app.notes.appName === 'Default Singly App' || app.notes.appName === 'Singly Development Sandbox')) {
+      var text = app.notes.appName;
+      if (app.notes.package) {
+        text += ' (' + Object.keys(app.notes.package)[0] + ')';
+      }
+      appsLinks.push({
+        href: host + '/app/info/' + app.app,
+        text: text
+      });
+    }
   }
   values.push(appsLinks);
   return values;

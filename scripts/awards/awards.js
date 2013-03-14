@@ -83,7 +83,8 @@ function printTable(script, rows, log) {
 function convertValToTableRow(val) {
   var text = '';
   var type = typeof val;
-  if (type === 'string' || type === 'number') text = val||'&nbsp;';
+  if (type === 'string') text = val||'&nbsp;';
+  else if(type === 'number') text = val;
   else if (Array.isArray(val)) {
     for(var i in val) text += convertValToTableRow(val[i]) + ' ';
   } else if (type === 'object') {
@@ -166,7 +167,7 @@ function main() {
       ['default']('hours', 24)
       ['default']('host', 'https://dawg.singly.com')
       ['default']('format', 'email')
-      ['default']('reports', 'tops,newApps')
+      ['default']('reports', 'newApps,newAccounts,tops')
       .boolean('attach-csv')
       .alias('attach-csv', 'attachCSV')
       .demand(['auth', 'app-id'])

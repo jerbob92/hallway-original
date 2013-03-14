@@ -1,6 +1,8 @@
 var request = require('request');
 var async = require('async');
 
+var lib = require('./lib');
+
 var host;
 var auth;
 var ignoredUsers;
@@ -9,9 +11,10 @@ exports.init = function(_host, _auth, _ignoredUsers) {
   host = _host;
   auth = {Authorization:"Basic " + new Buffer(_auth).toString("base64")};
   ignoredUsers = _ignoredUsers;
+  lib.init(_host, _auth, _ignoredUsers);
 };
 
-exports.title = 'Top developers on singly.com';
+exports.title = 'Top developers using the API explorer on singly.com';
 exports.columnNames = ['Account','Hits', 'Name','Loc','Email','Apps'];
 
 function getHits(appID, hours, callback) {
@@ -29,8 +32,6 @@ function getHits(appID, hours, callback) {
 }
 
 function getHitsPage(appID, hours, accounts, req, cb) {
-  var until = Date.now() - (3600*hours*1000);
-
   request.get(req, function(err, res, logs) {
     if(err || !Array.isArray(logs)) return cb(err, logs);
     logs.forEach(function(log) {
@@ -60,7 +61,7 @@ function getCustomApps(account, callback) {
     var apps = accountInfo.apps;
     for (var id in apps) {
       var app = apps[id];
-      if (app.appName !== 'Default Singly App') {
+      if (!(app.appName === 'Default Singly App' || app.appName === 'Singly Development Sandbox')) {
         if (!app.clientId) app.clientId = id;
         nonDef.push(app);
       }
@@ -94,7 +95,7 @@ exports.run = function(options, callback) {
       /*if (ignoredUsers && ignoredUsers.indexOf(act) !== -1) {
         return process.nextTick(cbAct);
       }*/
-      getProfile(act, function(err, profile) {
+      lib.getProfile(act, function(err, profile) {
         if (err) callback('failed to proxy for profile' + JSON.stringify(err));
         if (!profile) profile = {};
         getCustomApps(act, function(err, customApps) {

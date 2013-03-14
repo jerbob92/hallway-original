@@ -42,7 +42,8 @@ var EXAMPLE_MAP = {
     "provider_url": "http://www.otherdomain.com"
   },
   "media": "http://www.somedomain.com",
-  "ll": [-27.5, 31.2]
+  "ll": [-27.5, 31.2],
+  "earliest": 5000
 };
 
 describe('dMap', function () {
