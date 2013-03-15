@@ -46,19 +46,19 @@ describe("foursquare connector", function () {
   describe("friends synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + 'self/friends.json?oauth_token=token&limit=500',
+        uri: apiBase + 'self/friends.json?oauth_token=token&limit=100&offset=0',
         file: __dirname + '/../../fixtures/synclets/foursquare/friends.json'
       });
 
       fakeweb.registerUri({
-        uri: 'https://api.foursquare.com:443/v2/multi?requests=/users/37,' +
-          '/users/476,/users/516,/users/618,/users/763,&oauth_token=token',
+        uri: 'https://api.foursquare.com:443/v2/multi?oauth_token=token' +
+          '&requests=%2Fusers%2F37%2C%2Fusers%2F476%2C%2Fusers%2F516%2C%2Fusers%2F618%2C%2Fusers%2F763',
         file: __dirname + '/../../fixtures/synclets/foursquare/multi.json'
       });
 
       fakeweb.registerUri({
-        uri: 'https://api.foursquare.com:443/v2/multi?requests=/users/1419,' +
-          '/users/2307,/users/2928,/users/9832,/users/11203,&oauth_token=token',
+        uri: 'https://api.foursquare.com:443/v2/multi?oauth_token=token' +
+          '&requests=%2Fusers%2F1419%2C%2Fusers%2F2307%2C%2Fusers%2F2928%2C%2Fusers%2F9832%2C%2Fusers%2F11203',
         file: __dirname + '/../../fixtures/synclets/foursquare/none.json'
       });
     });
