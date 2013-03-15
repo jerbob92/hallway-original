@@ -2,7 +2,6 @@
 
 IGNORES=(
   "firebase-token-generator-node"
-  "dal-mysqlclient"
   "ijod-mem"
   "ijod-fs"
   "ijod-s3"

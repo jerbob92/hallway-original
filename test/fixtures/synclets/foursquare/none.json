@@ -1,1 +1,59 @@
-{}
+{
+    "meta": {
+        "code": 200,
+        "errorDetail": "Please provide an API version to avoid future errors.See http://bit.ly/vywCav",
+        "errorType": "deprecated"
+    },
+    "notifications": [
+        {
+            "item": {
+                "unreadCount": 7
+            },
+            "type": "notificationTray"
+        }
+    ],
+    "response": {
+        "responses": [
+            {
+                "meta": {
+                    "code": 400,
+                    "errorDetail": "Must provide a valid user ID or 'self.'",
+                    "errorType": "param_error"
+                },
+                "response": {}
+            },
+            {
+                "meta": {
+                    "code": 400,
+                    "errorDetail": "Must provide a valid user ID or 'self.'",
+                    "errorType": "param_error"
+                },
+                "response": {}
+            },
+            {
+                "meta": {
+                    "code": 400,
+                    "errorDetail": "Must provide a valid user ID or 'self.'",
+                    "errorType": "param_error"
+                },
+                "response": {}
+            },
+            {
+                "meta": {
+                    "code": 400,
+                    "errorDetail": "Must provide a valid user ID or 'self.'",
+                    "errorType": "param_error"
+                },
+                "response": {}
+            },
+            {
+                "meta": {
+                    "code": 400,
+                    "errorDetail": "Must provide a valid user ID or 'self.'",
+                    "errorType": "param_error"
+                },
+                "response": {}
+            }
+        ]
+    }
+}

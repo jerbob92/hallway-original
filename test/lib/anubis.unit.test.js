@@ -1,5 +1,6 @@
 require('chai').should();
 
+var fakeweb = require('node-fakeweb');
 var lconfig = require('lconfig');
 var dalFake = require('dal-fake');
 var dal = require('dal');
@@ -11,13 +12,17 @@ dalFake.addFake(/SELECT hex\(idr\) as idr, hash FROM/i, []);
 dal.setBackend('fake');
 
 var anubis = require('anubis');
-var ijod = require('ijod');
-
-before(function (done) {
-  ijod.initDB(done);
-});
 
 describe('anubis', function () {
+  beforeEach(function() {
+    fakeweb.allowNetConnect = false;
+    fakeweb.allowLocalConnect = false;
+  });
+
+  afterEach(function() {
+    fakeweb.tearDown();
+  });
+
   describe('#log', function () {
     this.timeout(1000);
 
@@ -40,21 +45,17 @@ describe('anubis', function () {
     });
 
     it('should reap the request', function (done) {
-      var ran = false;
-
-      dalFake.addFake(/INSERT INTO .* \(base, idr, path, hash, offset, len, lat, lng, q0, q1, q2, q3, par\) VALUES/i, function (binds) {
-        binds.should.be.an('array');
-
-        ran = true;
+      fakeweb.registerUri({
+        uri: 'http://localhost:8060/batchSmartAdd',
+        body: JSON.stringify({
+          timings: 'timings'
+        })
       });
 
-      anubis.reap();
-
-      setTimeout(function () {
-        ran.should.equal(true);
-
+      anubis.reap(function(err, result) {
+        result.should.eql('timings');
         done();
-      }, 250);
+      });
     });
   });
 });

@@ -19,6 +19,7 @@ var logger = require('logger').logger('clearProfile');
 var dMap = require('dMap');
 var entries = require('entries');
 var ijod = require('ijod');
+var podClient = require('podClient');
 var profileManager = require('profileManager');
 var servezas = require('servezas');
 var taskList = require('taskList');
@@ -42,14 +43,14 @@ function initialize(callback) {
 
 
 function clearBase(base, callback) {
-  ijod.getBounds(base, entries.options({}), function(err, bounds) {
+  podClient.getBounds(base, entries.options({}), function(err, bounds) {
     if (err) return callback(err);
 
     logger.info('Clearing', bounds.total, 'entries from', base);
 
     var toDelete = [];
 
-    ijod.getRange(base, {}, function(item) {
+    podClient.getRange(base, {}, function(item) {
       toDelete.push(item.idr);
     }, function(err) {
       if (err) return callback(err);

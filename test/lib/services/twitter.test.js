@@ -12,7 +12,6 @@ var tweets = require(path.join('services', 'twitter', 'tweets.js'));
 
 describe('Twitter connector', function () {
   var apiBase = 'https://api.twitter.com:443/1.1/';
-  var apiSuffix = '&include_entities=true';
   var pinfo;
 
   beforeEach(function () {
@@ -30,13 +29,13 @@ describe('Twitter connector', function () {
     beforeEach(function () {
       fakeweb.registerUri({
         uri: apiBase + 'friends/ids.json?path=%2Ffriends%2Fids.json' +
-          '&cursor=-1&slice=0' + apiSuffix,
+          '&stringify_ids=true&count=100',
         file: __dirname + '/../../fixtures/synclets/twitter/friends.js'
       });
 
       fakeweb.registerUri({
-        uri: apiBase + 'users/lookup.json?path=%2Fusers%2Flookup.json' +
-          '&user_id=1054551' + apiSuffix,
+        uri: apiBase + 'users/lookup.json?' +
+          'user_id=1054551&include_entities=false',
         file: __dirname + '/../../fixtures/synclets/twitter/1054551.js'
       });
     });
@@ -55,14 +54,13 @@ describe('Twitter connector', function () {
     beforeEach(function () {
       fakeweb.registerUri({
         uri: apiBase + 'account/verify_credentials.json' +
-          '?path=%2Faccount%2Fverify_credentials.json' + apiSuffix,
+          '?path=%2Faccount%2Fverify_credentials.json',
         file: __dirname + '/../../fixtures/synclets/twitter/verify_credentials.js'
       });
 
       fakeweb.registerUri({
         uri: apiBase + 'statuses/home_timeline.json?screen_name=ctide' +
-          '&since_id=1&path=%2Fstatuses%2Fhome_timeline.json&count=200' +
-          apiSuffix,
+          '&since_id=1&path=%2Fstatuses%2Fhome_timeline.json&count=200',
         file: __dirname + '/../../fixtures/synclets/twitter/home_timeline.js'
       });
     });
@@ -81,13 +79,13 @@ describe('Twitter connector', function () {
     beforeEach(function () {
       fakeweb.registerUri({
         uri: apiBase + 'account/verify_credentials.json' +
-          '?path=%2Faccount%2Fverify_credentials.json' + apiSuffix,
+          '?path=%2Faccount%2Fverify_credentials.json',
         file : __dirname + '/../../fixtures/synclets/twitter/verify_credentials.js'
       });
 
       fakeweb.registerUri({
         uri: apiBase + 'statuses/mentions_timeline.json?screen_name=ctide&since_id=1' +
-          '&path=%2Fstatuses%2Fmentions_timeline.json&count=200' + apiSuffix,
+          '&path=%2Fstatuses%2Fmentions_timeline.json&count=200',
         file: __dirname + '/../../fixtures/synclets/twitter/home_timeline.js'
       });
     });
@@ -106,14 +104,14 @@ describe('Twitter connector', function () {
     beforeEach(function () {
       fakeweb.registerUri({
         uri: apiBase + 'account/verify_credentials.json' +
-          '?path=%2Faccount%2Fverify_credentials.json' + apiSuffix,
+          '?path=%2Faccount%2Fverify_credentials.json',
         file: __dirname + '/../../fixtures/synclets/twitter/verify_credentials.js'
       });
 
       fakeweb.registerUri({
         uri: apiBase + 'statuses/user_timeline.json?screen_name=ctide' +
           '&since_id=1&path=%2Fstatuses%2Fuser_timeline.json&include_rts=true' +
-          '&count=200' + apiSuffix,
+          '&count=200',
         file: __dirname + '/../../fixtures/synclets/twitter/home_timeline.js'
       });
     });
