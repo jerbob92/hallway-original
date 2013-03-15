@@ -9,7 +9,7 @@
 
   "pods": {
     "enabled": true
-  }
+  },
 
   "ijod_backend": "file",
   "ijod_path": "/tmp/hallway",
