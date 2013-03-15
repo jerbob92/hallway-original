@@ -24,7 +24,8 @@ var argv = require('optimist')
 
 // the redis and riak clients
 var RiakClient = require("riak"), client;
-var riakClient = new RiakClient(["127.0.0.1:8098"], "sched_sample_client");
+var riakClient = new RiakClient(lconfig.taskman.store.servers,
+                                "sched_sample_client");
 var redisClient = redis.createClient(lconfig.worker.redis.port,
                                  lconfig.worker.redis.host);
 var scheduleDb = 3;
