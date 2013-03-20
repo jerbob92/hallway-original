@@ -159,7 +159,7 @@ function runService(paginationPi, cb) {
 
           if (synclets.sandbox) {
             pi.all[synclet] = data.config;
-            if (data.config.nextRun) {
+            if (data.config && data.config.nextRun) {
               pi.all.nextRun = data.config.nextRun;
               delete data.config.nextRun;
             }

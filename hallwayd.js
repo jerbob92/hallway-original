@@ -18,7 +18,7 @@ var lconfig = require('lconfig');
 var instruments = require('instruments');
 var logger = require('logger').logger('hallwayd');
 
-logger.info('process id:' + process.pid);
+logger.vital('hallwayd process id:', process.pid);
 
 // temp measure to help apihosts have bigger pool
 if (argv._.length === 0 || argv._[0] === "apihost") {
@@ -44,13 +44,13 @@ http.globalAgent.maxSockets = 800;
 https.globalAgent.maxSockets = 800;
 
 function startAPIHost(cbDone) {
-  logger.info("Starting an API host");
+  logger.vital("Starting an API host");
 
   var webservice = require('webservice');
 
   webservice.startService(lconfig.lockerPort, lconfig.lockerListenIP,
     function () {
-    logger.info('Hallway is now listening at ' + lconfig.lockerListenIP +
+    logger.vital('Hallway is now listening at ' + lconfig.lockerListenIP +
       ':' + lconfig.lockerPort);
 
     cbDone();
@@ -65,20 +65,20 @@ function startDawg(cbDone) {
     process.exit(1);
   }
 
-  logger.info("Starting a Hallway Dawg -- Think you can get away without " +
+  logger.vital("Starting a Hallway Dawg -- Think you can get away without " +
     "having a hall pass?  Think again.");
 
   var dawg = require('dawg');
 
   dawg.startService(lconfig.dawg.port, lconfig.dawg.listenIP, function () {
-    logger.info("The Dawg is now monitoring at port %d", lconfig.dawg.port);
+    logger.vital("The Dawg is now monitoring at port %d", lconfig.dawg.port);
 
     cbDone();
   });
 }
 
 function startNexus(cbDone) {
-  logger.info('Starting a Nexus. Should last about 4 years.');
+  logger.vital('Starting a Nexus. Should last about 4 years.');
   require('nexusService').startService(
     lconfig.nexus.port,
     lconfig.nexus.listenIP,
@@ -87,7 +87,7 @@ function startNexus(cbDone) {
 }
 
 function startPod(cbDone) {
-  logger.info('Starting a Pod so HAL can\'t hear us.');
+  logger.vital('Starting a Pod so HAL can\'t hear us.');
   require('podService').startService(
     lconfig.pods.port,
     lconfig.pods.listenIP,
@@ -96,10 +96,10 @@ function startPod(cbDone) {
 }
 
 function startStream(cbDone) {
-  logger.info("Starting a Hallway Stream -- you're in for a good time.");
+  logger.vital("Starting a Hallway Stream -- you're in for a good time.");
 
   require('streamer').startService(lconfig.stream, function () {
-    logger.info("Streaming at port %d", lconfig.stream.port);
+    logger.vital("Streaming at port %d", lconfig.stream.port);
 
     cbDone();
   });
@@ -172,7 +172,7 @@ function startWorkerWS(cbDone) {
   var worker = require("worker");
   if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
   worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function () {
-    logger.info("Starting a Hallway Worker, thou shalt be digitized",
+    logger.vital("Starting a Hallway Worker, thou shalt be digitized",
       lconfig.worker);
     cbDone();
   });
@@ -256,13 +256,13 @@ async.series(startupTasks, function (err) {
     process.exit(1);
   }
 
-  logger.info("Hallway is up and running.");
+  logger.vital("Hallway is up and running.");
 
   exports.alive = true;
 });
 
 process.on("SIGINT", function () {
-  logger.info("Shutting down via SIGINT...");
+  logger.vital("Shutting down via SIGINT...");
 
   switch (role) {
   case Roles.worker:
@@ -280,7 +280,7 @@ process.on("SIGINT", function () {
 });
 
 process.on("SIGTERM", function () {
-  logger.info("Shutting down via SIGTERM...");
+  logger.vital("Shutting down via SIGTERM...");
   process.exit(0);
 });
 

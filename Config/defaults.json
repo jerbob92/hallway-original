@@ -105,7 +105,8 @@
   },
   "cookieExpire": 2592000,
   "logging": {
-    "level": "verbose"
+    "level": "debug",
+    "localLevel": "debug"
   },
   "tolerance": {
     "threshold": 50,
