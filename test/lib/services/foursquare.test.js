@@ -75,8 +75,7 @@ describe("foursquare connector", function () {
   describe("checkins synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + 'self/checkins.json?limit=250&offset=0' +
-          '&oauth_token=token&afterTimestamp=1',
+        uri: apiBase + 'self/checkins.json?limit=250&oauth_token=token&v=20130318',
         file: __dirname + '/../../fixtures/synclets/foursquare/checkins.json'
       });
     });
