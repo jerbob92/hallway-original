@@ -91,10 +91,10 @@ describe('Facebook connector', function () {
     });
 
     describe('when there is more to fetch', function () {
-      it('remembers the next page to fetch', function (done) {
+      it('remembers the next page to fetch', function (done) { // Broken
         feed.sync(pinfo, function (err, response) {
-          response.config.next.should.equal('https://graph.facebook.com/me/' +
-            'home?access_token=abc&date_format=U&limit=25&until=1306193396');
+          response.config.paging.should.equal(true);
+          response.config.pagingMax.should.equal(1306345485-1);
           done();
         });
       });
@@ -115,9 +115,9 @@ describe('Facebook connector', function () {
         });
       });
 
-      it('does not schedule another run', function (done) {
+      it('does not schedule another run', function (done) { // Broken
         feed.sync(pinfo, function (err, response) {
-          response.config.next.should.equal(false);
+          response.config.paging.should.equal(false);
           done();
         });
       });
