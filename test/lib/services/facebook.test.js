@@ -91,7 +91,7 @@ describe('Facebook connector', function () {
     });
 
     describe('when there is more to fetch', function () {
-      it('remembers the next page to fetch', function (done) { // Broken
+      it('remembers the next page to fetch', function (done) {
         feed.sync(pinfo, function (err, response) {
           response.config.paging.should.equal(true);
           response.config.pagingMax.should.equal(1306345485-1);
@@ -115,7 +115,7 @@ describe('Facebook connector', function () {
         });
       });
 
-      it('does not schedule another run', function (done) { // Broken
+      it('does not schedule another run', function (done) {
         feed.sync(pinfo, function (err, response) {
           response.config.paging.should.equal(false);
           done();
