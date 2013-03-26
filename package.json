@@ -35,7 +35,7 @@
     "aws-lib": "0.1.4",
     "colors": "0.6.x",
     "commander": "1.1.x",
-    "compress-buffer": "git+https://github.com/pccowboy/node-compress-buffer.git#gipify",
+    "compress-buffer": "1.2.x",
     "connect": "2.7.1",
     "db-migrate": "git+https://github.com/Singly/node-db-migrate.git",
     "ejs": "0.8.3",
