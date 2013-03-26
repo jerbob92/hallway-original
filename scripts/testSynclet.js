@@ -108,8 +108,8 @@ function runService(paginationPi, cb) {
       }
 
       if (synclets.sandbox) {
-        pi.all = pi.config;
-        pi.config = pi.config[synclet];
+        pi.all = pi.config || {};
+        pi.config = pi.config[synclet] || {};
       }
 
       if (pi.all) logger.info('All configs: %j', pi.all);

@@ -213,13 +213,13 @@ describe('Facebook connector', function () {
 
       fakeweb.registerUri({
         uri : 'https://graph.facebook.com:443/10150465363772595/photos' +
-          '?limit=500&access_token=foo&date_format=U',
+          '?access_token=foo&limit=100&date_format=U',
         file : __dirname + '/../../fixtures/synclets/facebook/photos.json'
       });
 
       fakeweb.registerUri({
-        uri : 'https://graph.facebook.com:443/59354442594/photos?limit=500' +
-          '&access_token=foo&date_format=U',
+        uri : 'https://graph.facebook.com:443/59354442594/photos' +
+          '?access_token=foo&limit=100&date_format=U',
         file : __dirname + '/../../fixtures/synclets/facebook/photos.json'
       });
     });
