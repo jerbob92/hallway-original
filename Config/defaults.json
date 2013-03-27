@@ -62,6 +62,7 @@
     "domain": "localhost",
     "secure": false,
     "listenIP": "0.0.0.0",
+    "listenPort": 8070,
     "port": 8070,
     "auth": {
       "user": "hal",

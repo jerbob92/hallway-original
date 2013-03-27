@@ -89,7 +89,7 @@ function startNexus(cbDone) {
 function startPod(cbDone) {
   logger.vital('Starting a Pod so HAL can\'t hear us.');
   require('podService').startService(
-    lconfig.pods.port,
+    lconfig.pods.listenPort,
     lconfig.pods.listenIP,
     cbDone
   );
