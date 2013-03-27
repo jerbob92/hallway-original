@@ -29,7 +29,7 @@ function sync(pid, callback) {
 }
 
 function run() {
-  var queue = async.queue(sync, 50);
+  var queue = async.queue(sync, 300);
 
   queue.drain = function(err) {
     logger.info('Done', err);
