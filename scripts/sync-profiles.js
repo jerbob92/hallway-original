@@ -1,3 +1,7 @@
+var argv = require('optimist')
+  .demand('pod')
+  .argv;
+
 var async = require('async');
 var path  = require('path');
 var _     = require('underscore');
@@ -14,7 +18,7 @@ function errorAndQuit(err) {
 
 function sync(pid, callback) {
   logger.debug('Syncing', pid);
-  podClient.syncNow(1, pid, callback);
+  podClient.syncNow(argv.pod, pid, callback);
 }
 
 function getPids(callback) {
@@ -25,6 +29,7 @@ function getPids(callback) {
 }
 
 function run() {
+  logger.info('Syncing all profiles to pod', argv.pod);
   getPids(function(err, pids) {
     if (err) errorAndQuit(err);
 
