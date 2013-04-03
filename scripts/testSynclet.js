@@ -133,10 +133,12 @@ function runService(paginationPi, cb) {
 
           var returned;
 
-          if (program.verbose) {
-            returned = JSON.stringify(data.data, null, 2);
-          } else {
-            returned = JSON.stringify(terse(data.data));
+          if (data) {
+            if (program.verbose) {
+              returned = JSON.stringify(data.data, null, 2);
+            } else {
+              returned = JSON.stringify(terse(data.data));
+            }
           }
 
           logger.info('%d %s/%s: %s', runs, service, synclet, returned);
