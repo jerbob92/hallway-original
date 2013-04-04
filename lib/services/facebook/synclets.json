@@ -91,10 +91,19 @@
       "aka": "albums"
     },
     {
-      "name": "likes",
+      "name": "page_likes",
       "frequency": 86400,
-      "class": "personal",
-      "aka": "url_likes stream_likes page_likes"
+      "class": "personal"
+    },
+    {
+      "name": "stream_likes",
+      "frequency": 86400,
+      "class": "personal"
+    },
+    {
+      "name": "url_likes",
+      "frequency": 86400,
+      "class": "personal"
     },
     {
       "name": "pages",
