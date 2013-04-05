@@ -194,6 +194,8 @@ ijod.initDB(function () {
       runService(queue.pop(), function (data) {
         if (data.config && data.config.nextRun === -1) {
           queue.push(data);
+        } else {
+          logger.info('Final config:', data.config);
         }
 
         whilstCb();
