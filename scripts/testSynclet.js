@@ -47,6 +47,7 @@ function exitWithError() {
 }
 
 var runs = 0;
+var entries = 0;
 
 function terse(data) {
   if (typeof(data) !== 'object') return;
@@ -134,6 +135,11 @@ function runService(paginationPi, cb) {
           var returned;
 
           if (data) {
+            if (data.data) {
+              Object.keys(data.data).forEach(function(base) {
+                entries += data.data[base].length;
+              });
+            }
             if (program.verbose) {
               returned = JSON.stringify(data.data, null, 2);
             } else {
@@ -196,6 +202,7 @@ ijod.initDB(function () {
           queue.push(data);
         } else {
           logger.info('Final config:', data.config);
+          logger.info('Total entries:', entries);
         }
 
         whilstCb();
