@@ -47,6 +47,7 @@ function exitWithError() {
 }
 
 var runs = 0;
+var entries = 0;
 
 function terse(data) {
   var terseData = Object.keys(data);
@@ -131,10 +132,17 @@ function runService(paginationPi, cb) {
 
           var returned;
 
-          if (program.verbose) {
-            returned = JSON.stringify(data.data, null, 2);
-          } else {
-            returned = JSON.stringify(terse(data.data));
+          if (data) {
+            if (data.data) {
+              Object.keys(data.data).forEach(function(base) {
+                entries += data.data[base].length;
+              });
+            }
+            if (program.verbose) {
+              returned = JSON.stringify(data.data, null, 2);
+            } else {
+              returned = JSON.stringify(terse(data.data));
+            }
           }
 
           logger.info('%d %s/%s: %s', runs, service, synclet, returned);
@@ -191,6 +199,7 @@ ijod.initDB(function () {
           queue.push(data);
         } else {
           logger.info('Final config:', data.config);
+          logger.info('Total entries:', entries);
         }
 
         whilstCb();
