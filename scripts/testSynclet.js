@@ -165,15 +165,17 @@ function runService(paginationPi, cb) {
               JSON.stringify(filtered, null, 2));
           }
 
-          if (synclets.sandbox) {
-            pi.all[synclet] = data.config;
-            if (data.config && data.config.nextRun) {
-              pi.all.nextRun = data.config.nextRun;
-              delete data.config.nextRun;
+          if (data) {
+            if (synclets.sandbox) {
+              pi.all[synclet] = data.config;
+              if (data.config && data.config.nextRun) {
+                pi.all.nextRun = data.config.nextRun;
+                delete data.config.nextRun;
+              }
+              pi.config = pi.all;
+            } else {
+              _.extend(pi.config, data.config);
             }
-            pi.config = pi.all;
-          } else {
-            _.extend(pi.config, data.config);
           }
 
           cb(pi);
