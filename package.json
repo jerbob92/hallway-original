@@ -15,7 +15,7 @@
     "lib": "./lib"
   },
   "engines": {
-    "node": ">=0.8.7 <=0.10.0"
+    "node": ">=0.8.7 <=0.10.3"
   },
   "scripts": {
     "test": "make test",
@@ -35,7 +35,7 @@
     "aws-lib": "0.1.4",
     "colors": "0.6.x",
     "commander": "1.1.x",
-    "compress-buffer": "git+https://github.com/pccowboy/node-compress-buffer.git#gipify",
+    "compress-buffer": "1.2.x",
     "connect": "2.7.1",
     "db-migrate": "git+https://github.com/Singly/node-db-migrate.git",
     "ejs": "0.8.3",
@@ -49,7 +49,7 @@
     "generic-pool": "2.0.2",
     "hiredis": "0.1.x",
     "imap": "git+https://github.com/Singly/node-imap.git",
-    "knox": "0.0.9",
+    "knox": "0.6.0",
     "lodash": "1.0.1",
     "mc": "1.0.x",
     "mime": "1.2.x",

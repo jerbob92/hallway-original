@@ -40,8 +40,8 @@ setInterval(function() {
 }, lconfig.dnsReapTime);
 
 // Set our globalAgent sockets higher
-http.globalAgent.maxSockets = 800;
-https.globalAgent.maxSockets = 800;
+http.globalAgent.maxSockets = 2048;
+https.globalAgent.maxSockets = 2048;
 
 function startAPIHost(cbDone) {
   logger.vital("Starting an API host");

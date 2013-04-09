@@ -34,7 +34,7 @@ describe("linkedin connector", function () {
   describe("self synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: 'http://api.linkedin.com:80/v1/people/~:(id,first-name,last-name,headline,location:(name,country:(code)),industry,current-share,num-connections,summary,specialties,proposal-comments,associations,honors,interests,positions,publications,patents,languages,skills,certifications,educations,num-recommenders,recommendations-received,phone-numbers,im-accounts,twitter-accounts,date-of-birth,main-address,member-url-resources,picture-url,site-standard-profile-request:(url),api-standard-profile-request:(url),site-public-profile-request:(url),api-public-profile-request:(url),public-profile-url)?format=json',
+        uri: 'http://api.linkedin.com:80/v1/people/~:(id,first-name,last-name,email-address,headline,location:(name,country:(code)),industry,current-share,num-connections,summary,specialties,proposal-comments,associations,honors,interests,positions,publications,patents,languages,skills,certifications,educations,num-recommenders,recommendations-received,phone-numbers,im-accounts,twitter-accounts,date-of-birth,main-address,member-url-resources,picture-url,site-standard-profile-request:(url),api-standard-profile-request:(url),site-public-profile-request:(url),api-public-profile-request:(url),public-profile-url)?format=json',
         headers: { "Content-Type": "text/plain" },
         file: __dirname + '/../../fixtures/synclets/linkedin/self.json'
       });
