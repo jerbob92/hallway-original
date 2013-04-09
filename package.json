@@ -15,7 +15,7 @@
     "lib": "./lib"
   },
   "engines": {
-    "node": ">=0.8.7 <=0.10.0"
+    "node": ">=0.8.7 <=0.10.3"
   },
   "scripts": {
     "test": "make test",
