@@ -51,7 +51,6 @@
     "imap": "git+https://github.com/Singly/node-imap.git",
     "knox": "0.6.0",
     "lodash": "1.0.1",
-    "mc": "1.0.x",
     "mime": "1.2.x",
     "mimelib": "0.2.x",
     "mkdirp": "0.3.4",
