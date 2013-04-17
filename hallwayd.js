@@ -44,7 +44,7 @@ http.globalAgent.maxSockets = 2048;
 https.globalAgent.maxSockets = 2048;
 
 function startAPIHost(cbDone) {
-  logger.vital("Starting an API host");
+  logger.vital("Starting an API hostess");
 
   var webservice = require('webservice');
 
