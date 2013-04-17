@@ -18,7 +18,7 @@ function errorAndQuit(err) {
 
 function sync(pid, callback) {
   logger.debug('Syncing', pid);
-  podClient.syncNow(argv.pod, pid, callback);
+  podClient.syncNow(argv.pod, pid, 1, callback);
 }
 
 function getPids(callback) {
