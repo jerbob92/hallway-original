@@ -27,6 +27,8 @@ if (argv._.length === 0 || argv._[0] === "apihost") {
 
 var taskmanNG = require('taskman-ng');
 
+// avoid DEPTH_ZERO_SELF_SIGNED_CERT
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var http = require('http');
 var https = require('https');
 
