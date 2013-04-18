@@ -50,6 +50,8 @@ var runs = 0;
 var entries = 0;
 
 function terse(data) {
+  if (typeof(data) !== 'object') return;
+
   var terseData = Object.keys(data);
 
   terseData = terseData.map(function (key) {
@@ -181,6 +183,7 @@ function runService(paginationPi, cb) {
           cb(pi);
         });
       } catch (e) {
+        logger.error(e);
         exitWithError('Exception running %s/%s: %s', service, synclet, e);
       }
     });

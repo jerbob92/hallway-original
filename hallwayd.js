@@ -44,7 +44,7 @@ http.globalAgent.maxSockets = 2048;
 https.globalAgent.maxSockets = 2048;
 
 function startAPIHost(cbDone) {
-  logger.vital("Starting an API host");
+  logger.vital("Starting an API hostess");
 
   var webservice = require('webservice');
 
@@ -89,7 +89,7 @@ function startNexus(cbDone) {
 function startPod(cbDone) {
   logger.vital('Starting a Pod so HAL can\'t hear us.');
   require('podService').startService(
-    lconfig.pods.port,
+    lconfig.pods.listenPort,
     lconfig.pods.listenIP,
     cbDone
   );

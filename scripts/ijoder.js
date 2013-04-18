@@ -75,7 +75,12 @@ console.log("Table: " + table);
 console.log("Query: " + query);
 
 partition.readFrom(idr, function (parts) {
+  console.log(parts);
   parts[0].dal.query(query, [], function (err, rows) {
+    if (err || rows.length == 0) {
+      console.log("IDR not found");
+      return;
+    }
     backend.get(rows[0].path, rows[0].offset, rows[0].len, function (err, buf) {
       var zbuf = zlib.uncompress(buf);
 
