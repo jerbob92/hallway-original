@@ -261,7 +261,7 @@ describe('Facebook connector', function () {
       it('schedules itself immediately', function (done) {
         photos.sync(pinfo, function (err, response) {
           if (err) return done(err);
-          response.config.nextRun.should.equal(2);
+          response.config.nextRun.should.equal(3);
           done();
         });
       });
