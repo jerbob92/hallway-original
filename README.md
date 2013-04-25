@@ -4,7 +4,7 @@
 
 This is an open source project to help developers build amazing applications
 combining data from many sources easily, through one API. This codebase is
-currently live and powering [api.singly.com](https://api.singly.com/) so sign in
+currently live and powering [api.singly.com](https://singly.com/) so sign in
 and start building!
 
 [Background Video](http://www.youtube.com/watch?v=pTNO5npNq28)
