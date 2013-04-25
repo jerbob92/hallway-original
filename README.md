@@ -10,10 +10,7 @@ and start building!
 [Background Video](http://www.youtube.com/watch?v=pTNO5npNq28)
 
 Follow [@singly](http://twitter.com/singly) and come hang out with us in
-[HipChat](http://chat.singly.com/).
-
-We also have a [mailing list](https://groups.google.com/group/singlyapi), join
-and say hello!
+[HipChat](http://support.singly.com/).
 
 Let's get started.
 
