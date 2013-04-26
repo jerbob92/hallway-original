@@ -173,7 +173,7 @@ You should see the following output once hallway is ready to go:
 ## Using Hallway
 
 To use hallway you will need to setup a test app in the database and then clone
-down and use an example app.  To setup a test app in the database run the
+down and use an example app.  To setup a test app in the database, run the
 following commands and sql.
 
     mysql -u <admin_username> -p <admin_password> hallway_development
