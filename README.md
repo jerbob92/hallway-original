@@ -12,7 +12,7 @@ and start building!
 Follow [@singly](http://twitter.com/singly) and come hang out with us in
 [HipChat](http://support.singly.com/).
 
-Let's get started.
+Let's get started...
 
 ## Installing Dependencies
 
