@@ -71,7 +71,7 @@ You should see all the hallway tables.
 ## Redis Setup
 
 Redis should have been setup during the initial install.  You can verify that it
-is everything is setup and working by running the following commands:
+is setup and working by running the following commands:
 
     redis-cli
     info
