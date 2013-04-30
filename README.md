@@ -33,7 +33,7 @@ following command:
 
     git clone https://github.com/Singly/hallway.git
 
-Now go to the hallway directory and run make:
+Now go to the hallway directory and run `make`:
 
     cd hallway
     make
