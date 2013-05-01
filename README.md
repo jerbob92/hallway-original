@@ -55,7 +55,8 @@ command line tool, run the following command, substituting your own values for
     mysql> create user <mysql_username> identified by '<mysql_password>';
     mysql> grant all on hallway_dev.* to hallway;
 
-Once this is done, you can then use the following command to create the necessary tables:
+Once this is done, you can then use the following command to create the
+necessary tables:
 
     mysql -u <mysql_username> -p hallway_dev < create_tables.sql
 
