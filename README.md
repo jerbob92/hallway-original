@@ -77,7 +77,7 @@ is setup and working by running the following commands:
     redis-cli
     info
 
-If everything is up and running you should see an info output.
+If everything is up and running you should see *info* log output.
 
 ## Hallway Configuration
 
