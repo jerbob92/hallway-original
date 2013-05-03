@@ -257,6 +257,7 @@ describe('API host', function () {
     });
 
     paths.forEach(function (path) {
+      if(path.indexOf('applications') >= 0) return;
       it(path + ' should require authentication', function (done) {
         REQUEST.options(path)
           .expect('Content-Type', /json/)
