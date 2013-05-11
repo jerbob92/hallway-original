@@ -22,6 +22,7 @@ Hallway has the following dependencies:
  * [NPM](https://npmjs.org/)
  * [MySQL](http://www.mysql.com/downloads/mysql/5.1.html)
  * [Redis](http://redis.io/)
+ * [Riak](http://basho.com/riak/)
 
 Detailed instructions for each platform can be found
 [here](https://github.com/Singly/hallway/wiki/Installing-hallway-dependencies).
