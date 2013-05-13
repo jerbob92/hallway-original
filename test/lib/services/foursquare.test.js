@@ -46,7 +46,7 @@ describe("foursquare connector", function () {
   describe("friends synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + 'self/friends.json?oauth_token=token&limit=100&offset=0',
+        uri: apiBase + 'self/friends?oauth_token=token&limit=100&offset=0',
         file: __dirname + '/../../fixtures/synclets/foursquare/friends.json'
       });
 
@@ -75,7 +75,7 @@ describe("foursquare connector", function () {
   describe("checkins synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + 'self/checkins.json?limit=250&oauth_token=token&v=20130318',
+        uri: apiBase + 'self/checkins?limit=250&oauth_token=token&v=20130318',
         file: __dirname + '/../../fixtures/synclets/foursquare/checkins.json'
       });
     });
@@ -94,7 +94,7 @@ describe("foursquare connector", function () {
   describe("photos synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: apiBase + 'self/photos.json?limit=250&offset=0&oauth_token=token',
+        uri: apiBase + 'self/photos?limit=250&offset=0&oauth_token=token',
         file: __dirname + '/../../fixtures/synclets/foursquare/photos.json'
       });
     });
@@ -113,7 +113,7 @@ describe("foursquare connector", function () {
   describe("recent synclet", function () {
     beforeEach(function () {
       fakeweb.registerUri({
-        uri: 'https://api.foursquare.com:443/v2/checkins/recent.json' +
+        uri: 'https://api.foursquare.com:443/v2/checkins/recent' +
           '?limit=100&oauth_token=token',
         file: __dirname + '/../../fixtures/synclets/foursquare/recent.json'
       });
