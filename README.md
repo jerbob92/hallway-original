@@ -9,8 +9,7 @@ and start building!
 
 [Background Video](http://www.youtube.com/watch?v=pTNO5npNq28)
 
-Follow [@singly](http://twitter.com/singly) and come hang out with us in
-[HipChat](http://support.singly.com/).
+Follow [@singly](http://twitter.com/singly) and check out our [blog](http://blog.singly.com).
 
 Let's get started:
 
