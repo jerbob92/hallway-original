@@ -1,0 +1,8 @@
+{
+  "name": "Evernote Account",
+  "desc": "Provides authentication",
+  "key": "Client ID",
+  "secret": "Client secret",
+  "icons": [],
+  "synclets": []
+}
