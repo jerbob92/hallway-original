@@ -124,15 +124,10 @@ var TYPE_GETS = [
 
 var PUBLIC_GETS = [
   '/enoch',
-  '/resources/friends',
   '/resources.json',
   '/resources/profile',
   '/resources/profiles',
-  '/resources/services',
-  '/resources/types',
-  '/services',
-  '/state',
-  '/types'
+  '/state'
 ];
 
 var SIMPLE_GETS = [
