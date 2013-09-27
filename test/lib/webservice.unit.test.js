@@ -158,38 +158,6 @@ function failOnBadAccessToken(url) {
 }
 
 describe('API host', function () {
-  describe('applying auth', function () {
-    it('should throttle when necessary', function (done) {
-      lconfig.backlogThresholds = {
-        aaaabbbbccccdddd: -1
-      };
-
-      REQUEST.get('/auth/facebook/apply')
-        .query({
-          client_id: 'aaaabbbbccccdddd',
-          client_secret: 'AAAABBBBCCCCDDDD',
-          token: '1111222233334444',
-          token_secret: '5555666677778888'
-        })
-        .expect(503, /Throttling in effect/)
-        .end(done);
-    });
-
-    it('should not throttle when unnecessary', function (done) {
-      lconfig.backlogThresholds = {};
-
-      REQUEST.get('/auth/facebook/apply')
-        .query({
-          client_id: 'aaaabbbbccccddd',
-          client_secret: 'AAAABBBBCCCCDDDD',
-          token: '1111222233334444',
-          token_secret: '5555666677778888'
-        })
-        .expect(404)
-        .end(done);
-    });
-  });
-
   describe('endpoints without their own OPTIONS', function () {
     var paths = [];
 
