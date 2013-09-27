@@ -106,21 +106,7 @@ servezas.serviceList().forEach(function (service) {
   });
 });
 
-var TYPE_GETS = [
-  '/types/photos',
-  '/types/photos_feed',
-  '/types/news',
-  '/types/news_feed',
-  '/types/videos',
-  '/types/videos_feed',
-  '/types/checkins',
-  '/types/checkins_feed',
-  '/types/statuses',
-  '/types/statuses_feed',
-  '/types/contacts',
-  '/types/all',
-  '/types/all_feed'
-];
+var TYPE_GETS = [];
 
 var PUBLIC_GETS = [
   '/enoch',
@@ -132,26 +118,12 @@ var PUBLIC_GETS = [
 
 var SIMPLE_GETS = [
   '/apps',
-  '/friends',
   '/logout',
   '/profile',
   '/profile?data=true',
   '/profile?verify=true',
   '/profile?data=true&verify=true',
-  '/profiles',
-  '/push',
-  '/services/reset',
-  '/types/contacts',
-  '/types/photos',
-  '/types/photos_feed',
-  '/types/checkins',
-  '/types/checkins_feed',
-  '/types/news',
-  '/types/news_feed',
-  '/types/videos',
-  '/types/videos_feed',
-  '/types/statuses',
-  '/types/statuses_feed'
+  '/profiles'
 ];
 
 var REQUEST;
