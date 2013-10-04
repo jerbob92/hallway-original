@@ -190,4 +190,3 @@ the local host and port that you have Hallway running on.
 
 Here is the [NodeJS Example](https://singly.com/docs/getting_started_node) to
 get started.
-
