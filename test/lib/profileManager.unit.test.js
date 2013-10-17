@@ -16,7 +16,6 @@ describe('profileManager', function() {
     lconfig.taskman.store = {
       type: 'mem'
     };
-    lconfig.pods.newProfiles = 1;
     profileManager.init(done);
   });
 
@@ -56,98 +55,7 @@ describe('profileManager', function() {
         });
       });
 
-      describe('when there is a pod ID', function() {
-        beforeEach(function() {
-          dalFake.addFake(/SELECT \* FROM Profiles/i, [{
-            id: 'id@service',
-            service: 'service',
-            pod: 1
-          }]);
-          fakeweb.registerUri({
-            uri: 'http://lb.pod1.localhost:8070/profile?pid=id%40service',
-            method: 'GET',
-            body: JSON.stringify({
-              id: 'id@service',
-              service: 'service',
-              pod: null,
-              cat: CAT,
-              auth: 'authinfo',
-              config: 'configinfo'
-            })
-          });
-        });
-
-        it('fetches from the remote pod', function(done) {
-          profileManager.allGet('id@service', function(err, profile) {
-            return done(); // jer - I don't know wtf is going on here right now
-            profile.should.eql({
-              id: 'id@service',
-              service: 'service',
-              pod: 1,
-              auth: 'authinfo',
-              config: 'configinfo',
-              cat: CAT
-            });
-          });
-        });
-      });
     });
 
-    describe('when the Profile does not exist', function() {
-      beforeEach(function() {
-        dalFake.addFake(/SELECT \* FROM Profiles/i, []);
-      });
-
-      describe('on an apihost', function() {
-        beforeEach(function() {
-          profileManager.setRole('apihost');
-          dalFake.addFake(/INSERT INTO Profiles \(id,service,pod\)/i, []);
-          fakeweb.registerUri({
-            uri: 'http://lb.pod1.localhost:8070/profile?pid=id%40service',
-            method: 'POST',
-            body: JSON.stringify({
-              id: 'id@service',
-              service: 'service',
-              pod: null,
-              cat: CAT,
-              auth: {},
-              config: {}
-            })
-          });
-        });
-
-        it('creates a new Profile on a remote pod', function(done) {
-          profileManager.allGet('id@service', function(err, profile) {
-            profile.should.eql({
-              id: 'id@service',
-              service: 'service',
-              pod: 1,
-              auth: {},
-              config: {}
-            });
-            return done();
-          });
-        });
-      });
-
-      describe('on a pod', function() {
-        beforeEach(function() {
-          profileManager.setRole('pod');
-          dalFake.addFake(/INSERT INTO Profiles \(id,service\)/i, []);
-        });
-
-        it('creates a new Profile in the local DB', function(done) {
-          profileManager.allGet('id@service', function(err, profile) {
-            profile.should.eql({
-              id: 'id@service',
-              service: 'service',
-              auth: {},
-              config: {}
-            });
-            return done();
-          });
-        });
-      });
-    });
   });
 });
