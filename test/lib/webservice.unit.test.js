@@ -282,6 +282,7 @@ describe('API host', function () {
     });
 
     SERVICE_GETS.forEach(function (url) {
+      if (url.slice(-4) !== 'self') return;
       describe(url, function () {
         failOnBadAccessToken(url);
 
