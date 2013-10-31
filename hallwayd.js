@@ -77,37 +77,12 @@ function startDawg(cbDone) {
   });
 }
 
-function startNexus(cbDone) {
-  logger.vital('Starting a Nexus. Should last about 4 years.');
-  require('nexusService').startService(
-    lconfig.nexus.port,
-    lconfig.nexus.listenIP,
-    cbDone
-  );
-}
-
-function startStream(cbDone) {
-  logger.vital("Starting a Hallway Stream -- you're in for a good time.");
-
-  require('streamer').startService(lconfig.stream, function () {
-    logger.vital("Streaming at port %d", lconfig.stream.port);
-
-    cbDone();
-  });
-}
-
 var Roles = {
   apihost: {
     startup: startAPIHost
   },
   dawg: {
     startup: startDawg
-  },
-  nexus: {
-    startup: startNexus
-  },
-  stream: {
-    startup: startStream
   }
 };
 
@@ -127,27 +102,19 @@ if (argv._.length > 0) {
 
 var startupTasks = [];
 
-var podClient = require("podClient");
-podClient.setRole(rolename);
+startupTasks.push(function (cb) {
+  require('dMap').load();
+  require('servezas').load();
 
-if (role !== Roles.stream) {
-  // this loads all lib/services/*/map.js
-  startupTasks.push(function (cb) {
-    require('dMap').load();
-    require('servezas').load();
+  cb();
+});
+startupTasks.push(require('tokenz').init);
 
-    cb();
-  });
-  startupTasks.push(require('ijod').initDB);
-  startupTasks.push(require('tokenz').init);
-  startupTasks.push(require('nexusClient').init);
+var profileManager = require('profileManager');
+startupTasks.push(profileManager.init);
+profileManager.setRole(rolename);
 
-  var profileManager = require('profileManager');
-  startupTasks.push(profileManager.init);
-  profileManager.setRole(rolename);
-}
-
-if (role !== Roles.dawg && role !== Roles.stream) {
+if (role !== Roles.dawg) {
   var acl = require('acl');
   startupTasks.push(acl.init);
   acl.setRole(rolename);
