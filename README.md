@@ -1,12 +1,6 @@
-# Hallway Original - Empowering Personal Data Applications
+# Singly Hallway - Empowering Personal Data Applications
 
-[![Build Status](https://travis-ci.org/jerbob92/hallway.png)](https://travis-ci.org/jerbob92/hallway)
-
-This is a forked project of the Singly API. 
-Recently Singly decides to do a major overhaul on their API, removing almost everything I wanted to use. 
-So here is the version with everything in it, and some patches backported.
-
-I will soon make the documentation available somewhere else, as it's like Singly will remove it from their website soon.
+[![Build Status](https://travis-ci.org/Singly/hallway.png)](https://travis-ci.org/Singly/hallway)
 
 This is an open source project to help developers build amazing applications
 combining data from many sources easily, through one API. This codebase is
@@ -14,6 +8,8 @@ currently live and powering [api.singly.com](https://singly.com/). Sign in
 and start building!
 
 [Background Video](http://www.youtube.com/watch?v=pTNO5npNq28)
+
+Follow [@singly](http://twitter.com/singly) and check out our [blog](http://blog.singly.com).
 
 Let's get started:
 
@@ -28,14 +24,14 @@ Hallway has the following dependencies:
  * [Riak](http://basho.com/riak/)
 
 Detailed instructions for each platform can be found
-[here](https://github.com/jerbob92/hallway/wiki/Installing-hallway-dependencies).
+[here](https://github.com/Singly/hallway/wiki/Installing-hallway-dependencies).
 
 ## Building Hallway
 
 Once the dependencies are installed, clone the source code from github using the
 following command:
 
-    git clone https://github.com/jerbob92/hallway.git
+    git clone https://github.com/Singly/hallway.git
 
 Now go to the hallway directory and run `make`:
 
@@ -134,7 +130,7 @@ You can find other options to set in the `Config/defaults.json` file.
 For each service you want to use with Hallway you will need to register an app
 with that service, get your client id and client secret, and paste them into the
 apikeys.json file.  A full example of how to get keys per service can be [found
-here](https://github.com/jerbob92/hallway/wiki/GettingAPIKeys).
+here](https://github.com/Singly/hallway/wiki/GettingAPIKeys).
 
     {
         "twitter":{
@@ -194,3 +190,4 @@ the local host and port that you have Hallway running on.
 
 Here is the [NodeJS Example](https://singly.com/docs/getting_started_node) to
 get started.
+

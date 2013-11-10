@@ -44,7 +44,6 @@
     "ent": "0.0.5",
     "express": "3.0.4",
     "facebook-js": "1.0.0",
-    "firebase-token-generator": "0.1.x",
     "fitbit-js": "0.1.0",
     "flickr-js": "0.0.3",
     "generic-pool": "2.0.2",

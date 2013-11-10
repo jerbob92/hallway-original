@@ -1,6 +1,6 @@
 /*
  *
- * Copyright (C) 2011, Singly, Inc.
+ * Copyright (C) 2011, The Locker Project
  * All rights reserved.
  *
  * Please see the LICENSE file for more information.
@@ -24,6 +24,8 @@ logger.vital('hallwayd process id:', process.pid);
 if (argv._.length === 0 || argv._[0] === "apihost") {
   if(lconfig.database && lconfig.database.maxConnections) lconfig.database.maxConnections *= 2;
 }
+
+var taskmanNG = require('taskman-ng');
 
 // avoid DEPTH_ZERO_SELF_SIGNED_CERT
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -77,12 +79,128 @@ function startDawg(cbDone) {
   });
 }
 
+function startNexus(cbDone) {
+  logger.vital('Starting a Nexus. Should last about 4 years.');
+  require('nexusService').startService(
+    lconfig.nexus.port,
+    lconfig.nexus.listenIP,
+    cbDone
+  );
+}
+
+function startPod(cbDone) {
+  logger.vital('Starting a Pod so HAL can\'t hear us.');
+  require('podService').startService(
+    lconfig.pods.listenPort,
+    lconfig.pods.listenIP,
+    cbDone
+  );
+}
+
+function startStream(cbDone) {
+  logger.vital("Starting a Hallway Stream -- you're in for a good time.");
+
+  require('streamer').startService(lconfig.stream, function () {
+    logger.vital("Streaming at port %d", lconfig.stream.port);
+
+    cbDone();
+  });
+}
+
+function startWorkerSup(cbDone) {
+  var redis = require("redis");
+  var rclient = redis.createClient(lconfig.worker.redis.port || 6379,
+                                   lconfig.worker.redis.host || "127.0.0.1");
+  var pcron = require('pcron');
+  var pcronInst = pcron.init(rclient);
+
+  // Dynamically update lconfig.worker to include moduleName and args for
+  // invoking node
+  lconfig.worker.workerId = process.env.WORKER || require("os").hostname();
+  lconfig.worker.moduleName = "hallwayd.js";
+  lconfig.worker.spawnArgs = ["workerchild"];
+
+  // Monitor all services if unspecified
+  if (!lconfig.worker.services) {
+    var servezas = require('servezas');
+
+    servezas.load();
+
+    lconfig.worker.services = servezas.serviceList();
+  }
+
+  // Use pcronInsta.set_master to ensure we're not running gc_work/notify too
+  // often/heavily. We use a 10 second interval for simplicity; this means that
+  // each worker will run this script once every 10 seconds and then, if it's
+  // master, kick off gc_work/notify. Note that the "master" key is set to
+  // expire in 12 seconds to accomodate any lag that might happen.
+  var loop = function () {
+    pcronInst.set_master(lconfig.worker.workerId, 12000, function (err, result) {
+      if (err) {
+        logger.error("set_master failed: " + err);
+      } else if (result === 1) {
+        logger.debug("Won master lock; kicking pcronInst.notify/gc_work");
+        pcronInst.notify(lconfig.worker.services, Date.now(), function () {});
+        pcronInst.gc_work(lconfig.worker.services, Date.now(),
+          lconfig.worker.error_delay, function () {});
+      }
+    });
+    setTimeout(loop, 10000);
+  };
+
+  loop();
+
+  pcronInst.start_sup(lconfig.worker, function (err) {
+    if (err) {
+      logger.error("Failed to init pcron_sup: " + err);
+      process.exit(1);
+    }
+    cbDone();
+  });
+}
+
+function startWorkerChild(cbDone) {
+  taskmanNG.init(function () {
+    startWorkerWS(cbDone);
+  });
+}
+
+function startWorkerWS(cbDone) {
+  if (!lconfig.worker || !lconfig.worker.port) {
+    logger.error("You must specify a worker section with at least a port and " +
+      "password to run.");
+    process.exit(1);
+  }
+  var worker = require("worker");
+  if (!lconfig.worker.listenIP) lconfig.worker.listenIP = "0.0.0.0";
+  worker.startService(lconfig.worker.port, lconfig.worker.listenIP, function () {
+    logger.vital("Starting a Hallway Worker, thou shalt be digitized",
+      lconfig.worker);
+    cbDone();
+  });
+}
+
 var Roles = {
+  workersup: {
+    startup: startWorkerSup
+  },
+  workerchild: {
+    startup: startWorkerChild
+  },
   apihost: {
     startup: startAPIHost
   },
   dawg: {
     startup: startDawg
+  },
+  nexus: {
+    startup: startNexus
+  },
+  pod: {
+    startup: startPod
+  },
+  stream: {
+    startup: startStream
   }
 };
 
@@ -102,19 +220,28 @@ if (argv._.length > 0) {
 
 var startupTasks = [];
 
-startupTasks.push(function (cb) {
-  require('dMap').load();
-  require('servezas').load();
+var podClient = require("podClient");
+podClient.setRole(rolename);
 
-  cb();
-});
-startupTasks.push(require('tokenz').init);
+if (role !== Roles.stream) {
+  // this loads all lib/services/*/map.js
+  startupTasks.push(function (cb) {
+    require('dMap').load();
+    require('servezas').load();
 
-var profileManager = require('profileManager');
-startupTasks.push(profileManager.init);
-profileManager.setRole(rolename);
+    cb();
+  });
+  startupTasks.push(require('ijod').initDB);
+  startupTasks.push(require('tokenz').init);
+  startupTasks.push(require('taskList').init);
+  startupTasks.push(require('nexusClient').init);
 
-if (role !== Roles.dawg) {
+  var profileManager = require('profileManager');
+  startupTasks.push(profileManager.init);
+  profileManager.setRole(rolename);
+}
+
+if (role !== Roles.dawg && role !== Roles.stream) {
   var acl = require('acl');
   startupTasks.push(acl.init);
   acl.setRole(rolename);
@@ -140,6 +267,11 @@ process.on("SIGINT", function () {
   logger.vital("Shutting down via SIGINT...");
 
   switch (role) {
+  case Roles.worker:
+    taskmanNG.stop(function () {
+      process.exit(0);
+    });
+    break;
   case Roles.apihost:
     process.exit(0);
     break;
