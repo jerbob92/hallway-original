@@ -1,0 +1,60 @@
+{
+  "name": "Moves App",
+  "desc": "Only provides authentication",
+  "key": "Client ID",
+  "secret": "Client secret",
+  "icons": [
+    {
+      "height": 16,
+      "width": 16,
+      "source": "http://assets.singly.com/service-icons/16px/moves.png"
+    },
+    {
+      "height": 24,
+      "width": 24,
+      "source": "http://assets.singly.com/service-icons/24px/moves.png"
+    },
+    {
+      "height": 32,
+      "width": 32,
+      "source": "http://assets.singly.com/service-icons/32px/moves.png"
+    },
+    {
+      "height": 48,
+      "width": 48,
+      "source": "http://assets.singly.com/service-icons/48px/moves.png"
+    },
+    {
+      "height": 64,
+      "width": 64,
+      "source": "http://assets.singly.com/service-icons/64px/moves.png"
+    },
+    {
+      "height": 128,
+      "width": 128,
+      "source": "http://assets.singly.com/service-icons/128px/moves.png"
+    },
+    {
+      "height": 256,
+      "width": 256,
+      "source": "http://assets.singly.com/service-icons/256px/moves.png"
+    },
+    {
+      "height": 512,
+      "width": 512,
+      "source": "http://assets.singly.com/service-icons/512px/moves.png"
+    },
+    {
+      "height": 1024,
+      "width": 1024,
+      "source": "http://assets.singly.com/service-icons/1024px/moves.png"
+    }
+  ],
+  "synclets": [
+    {
+      "name": "self",
+      "frequency": 9999999,
+      "class": "core"
+    }
+  ]
+}
