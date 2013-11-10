@@ -1,6 +1,5 @@
-# Singly Hallway - Empowering Personal Data Applications
+# Hallway Original - Data API restored
 
-[![Build Status](https://travis-ci.org/Singly/hallway.png)](https://travis-ci.org/Singly/hallway)
 
 This is an open source project to help developers build amazing applications
 combining data from many sources easily, through one API. This codebase is
@@ -8,8 +7,6 @@ currently live and powering [api.singly.com](https://singly.com/). Sign in
 and start building!
 
 [Background Video](http://www.youtube.com/watch?v=pTNO5npNq28)
-
-Follow [@singly](http://twitter.com/singly) and check out our [blog](http://blog.singly.com).
 
 Let's get started:
 
@@ -24,14 +21,14 @@ Hallway has the following dependencies:
  * [Riak](http://basho.com/riak/)
 
 Detailed instructions for each platform can be found
-[here](https://github.com/Singly/hallway/wiki/Installing-hallway-dependencies).
+[here](https://github.com/jerbob92/hallway/wiki/Installing-hallway-dependencies).
 
 ## Building Hallway
 
 Once the dependencies are installed, clone the source code from github using the
 following command:
 
-    git clone https://github.com/Singly/hallway.git
+    git clone https://github.com/jerbob92/hallway-original.git
 
 Now go to the hallway directory and run `make`:
 
@@ -125,12 +122,12 @@ the lockerHost, lockerPort, externalHost, and externalPort settings.
 
 You can find other options to set in the `Config/defaults.json` file.
 
-### The apikeys.json File
+### The api keys 
 
 For each service you want to use with Hallway you will need to register an app
-with that service, get your client id and client secret, and paste them into the
-apikeys.json file.  A full example of how to get keys per service can be [found
-here](https://github.com/Singly/hallway/wiki/GettingAPIKeys).
+with that service, get your client id and client secret, and use them in your App row in mysql.
+A full example of how to get keys per service can be [found
+here](https://github.com/jerbob92/hallway/wiki/GettingAPIKeys).
 
     {
         "twitter":{
@@ -151,6 +148,7 @@ here](https://github.com/Singly/hallway/wiki/GettingAPIKeys).
         },
         ...
     }
+
 
 When setting up services the callback urls must point back to your local
 hallway. For example, when running hallway locally the callback url would be
@@ -178,10 +176,12 @@ down and use an example app.  To setup a test app in the database, run the
 following commands and sql.
 
     mysql -u <admin_username> -p <admin_password> hallway_development
-    insert into Apps (app, secret) values ('a_new_app_id', 'a_new_app_secret');
+    insert into Apps (app, secret, apikeys, notes) values ('a_new_app_id', 'a_new_app_secret', '{}', '{"PersonalCheckins": true,"PersonalNews": true,"PersonalPhotos": true,"PersonalStatuses": true,"SocialCheckins": true,"SocialNews": true,"SocialPhotos": true,"SocialStatuses": true}');
 
 You can give whatever values you like for the app and secret fields.  They
 become your client id and client secret for your example app.
+
+Replace the third value with your API keys object. The fourth value is to configure what hallway will actually fetch from the social networks
 
 You can then follow the instructions for one of the example apps in the "Getting
 Started" section of the [Singly docs](http://singly.com/docs).  Your client id
