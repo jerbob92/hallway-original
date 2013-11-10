@@ -77,11 +77,6 @@
       "frequency": 43200,
       "name": "photos",
       "class": "personal"
-    },
-    {
-      "frequency": 86400,
-      "name": "badges",
-      "class": "personal"
     }
   ]
 }
