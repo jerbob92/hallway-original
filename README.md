@@ -6,6 +6,8 @@ This is a forked project of the Singly API.
 Recently Singly decides to do a major overhaul on their API, removing almost everything I wanted to use. 
 So here is the version with everything in it, and some patches backported.
 
+I will soon make the documentation available somewhere else, as it's like Singly will remove it from their website soon.
+
 This is an open source project to help developers build amazing applications
 combining data from many sources easily, through one API. This codebase is
 currently live and powering [api.singly.com](https://singly.com/). Sign in
