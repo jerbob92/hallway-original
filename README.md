@@ -1,8 +1,8 @@
 # Hallway Original - Data API restored
 
-This is a forked project of the Singly API. Recently Singly decides to do a major overhaul on their API, removing almost everything I wanted to use. So here is the version with everything in it, and some patches backported.
+This is a forked project of the Singly API. Recently Singly decided to do a major overhaul on their API, removing almost everything I wanted to use. So here is the version with everything in it, and some patches backported.
 
-I will soon make the documentation available somewhere else, as it's likely Singly will remove it from their website soon.
+I will make the documentation available somewhere else, as it's likely Singly will remove it from their website soon.
 
 
 This is an open source project to help developers build amazing applications
